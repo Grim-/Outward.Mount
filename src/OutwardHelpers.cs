@@ -35,6 +35,11 @@ namespace EmoMount
             return SL.GetSLPack(SLPackName).AssetBundles[AssetBundle].LoadAsset<T>(key);
         }
 
+        public static Vector3 GetPositionAroundCharacter(Character _affectedCharacter, Vector3 PositionOffset = default(Vector3))
+        {
+            return _affectedCharacter.transform.position + PositionOffset;
+        }
+
 
         public static List<T> GetTypeFromColliders<T>(Collider[] colliders) where T : Component
         {
