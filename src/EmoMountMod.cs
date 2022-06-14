@@ -247,4 +247,22 @@ namespace EmoMount
             __instance.gameObject.AddComponent<CharacterMount>();
         }
     }
+
+    //SinaiSavesTheDay++
+    [HarmonyPatch(typeof(InteractionDisplay), nameof(InteractionDisplay.SetInteractable))]
+    public class InteractionDisplayPatch
+    {
+        static void Postfix(InteractionDisplay __instance, InteractionTriggerBase _interactionTrigger)
+        {
+            if (!_interactionTrigger || !_interactionTrigger.ItemToPreview || _interactionTrigger.ItemToPreview is not Bag)
+                return;
+            BasicMountController basicMountController = _interactionTrigger.ItemToPreview.gameObject.GetComponentInParent<BasicMountController>();
+            if (basicMountController != null && basicMountController.BagContainer.UID == _interactionTrigger.ItemToPreview.UID)
+            {
+                //EmoMountMod.Log.LogMessage("Interaction Display UID is Mount Bag UID");
+
+                __instance.m_interactionBag.Show(false);
+            }
+        }
+    }
 }
