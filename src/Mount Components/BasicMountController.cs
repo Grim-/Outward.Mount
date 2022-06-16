@@ -440,6 +440,29 @@ namespace EmoMount
             Animator.SetTrigger(name);
         }
 
+
+        public void PlayMountAnimation(MountAnimations animation)
+        {
+            switch (animation)
+            {
+                case MountAnimations.MOUNT_HAPPY:
+                    PlayTriggerAnimation("DoMountHappy");
+                    break;
+                case MountAnimations.MOUNT_ANGRY:
+                    PlayTriggerAnimation("DoMountAngry");
+                    break;
+                case MountAnimations.MOUNT_SPECIAL:
+                    PlayTriggerAnimation("DoMountSpecial");
+                    break;
+                case MountAnimations.MOUNT_ATTACK:
+                    PlayTriggerAnimation("DoMountAttack");
+                    break;
+                case MountAnimations.MOUNT_HITREACT:
+                    PlayTriggerAnimation("DoMountHitReact");
+                    break;
+            }
+        }
+
         private void UpdateCurrentWeight(float newWeight)
         {
             CurrentCarryWeight = newWeight;
@@ -454,5 +477,14 @@ namespace EmoMount
         {
             NavMesh.enabled = false;
         }
+    }
+
+    public enum MountAnimations
+    {
+        MOUNT_HAPPY,
+        MOUNT_ANGRY,
+        MOUNT_SPECIAL,
+        MOUNT_ATTACK,
+        MOUNT_HITREACT
     }
 }

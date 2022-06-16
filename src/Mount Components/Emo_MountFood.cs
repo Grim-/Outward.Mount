@@ -66,11 +66,13 @@ namespace EmoMount
                 finalFoodValue *= FavouriteFoods[itemID];
 
                 MountController.DisplayNotification($"{MountController.MountName} loves this food!");
+                MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
             }
             else if (IsHatedFood(itemID))
             {
                 finalFoodValue *= 0.7f;
                 MountController.DisplayNotification($"{MountController.MountName} HATES this food!");
+                MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
             }
 
 

@@ -81,151 +81,34 @@ namespace EmoMount
 
         private void InitTestItems()
         {
-            SL_Item Test_WolfWhistle = new SL_Item()
-            {
-                Target_ItemID = 4300130,
-                New_ItemID = -26995,
-                Name = "Wolf  whistle",
-                Description = "Test",
-                EffectBehaviour = EditBehaviours.Destroy,
-                EffectTransforms = new SL_EffectTransform[]
-    {
-                    new SL_EffectTransform
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount
-                            {
-                                SLPackName = "mount",
-                                AssetBundleName = "emomountbundle",
-                                PrefabName = "Mount_Wolf",
-                                MountSpeed = 7,
-                                RotateSpeed = 90,
-                            }
-                        }
-                    }
-    }
-            };
+            //SL_Item Test_WolfWhistle = new SL_Item()
+            //{
+            //    Target_ItemID = 4300130,
+            //    New_ItemID = -26995,
+            //    Name = "Wolf  whistle",
+            //    Description = "Test",
+            //    EffectBehaviour = EditBehaviours.Destroy,
+            //    EffectTransforms = new SL_EffectTransform[]
+            //     {
+            //        new SL_EffectTransform
+            //        {
+            //            TransformName = "Normal",
+            //            Effects = new SL_Effect[]
+            //            {
+            //                new SL_SpawnMount
+            //                {
+            //                    SLPackName = "mount",
+            //                    AssetBundleName = "emomountbundle",
+            //                    PrefabName = "Mount_Wolf",
+            //                    MountSpeed = 7,
+            //                    RotateSpeed = 90,
+            //                }
+            //            }
+            //        }
+            //    }
+            //};
 
-            Test_WolfWhistle.ApplyTemplate();
-
-
-            SL_Item Test_CosmicWolfWhistle = new SL_Item()
-            {
-                Target_ItemID = 4300130,
-                New_ItemID = -26993,
-                Name = "Wolf (Cosmic) whistle",
-                Description = "Test",
-                EffectBehaviour = EditBehaviours.Destroy,
-                EffectTransforms = new SL_EffectTransform[]
-{
-                    new SL_EffectTransform
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount
-                            {
-                                SLPackName = "mount",
-                                AssetBundleName = "emomountbundle",
-                                PrefabName = "Mount_Wolf_Cosmic",
-                                MountSpeed = 7,
-                                RotateSpeed = 90,
-                            }
-                        }
-                    }
-}
-            };
-
-            Test_CosmicWolfWhistle.ApplyTemplate();
-
-            SL_Item Test_HolyWolfWhistle = new SL_Item()
-            {
-                Target_ItemID = 4300130,
-                New_ItemID = -26992,
-                Name = "Wolf (Holy) whistle",
-                Description = "Test",
-                EffectBehaviour = EditBehaviours.Destroy,
-                EffectTransforms = new SL_EffectTransform[]
-{
-                    new SL_EffectTransform
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount
-                            {
-                                SLPackName = "mount",
-                                AssetBundleName = "emomountbundle",
-                                PrefabName = "Mount_Wolf_Holy",
-                                MountSpeed = 7,
-                                RotateSpeed = 90,
-                            }
-                        }
-                    }
-}
-            };
-
-            Test_HolyWolfWhistle.ApplyTemplate();
-
-            SL_Item Test_GolemWhistle = new SL_Item()
-            {
-                Target_ItemID = 4300130,
-                New_ItemID = -26994,
-                Name = "Golem whistle",
-                Description = "Test",
-                EffectBehaviour = EditBehaviours.Destroy,
-                EffectTransforms = new SL_EffectTransform[]
-                {
-                    new SL_EffectTransform
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount
-                            {
-                                SLPackName = "mount",
-                                AssetBundleName = "emomountbundle",
-                                PrefabName = "Mount_RockGolem",
-                                MountSpeed = 7,
-                                RotateSpeed = 90,
-                            }
-                        }
-                    }
-             }
-            };
-
-            Test_GolemWhistle.ApplyTemplate();
-
-            SL_Item Test_RaptorWhistle = new SL_Item()
-            {
-                Target_ItemID = 4300130,
-                New_ItemID = -26900,
-                Name = "Raptor whistle",
-                Description = "Test",
-                EffectBehaviour = EditBehaviours.Destroy,
-                EffectTransforms = new SL_EffectTransform[]
-    {
-                    new SL_EffectTransform
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount
-                            {
-                                SLPackName = "mount",
-                                AssetBundleName = "emomountbundle",
-                                PrefabName = "Mount_Raptor",
-                                MountSpeed = 9,
-                                RotateSpeed = 90,
-                            }
-                        }
-                    }
- }
-            };
-
-            Test_RaptorWhistle.ApplyTemplate();
+            //Test_WolfWhistle.ApplyTemplate();
         }
         private void InitializeCanvas()
         {

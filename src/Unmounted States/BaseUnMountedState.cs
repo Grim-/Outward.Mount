@@ -2,6 +2,10 @@
 
 namespace EmoMount
 {
+
+    /// <summary>
+    /// Base UnMounted State only 
+    /// </summary>
     public class BaseUnMountedState : BaseState<BasicMountController>
     {
         public override void OnEnter(BasicMountController controller)
