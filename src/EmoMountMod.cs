@@ -23,6 +23,12 @@ namespace EmoMount
         // Increment the VERSION when you release a new version of your mod.
         public const string VERSION = "1.0.0";
 
+        public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
+        public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
+        public const string MOUNT_MOVE_TO_KEY = "MountMod_MoveTo_Toggle";
+
+        public static bool Debug = true;
+
         // For accessing your BepInEx Logger from outside of this class (MyMod.Log)
         internal static ManualLogSource Log;
         public static Canvas MainCanvas
@@ -68,9 +74,9 @@ namespace EmoMount
 
         private void InitKeybinds()
         {
-            CustomKeybindings.AddAction("TEST_DISMOUNT_BUTTON", KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction("TEST_FOLLOWWAIT_TOGGLE_BUTTON", KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction("TEST_MOVETO_BUTTON", KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings);
         }
 
         private void InitTestItems()
@@ -86,7 +92,7 @@ namespace EmoMount
     {
                     new SL_EffectTransform
                     {
-                        TransformName = "Effects",
+                        TransformName = "Normal",
                         Effects = new SL_Effect[]
                         {
                             new SL_SpawnMount
@@ -116,7 +122,7 @@ namespace EmoMount
 {
                     new SL_EffectTransform
                     {
-                        TransformName = "Effects",
+                        TransformName = "Normal",
                         Effects = new SL_Effect[]
                         {
                             new SL_SpawnMount
@@ -145,7 +151,7 @@ namespace EmoMount
 {
                     new SL_EffectTransform
                     {
-                        TransformName = "Effects",
+                        TransformName = "Normal",
                         Effects = new SL_Effect[]
                         {
                             new SL_SpawnMount
@@ -174,7 +180,7 @@ namespace EmoMount
                 {
                     new SL_EffectTransform
                     {
-                        TransformName = "Effects",
+                        TransformName = "Normal",
                         Effects = new SL_Effect[]
                         {
                             new SL_SpawnMount
@@ -203,7 +209,7 @@ namespace EmoMount
     {
                     new SL_EffectTransform
                     {
-                        TransformName = "Effects",
+                        TransformName = "Normal",
                         Effects = new SL_Effect[]
                         {
                             new SL_SpawnMount
@@ -248,6 +254,21 @@ namespace EmoMount
         }
     }
 
+    [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3)})]
+    public class CharacterTeleport
+    {
+        static void Postfix(Character __instance, Vector3 _pos, Vector3 _rot)
+        {
+            CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
+
+            if (characterMount != null && characterMount.HasMount)
+            {
+                EmoMountMod.Log.LogMessage($"Warping {characterMount.Mount.MountName} with {characterMount.Character.Name}");
+                characterMount.Mount.NavMesh.Warp(_pos);
+            }
+        }
+    }
+
     //SinaiSavesTheDay++
     [HarmonyPatch(typeof(InteractionDisplay), nameof(InteractionDisplay.SetInteractable))]
     public class InteractionDisplayPatch
@@ -256,6 +277,7 @@ namespace EmoMount
         {
             if (!_interactionTrigger || !_interactionTrigger.ItemToPreview || _interactionTrigger.ItemToPreview is not Bag)
                 return;
+            //maybe not the best way to do this but it fucken works.
             BasicMountController basicMountController = _interactionTrigger.ItemToPreview.gameObject.GetComponentInParent<BasicMountController>();
             if (basicMountController != null && basicMountController.BagContainer.UID == _interactionTrigger.ItemToPreview.UID)
             {

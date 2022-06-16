@@ -42,6 +42,9 @@ namespace EmoMount
         {
             MountController = basicMount;
             UpdateNameLabel(basicMount.MountName);
+
+            MountController.MountFood.OnChange += Redraw;
+            Redraw();
         }
 
         private void Redraw()

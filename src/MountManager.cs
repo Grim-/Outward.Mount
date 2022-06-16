@@ -16,16 +16,27 @@ namespace EmoMount
         public MountManager()
         {
             MountControllers = new Dictionary<Character, BasicMountController>();
+            EmoMountMod.Log.LogMessage($"Initalising MountManager");
         }
 
-        public BasicMountController CreateMountForCharacter(Character _affectedCharacter, string SLPackName, string AssetBundleName, string PrefabName, string bagID, Vector3 Position, Vector3 Rotation, float MountSpeed, float RotateSpeed)
+        private string[] Names = new string[]
+        {
+                "Buddy",
+                "Maisie",
+                "Taff",
+                "Lola",
+                "Mooch",
+                "Ebony"
+        };
+
+        public BasicMountController CreateMountForCharacter(Character _affectedCharacter, string MountName, string SLPackName, string AssetBundleName, string PrefabName, string bagID, Vector3 Position, Vector3 Rotation, float MountSpeed, float RotateSpeed)
         {
             GameObject Prefab = OutwardHelpers.GetFromAssetBundle<GameObject>(SLPackName, AssetBundleName, PrefabName);
             GameObject MountInstance = null;
 
             if (Prefab == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountForCharacter {PrefabName} from AssetBundle was null.");
+                EmoMountMod.Log.LogMessage($"CreateMountForCharacter PrefabName : {PrefabName} from AssetBundle was null.");
                 return null;
             }
 
@@ -37,6 +48,16 @@ namespace EmoMount
                 GameObject.DontDestroyOnLoad(MountInstance);
 
                 BasicMountController basicMountController = MountInstance.AddComponent<BasicMountController>();
+
+                if (string.IsNullOrEmpty(MountName))
+                {
+                    basicMountController.MountName = EmoMountMod.MountManager.GetRandomName();
+                }
+                else
+                {
+                    basicMountController.MountName = MountName;
+                }
+             
                 basicMountController.SetOwner(_affectedCharacter);
                 basicMountController.SetMoveSpeed(MountSpeed);
                 basicMountController.SetRotationSpeed(RotateSpeed);
@@ -50,7 +71,7 @@ namespace EmoMount
                     characterMount.SetMount(basicMountController);
                 }
 
-                Item Bag = CreateMountBag(bagID);
+                Item Bag = CreateMountBag(basicMountController, bagID);
 
                 if (Bag)
                 {
@@ -84,7 +105,7 @@ namespace EmoMount
             return null;
         }
 
-        public Item CreateMountBag(string bagItemID)
+        public Item CreateMountBag(BasicMountController mountController, string bagItemID)
         {
             Item Bag = ResourcesPrefabManager.Instance.GenerateItem(bagItemID);
 
@@ -100,10 +121,11 @@ namespace EmoMount
                         bagRigidbody.useGravity = false;
                     }
 
-                    RigidbodySuspender rigidbodySuspender = Bag.gameObject.GetComponent<RigidbodySuspender>();
+                    RigidbodySuspender rigidbodySuspender = Bag.gameObject.GetComponentInChildren<RigidbodySuspender>();
 
                     if (rigidbodySuspender)
                     {
+                        rigidbodySuspender.enabled = false;
                         GameObject.Destroy(rigidbodySuspender);
                     }
 
@@ -120,6 +142,9 @@ namespace EmoMount
 
             return Bag;
         }
+
+
+
         public void AddMountInteractionComponents(GameObject MountInstance)
         {
             MountUpInteraction mountInteraction = MountInstance.AddComponent<MountUpInteraction>();
@@ -129,15 +154,19 @@ namespace EmoMount
 
             interactionActivator.BasicInteraction = mountInteraction;
             interactionActivator.m_defaultHoldInteraction = feedMountInteraction;
-            interactionTriggerBase.DetectionColliderRadius = 2f;
+            interactionTriggerBase.DetectionColliderRadius = 1.2f;
         }
 
         public void DestroyAllMountInstances()
         {
+            EmoMountMod.Log.LogMessage($"Destroying All Mount Instances...");
+
             if (MountControllers != null)
             {
                 foreach (var mount in MountControllers)
                 {
+                    mount.Value.DisableNavMeshAgent();
+                    EmoMountMod.Log.LogMessage($"Destroying and unregistring from UI for {mount.Value.MountName} of {mount.Key.Name}");
                     MountCanvasManager.Instance.UnRegisterMount(mount.Value);
                     GameObject.Destroy(mount.Value.gameObject);
                 }
@@ -146,6 +175,11 @@ namespace EmoMount
 
                 EmoMountMod.Log.LogMessage($"All Mount Instances Destroyed Successfully.");
             }
+        }
+
+        public string GetRandomName()
+        {
+            return Names != null ? Names[Random.Range(0, Names.Length)] : "Scooby";
         }
     }
 }

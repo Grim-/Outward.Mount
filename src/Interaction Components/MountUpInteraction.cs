@@ -15,13 +15,9 @@ namespace EmoMount
         {
             if (MountController != null)
             {
-                if (MountController.MountFood.FoodAsNormalizedPercent > 0.1f)
+                if (MountController.CanMount(_character))
                 {
                     MountController.MountCharacter(_character);
-                }
-                else
-                {
-                    _character.CharacterUI.NotificationPanel.ShowNotification($"{MountController.MountName} refuses, it is too hungry.");
                 }
 
             }

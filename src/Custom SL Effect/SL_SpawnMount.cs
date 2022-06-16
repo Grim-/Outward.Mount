@@ -67,7 +67,7 @@ namespace EmoMount
         {
             if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
             {
-                    EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, SLPackName, AssetBundleName, PrefabName, "5300000", 
+                    EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, EmoMountMod.MountManager.GetRandomName(), SLPackName, AssetBundleName, PrefabName, "5300000", 
                     OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter, PositionOffset), RotationOffset, MountSpeed, RotateSpeed);
             }      
         }

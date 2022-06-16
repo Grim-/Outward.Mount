@@ -64,11 +64,8 @@ namespace EmoMount
             if (!string.IsNullOrEmpty(MountName))
             {
                 EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
-                BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(character, SLPackName, AssetBundleName, PrefabName, BagID, Position, Rotation, MountSpeed, RotateSpeed);
-
-                basicMountController.MountName = this.MountName;
+                BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(character, MountName, SLPackName, AssetBundleName, PrefabName, BagID, Position, Rotation, MountSpeed, RotateSpeed);
                 basicMountController.MountUID = this.MountUID;
-
                 basicMountController.MountFood.CurrentFood = this.CurrentFood;
                 basicMountController.MountFood.MaximumFood = this.MaximumFood;
 
