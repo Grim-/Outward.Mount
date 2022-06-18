@@ -19,13 +19,26 @@ namespace EmoMount
         public string SLPackName;
         public string AssetBundleName;
         public string PrefabName;
+
         public float MountSpeed;
         public float RotateSpeed;
+
+        public float MountMaxCarryWeight;
+        public float MountEncumberenceLimit;
+        public float MountEncumberenceSpeedModifier;
+
+        public float MountHungerTickTime;
+        public float MountFoodLostPerHungerTick;
+
 
         public Vector3 PositionOffset;
         public Vector3 RotationOffset;
         public Vector3 MountScale;
+        public Vector3 MountedCameraOffset;
 
+
+        public List<MountFoodInformation> FavouriteFoods;
+        public List<MountFoodInformation> HatedFoods;
 
         public override void ApplyToComponent<T>(T component)
         {
@@ -71,6 +84,14 @@ namespace EmoMount
                     OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter, PositionOffset), RotationOffset, MountSpeed, RotateSpeed);
             }      
         }
+    }
+
+
+    [System.Serializable]
+    public class MountFoodInformation
+    {
+        public int ItemID;
+        public float FoodModifierValue;
     }
 }
 

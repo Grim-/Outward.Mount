@@ -74,7 +74,7 @@ namespace EmoMount
 
         //Mount Movement Settings
         public float MoveSpeed { get; private set; }
-        public float ActualMoveSpeed => WeightAsNormalizedPercent > WeightEncumberenceLimit ? MoveSpeed * EncumberenceModifier : MoveSpeed;
+        public float ActualMoveSpeed => WeightAsNormalizedPercent > WeightEncumberenceLimit ? MoveSpeed * EncumberenceSpeedModifier : MoveSpeed;
         public float RotateSpeed { get; private set; }
         public float LeashDistance = 6f;
         //A Point is randomly chosen in LeashPointRadius around player to leash to.
@@ -88,7 +88,7 @@ namespace EmoMount
         //no idea on a reasonable number for any of this
         public float MaxCarryWeight = 90f;
         public float WeightEncumberenceLimit = 0.75f;
-        public float EncumberenceModifier = 0.5f;
+        public float EncumberenceSpeedModifier = 0.5f;
         public float WeightAsNormalizedPercent => CurrentCarryWeight / MaxCarryWeight;
 
 
