@@ -2,6 +2,6 @@
 
 Mount values 
 
-[ ] - Hunger
-[ ] - MovementSpeed
-[ ] - Food Types and Food values
+- [ ] - Hunger
+- [ ] - MovementSpeed
+- [ ] - Food Types and Food values
