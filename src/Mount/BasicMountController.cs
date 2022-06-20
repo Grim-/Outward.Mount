@@ -39,6 +39,11 @@ namespace EmoMount
             get; private set;
         }
 
+        public MountSpecies MountSpecies
+        {
+            get; private set;
+        }
+
         public string MountName
         {
             get; set;
@@ -92,23 +97,13 @@ namespace EmoMount
         public float WeightAsNormalizedPercent => CurrentCarryWeight / MaxCarryWeight;
 
 
-        private Vector3 OriginalPlayerCameraOffset;
-        private Vector3 MountedCameraOffset = new Vector3(0, 0, -4);
+        public Vector3 MountedCameraOffset;
 
 
         //how often is food taken while mounted
         private float MountedHungerTickTime = 30f;
         private float MountedHungerTimer = 0;
-
-
-
-
-        private string[] Actions = new string[]
-        {
-                "DoMountSpecial",
-                "DoMountAttack",
-                "HitReact"
-        };
+        private Vector3 OriginalPlayerCameraOffset;
 
 
         public StackBasedStateMachine<BasicMountController> MountFSM
@@ -169,7 +164,35 @@ namespace EmoMount
             MountUI = mountUI;
         }
 
+        public void SetSpecies(MountSpecies mountSpecies)
+        {
+            MountSpecies = mountSpecies;
+            SetMoveSpeed(MountSpecies.MoveSpeed);
+            SetRotationSpeed(MountSpecies.RotateSpeed);
+            SetNavMeshMoveSpeed(MountSpecies.MoveSpeed);
+            SetCameraOffset(MountSpecies.CameraOffset);
+        }
 
+        public void SetFavouriteFoods(List<MountFoodData> newFavourites)
+        {
+            MountFood.FavouriteFoods.Clear();
+
+            foreach (var item in newFavourites)
+            {
+                MountFood.FavouriteFoods.Add(item.ItemID, item.FoodValue);
+            }
+
+        }
+
+        public void SetHatedFoods(List<MountFoodData> newHated)
+        {
+            MountFood.HatedFoods.Clear();
+
+            foreach (var item in newHated)
+            {
+                MountFood.HatedFoods.Add(item.ItemID, item.FoodValue);
+            }
+        }
         private IEnumerator SetUpBag(Item bag)
         {
             if (EmoMountMod.Debug)
@@ -225,19 +248,12 @@ namespace EmoMount
             yield break;
         }
 
-        public void SetPrefabDetails(string SLPackName, string AssetBundleName, string PrefabName)
-        {
-            this.SLPackName = SLPackName;
-            this.AssetBundleName = AssetBundleName;
-            this.PrefabName = PrefabName;
-        }
-
         public void SetNavMeshMoveSpeed(float newSpeed)
         {
             if (NavMesh != null)
             {
                 NavMesh.speed = newSpeed;
-                NavMesh.acceleration = newSpeed * 0.5f;
+                NavMesh.acceleration = newSpeed * 0.25f;
             }
         }
         public void SetMoveSpeed(float newSpeed)
@@ -257,10 +273,8 @@ namespace EmoMount
             _affectedCharacter.CharacterCamera.Offset = NewOffset;
         }
 
-        //commenting this so I can understand it in the future, very complex statemachine
         public void Update()
         {
-
             //todo move to state machine, probably stack based
             if (MountFSM != null)
             {
@@ -439,7 +453,6 @@ namespace EmoMount
         {
             Animator.SetTrigger(name);
         }
-
 
         public void PlayMountAnimation(MountAnimations animation)
         {

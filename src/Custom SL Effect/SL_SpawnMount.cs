@@ -16,42 +16,12 @@ namespace EmoMount
         public Type SLTemplateModel => typeof(SL_SpawnMount);
         public Type GameModel => typeof(SLEx_SpawnMount);
 
-        public string SLPackName;
-        public string AssetBundleName;
-        public string PrefabName;
-
-        public float MountSpeed;
-        public float RotateSpeed;
-
-        public float MountMaxCarryWeight;
-        public float MountEncumberenceLimit;
-        public float MountEncumberenceSpeedModifier;
-
-        public float MountHungerTickTime;
-        public float MountFoodLostPerHungerTick;
-
-
-        public Vector3 PositionOffset;
-        public Vector3 RotationOffset;
-        public Vector3 MountScale;
-        public Vector3 MountedCameraOffset;
-
-
-        public List<MountFoodInformation> FavouriteFoods;
-        public List<MountFoodInformation> HatedFoods;
+        public string SpeciesName;
 
         public override void ApplyToComponent<T>(T component)
         {
             SLEx_SpawnMount comp = component as SLEx_SpawnMount;
-            comp.SLPackName = SLPackName;
-            comp.AssetBundleName = AssetBundleName;
-            comp.PrefabName = PrefabName;
-            comp.MountSpeed = MountSpeed;
-            comp.RotateSpeed = RotateSpeed;
-
-            comp.PositionOffset = PositionOffset;
-            comp.RotationOffset = RotationOffset;
-            comp.MountScale = MountScale;
+            comp.SpeciesName = SpeciesName;
         }
 
         public override void SerializeEffect<T>(T effect)
@@ -65,23 +35,19 @@ namespace EmoMount
         public Type SLTemplateModel => typeof(SL_SpawnMount);
         public Type GameModel => typeof(SLEx_SpawnMount);
 
-        public string SLPackName;
-        public string AssetBundleName;
-        public string PrefabName;
-        public float MountSpeed;
-        public float RotateSpeed;
-
-        public Vector3 PositionOffset;
-        public Vector3 RotationOffset;
-        public Vector3 MountScale;
-        public GameObject Prefab;
+        public string SpeciesName;
 
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
             if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
             {
-                    EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, EmoMountMod.MountManager.GetRandomName(), SLPackName, AssetBundleName, PrefabName, "5300000", 
-                    OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter, PositionOffset), RotationOffset, MountSpeed, RotateSpeed);
+                MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);
+
+                if (mountSpecies != null)
+                {
+                   BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFor(_affectedCharacter, mountSpecies, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
+                   basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
+                }
             }      
         }
     }

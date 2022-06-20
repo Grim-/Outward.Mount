@@ -86,7 +86,6 @@ namespace EmoMount
                 MountUI mountUI = MountUIInstance.AddComponent<MountUI>();
                 mountUI.SetTargetMount(mountController);
                 MountUIInstances.Add(mountController, mountUI);
-
                 Show();
                 return mountUI;
             }
@@ -100,7 +99,6 @@ namespace EmoMount
             {
                 GameObject.Destroy(MountUIInstances[mountController].gameObject);
                 MountUIInstances.Remove(mountController);
-
                 if (MountUIInstances.Count == 0)
                 {
                     Hide();

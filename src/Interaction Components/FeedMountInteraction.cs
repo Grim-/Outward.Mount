@@ -9,25 +9,24 @@ namespace EmoMount
     public class FeedMountInteraction : InteractionBase
     {
         private BasicMountController MountController => GetComponentInParent<BasicMountController>();
-        public override string DefaultHoldText => $"Feed {MountController.MountName}";
+        public override string DefaultHoldText => MountController != null ? $"Feed {MountController.MountName}" : "Feed Mount";
 
         public override void Activate(Character _character)
         {
-            //4000010 - gabberries
-            //is player
             if (_character.IsLocalPlayer && _character == MountController.CharacterOwner)
             {
+                List<Item> foundFoodFavourites = new List<Item>();
 
-                //todo loop inventory use 'best' food first
-
-                List<Item> foundFood = _character.Inventory.GetOwnedItems(4000010);
-
-                if (foundFood.Count > 0)
+                foreach (var favFood in MountController.MountFood.FavouriteFoods)
                 {
-                    _character.Inventory.RemoveItem(4000010, 1);
-                    MountController.PlayTriggerAnimation("DoMountSpecial");
-                    //MountController.Owner.CharacterUI.NotificationPanel.ShowNotification("You fed your mount");
-                    MountController.MountFood.Feed(4000010, 5f);
+                    foundFoodFavourites.AddRange(_character.Inventory.GetOwnedItems(favFood.Key));
+                }
+
+                if (foundFoodFavourites.Count > 0)
+                {
+                    _character.Inventory.RemoveItem(foundFoodFavourites[0].ItemID, 1);
+                    MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
+                    MountController.MountFood.Feed(foundFoodFavourites[0].ItemID, MountController.MountFood.FavouriteFoods[foundFoodFavourites[0].ItemID]);
                 }
             }
         }

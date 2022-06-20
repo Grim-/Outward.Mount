@@ -4,6 +4,8 @@ using BepInEx.Logging;
 using HarmonyLib;
 using SideLoader;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -41,13 +43,18 @@ namespace EmoMount
             get; private set;
         }
 
+
+        public static string RootFolder;
+
+
         // Awake is called when your plugin is created. Use this to set up your mod.
         internal void Awake()
         {
             Log = this.Logger;
-
+            RootFolder = this.Info.Location.Replace("EmoMount.dll", "");
             InitKeybinds();
-            MountManager = new MountManager();
+            //this cannot be the way lol
+            MountManager = new MountManager(RootFolder);
             SL.BeforePacksLoaded += SL_BeforePacksLoaded;
             SL.OnPacksLoaded += SL_OnPacksLoaded;
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
@@ -125,49 +132,6 @@ namespace EmoMount
                 Log.LogMessage("CanvasPrefab was null");
             }
 
-        }
-    }
-
-    [HarmonyPatch(typeof(Character), nameof(Character.Awake))]
-    public class CharacterAwakePatch
-    {
-        static void Postfix(Character __instance)
-        {
-            __instance.gameObject.AddComponent<CharacterMount>();
-        }
-    }
-
-    [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3)})]
-    public class CharacterTeleport
-    {
-        static void Postfix(Character __instance, Vector3 _pos, Vector3 _rot)
-        {
-            CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
-
-            if (characterMount != null && characterMount.HasMount)
-            {
-                EmoMountMod.Log.LogMessage($"Warping {characterMount.Mount.MountName} with {characterMount.Character.Name}");
-                characterMount.Mount.NavMesh.Warp(_pos);
-            }
-        }
-    }
-
-    //SinaiSavesTheDay++
-    [HarmonyPatch(typeof(InteractionDisplay), nameof(InteractionDisplay.SetInteractable))]
-    public class InteractionDisplayPatch
-    {
-        static void Postfix(InteractionDisplay __instance, InteractionTriggerBase _interactionTrigger)
-        {
-            if (!_interactionTrigger || !_interactionTrigger.ItemToPreview || _interactionTrigger.ItemToPreview is not Bag)
-                return;
-            //maybe not the best way to do this but it fucken works.
-            BasicMountController basicMountController = _interactionTrigger.ItemToPreview.gameObject.GetComponentInParent<BasicMountController>();
-            if (basicMountController != null && basicMountController.BagContainer.UID == _interactionTrigger.ItemToPreview.UID)
-            {
-                //EmoMountMod.Log.LogMessage("Interaction Display UID is Mount Bag UID");
-
-                __instance.m_interactionBag.Show(false);
-            }
         }
     }
 }
