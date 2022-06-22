@@ -39,11 +39,28 @@ namespace EmoMount
         {
             if (!HasStoredMount(MountToStore.MountUID))
             {
-                MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceData(MountToStore);
+                MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
                 StoredMounts.Add(mountInstanceData);
                 EmoMountMod.MountManager.DestroyActiveMount(Character);
                 SetActiveMount(null);
             }
+        }
+
+        public BasicMountController RetrieveStoredMount(string MountUID)
+        {
+            if (StoredMounts != null && HasStoredMount(MountUID))
+            {
+                MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
+                EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
+                StoredMounts.Remove(mountInstanceData);
+            }
+
+            return null;
+        }
+
+        public MountInstanceData GetStoredMountData(string MountUID)
+        {
+            return StoredMounts.Find(x => x.MountUID == MountUID);
         }
 
         public bool HasStoredMount(string MountUID)

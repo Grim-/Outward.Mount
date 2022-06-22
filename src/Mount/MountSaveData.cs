@@ -56,7 +56,7 @@ namespace EmoMount
         private void SaveActiveMount(Character character, CharacterMount characterMount)
         {
             EmoMountMod.Log.LogMessage("Saving Active Mount Data");
-            this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceData(characterMount.ActiveMount);
+            this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
         }
 
         private void SaveStoredMounts(Character character, CharacterMount characterMount)
@@ -86,13 +86,7 @@ namespace EmoMount
         private void LoadActiveMount(Character character, CharacterMount characterMount)
         {
             EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
-            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFor(character, this.ActiveMountInstance.MountSpecies, this.ActiveMountInstance.Position, this.ActiveMountInstance.Rotation);
-            basicMountController.MountName = this.ActiveMountInstance.MountName;
-            basicMountController.MountUID = this.ActiveMountInstance.MountUID;
-            basicMountController.MountFood.CurrentFood = this.ActiveMountInstance.CurrentFood;
-            basicMountController.MountFood.MaximumFood = this.ActiveMountInstance.MaximumFood;
-            basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
-            characterMount.SetActiveMount(basicMountController);
+            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance);
         }
 
 

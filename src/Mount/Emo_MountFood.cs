@@ -84,6 +84,7 @@ namespace EmoMount
                 OnFullHandler();
             }
 
+
             OnFoodAddedHandler();
             OnChange?.Invoke();
         }

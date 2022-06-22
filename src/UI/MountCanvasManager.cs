@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmoMount.UI;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,21 +30,66 @@ namespace EmoMount
             get; private set;
         }
 
-        public Transform UIContainer
+        //bottom left hud elemet
+        public RectTransform UIContainer
+        {
+            get; private set;
+        }
+
+        public CanvasGroup UIContainerGroup
+        {
+            get; private set;
+        }
+
+        //vertical layout group
+        public RectTransform StorageContainer
+        {
+            get; private set;
+        }
+
+        public CanvasGroup StorageContainerGroup
+        {
+            get; private set;
+        }
+
+        public GameObject StorageUIPrefab
         {
             get; private set;
         }
 
         private Dictionary<BasicMountController, MountUI> MountUIInstances = new Dictionary<BasicMountController, MountUI>();
+        private List<GameObject> StorageContainerInstances = new List<GameObject>();
 
         public void Awake()
         {
             Instance = this;
             ParentCanvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
-            UIContainer = transform.Find("UIContainer");
+
+
+            UIContainer = transform.Find("UIContainer").GetComponent<RectTransform>();
+            UIContainerGroup = UIContainer.GetComponent<CanvasGroup>();
+
+
+            if (UIContainer == null)
+            {
+                EmoMountMod.Log.LogMessage($"Mount Canvas Manager UI Container cannot be found.");
+            }
+
+
+            StorageContainer = transform.Find("StorageContainer").GetComponent<RectTransform>();
+            StorageContainerGroup = StorageContainer.GetComponent<CanvasGroup>();
+
+
+            if (StorageContainer == null)
+            {
+                EmoMountMod.Log.LogMessage($"Mount Canvas Manager UI Storage Container cannot be found.");
+            }
+
 
             MountUIPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "MountUIPrefab");
+            StorageUIPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "StoredMountPrefab");
+
 
             if (MountUIPrefab == null)
             {
@@ -52,24 +98,108 @@ namespace EmoMount
             }
 
 
-            Hide();
+            HideMountHud();
+            HideStorage();
         }
 
       
         public void Show()
         {
-            if (CanvasGroup != null)
+            if (UIContainerGroup != null)
             {
-                CanvasGroup.alpha = 1;
+                UIContainerGroup.alpha = 1;
             }
         }
 
-        public void Hide()
+        public void HideMountHud()
         {
-            if (CanvasGroup != null)
+            if (UIContainerGroup != null)
             {
-                CanvasGroup.alpha = 0;
+                UIContainerGroup.alpha = 0;
             }
+        }
+
+
+
+
+        public void DisplayStorageForCharacter(Character character)
+        {
+            EmoMountMod.Log.LogMessage($"Displaying Storage UI for {character.Name}");
+
+            if (StorageUIPrefab == null)
+            {
+                EmoMountMod.Log.LogMessage("No Storage UI Prefab found");
+                return;
+            }
+
+            SideLoader.Helpers.ForceUnlockCursor.AddUnlockSource();
+
+            CharacterMount characterMount = character.GetComponent<CharacterMount>();
+
+
+            if (characterMount != null)
+            {
+
+                if (characterMount.StoredMounts.Count == 0)
+                {
+                    EmoMountMod.Log.LogMessage($"No Stored Mounts");
+                    //no mounts to show
+                    return;
+                }
+
+
+                foreach (var item in characterMount.StoredMounts)
+                {
+                    EmoMountMod.Log.LogMessage($"Creating Stored Mount UI Selection Instance for {item.MountName}");
+
+                    GameObject mountSelectionInstance = GameObject.Instantiate<GameObject>(StorageUIPrefab);
+                    MountSelectionElement mountSelectionElement = mountSelectionInstance.AddComponent<MountSelectionElement>();
+
+                    mountSelectionElement.SetNameLabel(item.MountName);
+                    mountSelectionElement.SetFoodLabel($"Food : {item.CurrentFood} / {item.MaximumFood}");
+                    mountSelectionElement.RetrieveButton.onClick.AddListener(() =>
+                    {
+                        BasicMountController basicMountController = characterMount.RetrieveStoredMount(item.MountUID);
+                        HideStorage();
+                        SideLoader.Helpers.ForceUnlockCursor.RemoveUnlockSource();
+                    });
+
+                    StorageContainerInstances.Add(mountSelectionInstance);
+
+                    mountSelectionInstance.transform.SetParent(StorageContainer, false);
+                }
+
+                ShowStorage();
+            }
+            else
+            {
+                EmoMountMod.Log.LogMessage($"CharacterMount component not found for  {character.Name}");
+            }
+
+
+        }
+
+        public void ShowStorage()
+        {
+            EmoMountMod.Log.LogMessage($"Showing Storage UI");
+            StorageContainerGroup.alpha = 1;
+            StorageContainerGroup.interactable = true;
+        }
+
+        public void HideStorage()
+        {
+            EmoMountMod.Log.LogMessage($"Hiding Storage UI");
+            StorageContainerGroup.alpha = 0;
+            StorageContainerGroup.interactable = false;
+
+
+            EmoMountMod.Log.LogMessage($"Destroying Storage Container Instances");
+            foreach (var item in StorageContainerInstances)
+            {
+                Destroy(item);
+            }
+
+            StorageContainerInstances.Clear();
         }
 
 
@@ -101,9 +231,10 @@ namespace EmoMount
                 MountUIInstances.Remove(mountController);
                 if (MountUIInstances.Count == 0)
                 {
-                    Hide();
+                    HideMountHud();
                 }
             }
         }
     }
+
 }

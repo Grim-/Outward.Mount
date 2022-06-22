@@ -97,7 +97,15 @@ namespace EmoMount
         }
 
         #region Controller
-         public BasicMountController CreateMountFor(Character _affectedCharacter, MountSpecies MountSpecies, Vector3 Position, Vector3 Rotation)
+        /// <summary>
+        /// Creates a new Mount in the scene next to the Owner Player from the XML Definition.
+        /// </summary>
+        /// <param name="_affectedCharacter"></param>
+        /// <param name="MountSpecies"></param>
+        /// <param name="Position"></param>
+        /// <param name="Rotation"></param>
+        /// <returns></returns>
+        public BasicMountController CreateMountFor(Character _affectedCharacter, MountSpecies MountSpecies, Vector3 Position, Vector3 Rotation)
         {
             GameObject Prefab = OutwardHelpers.GetFromAssetBundle<GameObject>(MountSpecies.SLPackName, MountSpecies.AssetBundleName, MountSpecies.PrefabName);
             GameObject MountInstance = null;
@@ -111,8 +119,6 @@ namespace EmoMount
             if (MountInstance == null)
             {
                 MountInstance = GameObject.Instantiate(Prefab, Position, Quaternion.Euler(Rotation));
-
-                AddMountInteractionComponents(MountInstance);
                 GameObject.DontDestroyOnLoad(MountInstance);
 
                 BasicMountController basicMountController = MountInstance.AddComponent<BasicMountController>();
@@ -139,14 +145,46 @@ namespace EmoMount
 
                 MountControllers.Add(_affectedCharacter, basicMountController);
 
+                basicMountController.NavMesh.Warp(Position);
                 return basicMountController;
             }
 
             return null;
         }
 
-        public MountInstanceData CreateInstanceData(BasicMountController characterMount)
+
+        /// <summary>
+        /// Creates a new Mount in the scene next to the Owner Player from SaveData. If SetAsActive is true this also calls MountCanvasManager.RegisterMount and sets the mount as the CurrentActiveMount for the Character.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="mountInstanceData"></param>
+        /// <param name="SetAsActive"></param>
+        /// <returns></returns>
+        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, bool SetAsActive = true)
         {
+            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFor(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation);
+            basicMountController.MountName = mountInstanceData.MountName;
+            basicMountController.MountUID = mountInstanceData.MountUID;
+            basicMountController.MountFood.CurrentFood = mountInstanceData.CurrentFood;
+            basicMountController.MountFood.MaximumFood = mountInstanceData.MaximumFood;
+
+            if (SetAsActive)
+            {
+                EmoMountMod.MainCanvasManager.RegisterMount(basicMountController);
+                character.GetComponent<CharacterMount>().SetActiveMount(basicMountController);
+            }
+
+            return basicMountController;
+        }
+
+        /// <summary>
+        /// Returns the SaveData for the BasicMountController
+        /// </summary>
+        /// <param name="characterMount"></param>
+        /// <returns></returns>
+        public MountInstanceData CreateInstanceDataFromMount(BasicMountController characterMount)
+        {
+            EmoMountMod.Log.LogMessage($"Creating Instance Data For {characterMount.MountName}");
             MountInstanceData mountInstanceData = new MountInstanceData();
             mountInstanceData.MountName = characterMount.MountName;
             mountInstanceData.MountUID = characterMount.MountUID;
@@ -213,22 +251,6 @@ namespace EmoMount
 
             return Bag;
         }
-        public void AddMountInteractionComponents(GameObject MountInstance)
-        {
-            EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
-
-            MountUpInteraction mountInteraction = MountInstance.AddComponent<MountUpInteraction>();
-            FeedMountInteraction feedMountInteraction = MountInstance.AddComponent<FeedMountInteraction>();
-            PetMountInteraction petMountInteraction = MountInstance.AddComponent<PetMountInteraction>();
-            DismissMountInteraction dismissMountInteraction = MountInstance.AddComponent<DismissMountInteraction>();
-            InteractionActivator interactionActivator = MountInstance.AddComponent<InteractionActivator>();
-            InteractionTriggerBase interactionTriggerBase = MountInstance.AddComponent<InteractionTriggerBase>();
-
-            interactionActivator.BasicInteraction = mountInteraction;
-            //interactionActivator.AddBasicInteractionOverride(petMountInteraction);
-            interactionActivator.m_defaultHoldInteraction = feedMountInteraction;
-            interactionTriggerBase.DetectionColliderRadius = 1.2f;
-        }
         public void DestroyAllMountInstances()
         {
             EmoMountMod.Log.LogMessage($"Destroying All Mount Instances...");
@@ -261,6 +283,7 @@ namespace EmoMount
         }
         public void DestroyMount(Character character, BasicMountController basicMountController)
         {
+            EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");
             MountCanvasManager.Instance.UnRegisterMount(basicMountController);
             GameObject.Destroy(basicMountController.gameObject);
             MountControllers.Remove(character);

@@ -120,17 +120,27 @@ namespace EmoMount
         public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
         public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
 
+        public MountUpInteraction mountInteraction { get; private set; }
+        public FeedMountInteraction feedMountInteraction { get; private set; }
+        public PetMountInteraction petMountInteraction { get; private set; }
+        public DismissMountInteraction dismissMountInteraction { get; private set; }
+        public InteractionActivator interactionActivator { get; private set; }
+        public InteractionTriggerBase interactionTriggerBase { get; private set; }
+
         public void Awake()
         {
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
             NavMesh = gameObject.AddComponent<NavMeshAgent>();
             MountFood = gameObject.AddComponent<Emo_MountFood>();
+            SetupInteractionComponents();
+
             MountFood.Init();
 
             NavMesh.stoppingDistance = 1f;
             NavMesh.enabled = false;
             MountUID = Guid.NewGuid().ToString();
+
             SetupFSM();
         }
 
@@ -143,6 +153,24 @@ namespace EmoMount
             MountFSM.AddState("Base", new UnMountedState());
             MountFSM.PushState("Base");
         }
+
+        private void SetupInteractionComponents()
+        {
+            EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
+            mountInteraction = gameObject.AddComponent<MountUpInteraction>();
+            feedMountInteraction = gameObject.AddComponent<FeedMountInteraction>();
+            petMountInteraction = gameObject.AddComponent<PetMountInteraction>();
+            dismissMountInteraction = gameObject.AddComponent<DismissMountInteraction>();
+            interactionActivator = gameObject.AddComponent<InteractionActivator>();
+            interactionTriggerBase = gameObject.AddComponent<InteractionTriggerBase>();
+
+            interactionActivator.BasicInteraction = mountInteraction;
+            //interactionActivator.AddBasicInteractionOverride(petMountInteraction);
+            interactionActivator.m_defaultHoldInteraction = petMountInteraction;
+            interactionTriggerBase.DetectionColliderRadius = 1.2f;
+        }
+
+        #region Setters
 
         public void SetOwner(Character mountTarget)
         {
@@ -272,6 +300,7 @@ namespace EmoMount
         {
             _affectedCharacter.CharacterCamera.Offset = NewOffset;
         }
+        #endregion
 
         public void Update()
         {

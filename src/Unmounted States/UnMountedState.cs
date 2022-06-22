@@ -8,12 +8,12 @@ namespace EmoMount
     {
         private Vector3 MoveToTarget = Vector3.zero;
         private bool StayStill = false;
+        private bool ShowDismissInteraction = false;
+
         public override void OnEnter(BasicMountController MountController)
         {
             MountController.EnableNavMeshAgent();
-
-           
-
+       
             if (EmoMountMod.Debug)
             {
                 MountController.DisplayNotification($"{MountController.MountName}, entered Leash State");
@@ -39,7 +39,23 @@ namespace EmoMount
         public override void OnUpdate(BasicMountController MountController)
         {
             base.OnUpdate(MountController);
- 
+
+            if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_DISMOUNT_KEY))
+            {
+                ShowDismissInteraction = !ShowDismissInteraction;
+
+
+                if (ShowDismissInteraction)
+                {
+                    MountController.interactionActivator.AddBasicInteractionOverride(MountController.dismissMountInteraction);
+                }
+                else
+                {
+                    MountController.interactionActivator.RemoveBasicInteractionOverride(MountController.dismissMountInteraction);
+                }
+
+            }
+
             if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_FOLLOW_WAIT_TOGGLE))
             {
                 StayStill = !StayStill;
@@ -65,7 +81,7 @@ namespace EmoMount
                 {
                     if (MountController.DistanceToOwner > MountController.LeashDistance)
                     {
-                        FollowOwner(MountController);
+                        MoveToOwner(MountController);
                     }                  
                 }
               
@@ -80,7 +96,7 @@ namespace EmoMount
         }
 
 
-        private void FollowOwner(BasicMountController MountController)
+        private void MoveToOwner(BasicMountController MountController)
         {
             StayStill = true;
 
@@ -112,7 +128,6 @@ namespace EmoMount
                 }
             }
         }
-
         private void CheckMoveToInput(BasicMountController MountController)
         {
 
