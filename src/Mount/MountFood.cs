@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace EmoMount
 {
-    public class Emo_MountFood : MonoBehaviour
+    public class MountFood : MonoBehaviour
     {
         public float CurrentFood = 0;
         public float MaximumFood = 100;

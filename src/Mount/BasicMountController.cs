@@ -34,7 +34,7 @@ namespace EmoMount
         {
             get; private set;
         }
-        public Emo_MountFood MountFood
+        public MountFood MountFood
         {
             get; private set;
         }
@@ -132,7 +132,7 @@ namespace EmoMount
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
             NavMesh = gameObject.AddComponent<NavMeshAgent>();
-            MountFood = gameObject.AddComponent<Emo_MountFood>();
+            MountFood = gameObject.AddComponent<MountFood>();
             SetupInteractionComponents();
 
             MountFood.Init();

@@ -371,7 +371,7 @@
     <Compile Include="Mount\BasicMountController.cs" />
     <Compile Include="Mount\CharacterMount.cs" />
     <Compile Include="EmoMountMod.cs" />
-    <Compile Include="Mount\Emo_MountFood.cs" />
+    <Compile Include="Mount\MountFood.cs" />
     <Compile Include="Interaction Components\FeedMountInteraction.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
     <Compile Include="Unmounted States\NYI_UnMountedFetchItemState.cs" />
