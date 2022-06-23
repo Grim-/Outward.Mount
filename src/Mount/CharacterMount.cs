@@ -62,8 +62,10 @@ namespace EmoMount
                 foreach (var item in (MountToStore.BagContainer as Bag).m_container.GetContainedItems().ToList())
                 {
                     EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {(MountToStore.BagContainer as Bag).m_container.UID}");
+                    
+                    item.ChangeParent(null, MountToStore.CharacterOwner. transform.position);
+                    item.ResetTargetMove();
                     (MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
-                    item.transform.position = MountToStore.transform.position;
                 }
             }
         }
@@ -79,7 +81,7 @@ namespace EmoMount
             {
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
                 BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
-                EmoMountMod.MountManager.DeSerializeMountBagContents(mountInstanceData, basicMountController);
+                //EmoMountMod.MountManager.DeSerializeMountBagContents(mountInstanceData, basicMountController);
                 StoredMounts.Remove(mountInstanceData);
                 return basicMountController;
             }
