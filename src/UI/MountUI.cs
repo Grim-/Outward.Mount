@@ -43,11 +43,11 @@ namespace EmoMount
             MountController = basicMount;
             UpdateNameLabel(basicMount.MountName);
 
-            MountController.MountFood.OnChange += Redraw;
-            Redraw();
+            MountController.MountFood.OnChange += UpdateUI;
+            UpdateUI();
         }
 
-        private void Redraw()
+        private void UpdateUI()
         {
             UpdateHungerLabel($"{MountController.MountFood.CurrentFood} / {MountController.MountFood.MaximumFood}");
             UpdateHungerBar(MountController.MountFood.FoodAsNormalizedPercent);

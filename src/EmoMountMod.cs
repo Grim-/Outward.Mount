@@ -3,7 +3,6 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using NodeCanvas.DialogueTrees;
-using NodeCanvas.Framework;
 using SideLoader;
 using System;
 using System.IO;
@@ -17,7 +16,7 @@ using Random = UnityEngine.Random;
 namespace EmoMount
 {
     [BepInPlugin(GUID, NAME, VERSION)]
-    public class EmoMountMod : BaseUnityPlugin
+    public partial class EmoMountMod : BaseUnityPlugin
     {
         public const string GUID = "emo.mountmod";
         public const string NAME = "Emo's Mount Mod";
@@ -149,7 +148,7 @@ namespace EmoMount
             answer2.SetActorName(ourActor.name);
 
             DismissMountActionNode dismissMountActionNode = new DismissMountActionNode();
-            DisplayStorageList displayStorageListNode = new DisplayStorageList();
+            DisplayMountStorageListNode displayStorageListNode = new DisplayMountStorageListNode();
 
             // ===== finalize nodes =====
             graph.allNodes.Clear();
@@ -191,45 +190,6 @@ namespace EmoMount
                 Log.LogMessage("EmoMountMod CanvasPrefab was null");
             }
 
-        }
-
-        public class DismissMountActionNode : ActionNode
-        {
-
-            public override Status OnExecute(Component agent, IBlackboard bb)
-            {
-                EmoMountMod.Log.LogMessage("Dismiss action called");
-
-                Character PlayerTalking = bb.GetVariable<Character>("gInstigator").GetValue();
-
-                CharacterMount characterMount = PlayerTalking.GetComponentInChildren<CharacterMount>();
-
-                if (characterMount != null && characterMount.HasActiveMount)
-                {
-                    characterMount.StoreMount(characterMount.ActiveMount);
-                }
-
-                return Status.Success;
-            }
-        }
-
-        public class DisplayStorageList : ActionNode
-        {
-            public override Status OnExecute(Component agent, IBlackboard bb)
-            {
-                EmoMountMod.Log.LogMessage("Summon Mount action called");
-
-                Character PlayerTalking = bb.GetVariable<Character>("gInstigator").GetValue();
-
-                CharacterMount characterMount = PlayerTalking.GetComponentInChildren<CharacterMount>();
-
-                if (characterMount != null && !characterMount.HasActiveMount)
-                {
-                    EmoMountMod.MainCanvasManager.DisplayStorageForCharacter(PlayerTalking);
-                }
-
-                return Status.Success;
-            }
         }
     }
 }

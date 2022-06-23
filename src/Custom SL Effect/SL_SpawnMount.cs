@@ -48,16 +48,16 @@ namespace EmoMount
                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFor(_affectedCharacter, mountSpecies, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
                    basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
                 }
-            }      
+                else
+                {
+                    EmoMountMod.Log.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
+                }
+            }
+            else
+            {
+                EmoMountMod.Log.LogMessage($"SLEx_SpawnMount {_affectedCharacter.Name} already has an active mount.");
+            }
         }
-    }
-
-
-    [System.Serializable]
-    public class MountFoodInformation
-    {
-        public int ItemID;
-        public float FoodModifierValue;
     }
 }
 

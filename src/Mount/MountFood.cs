@@ -22,10 +22,25 @@ namespace EmoMount
         public Dictionary<int, float> FavouriteFoods = new Dictionary<int, float>();
         public Dictionary<int, float> HatedFoods = new Dictionary<int, float>();
 
+        /// <summary>
+        /// called when starving (0 food since last tick)
+        /// </summary>
         public Action OnStarving;
+        /// <summary>
+        /// called when full
+        /// </summary>
         public Action OnFull;
+        /// <summary>
+        /// Called when given some food
+        /// </summary>
         public Action OnFed;
+        /// <summary>
+        /// Called every hunger tick
+        /// </summary>
         public Action OnHungerTick;
+        /// <summary>
+        /// Called everytime the food value changes
+        /// </summary>
         public Action OnChange;
 
         public BasicMountController MountController
@@ -70,7 +85,7 @@ namespace EmoMount
             }
             else if (IsHatedFood(itemID))
             {
-                finalFoodValue *= 0.7f;
+                finalFoodValue *= HatedFoods[itemID];
                 MountController.DisplayNotification($"{MountController.MountName} HATES this food!");
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
             }

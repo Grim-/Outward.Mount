@@ -198,6 +198,7 @@ namespace EmoMount
             SetMoveSpeed(MountSpecies.MoveSpeed);
             SetRotationSpeed(MountSpecies.RotateSpeed);
             SetNavMeshMoveSpeed(MountSpecies.MoveSpeed);
+            SetNavMeshAcceleration(MountSpecies.Acceleration);
             SetCameraOffset(MountSpecies.CameraOffset);
         }
 
@@ -228,13 +229,7 @@ namespace EmoMount
                 EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
             }
 
-
-            ///lol seriously
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
+            yield return new WaitForSeconds(0.6f);
 
 
             Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
@@ -242,9 +237,7 @@ namespace EmoMount
 
             if (ItemHighlight)
             {
-                if (EmoMountMod.Debug) EmoMountMod.Log.LogMessage($"Item Highlight found, disabling");
-                
-
+                EmoMountMod.Log.LogMessage($"Item Highlight found, disabling");              
                 ItemHighlight.gameObject.SetActive(false);
             }
 
@@ -257,10 +250,15 @@ namespace EmoMount
                 BagContainer.transform.parent = transform;
             }
 
-            Bag itemBag = bag as Bag;
+            RigidbodySuspender rigidbodySuspender = bag.gameObject.GetComponentInChildren<RigidbodySuspender>();
 
+            if (rigidbodySuspender)
+            {
+                rigidbodySuspender.enabled = false;
+                GameObject.Destroy(rigidbodySuspender);
+            }
 
-            if (EmoMountMod.Debug) EmoMountMod.Log.LogMessage($"Updating Bag Position");
+            EmoMountMod.Log.LogMessage($"Updating Bag Position");
             
             ///default bag position move later
             bag.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
@@ -281,9 +279,18 @@ namespace EmoMount
             if (NavMesh != null)
             {
                 NavMesh.speed = newSpeed;
-                NavMesh.acceleration = newSpeed * 0.25f;
+
             }
         }
+
+        public void SetNavMeshAcceleration(float acceleration)
+        {
+            if (NavMesh != null)
+            {
+                NavMesh.acceleration = acceleration;
+            }
+        }
+
         public void SetMoveSpeed(float newSpeed)
         {
             MoveSpeed = newSpeed;
@@ -462,6 +469,18 @@ namespace EmoMount
             if (CharacterOwner != null)
             {
                 CharacterOwner.CharacterUI.NotificationPanel.ShowNotification(text);
+            }
+        }
+
+
+        public void DestroyBagContainer()
+        {
+            if (BagContainer != null)
+            {
+                EmoMountMod.Log.LogMessage($"Destroying Mount Bag");
+
+                ItemManager.Instance.DestroyItem(BagContainer.UID);
+                SetInventory(null);
             }
         }
 

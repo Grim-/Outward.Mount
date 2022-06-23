@@ -119,9 +119,6 @@ namespace EmoMount
             }
         }
 
-
-
-
         public void DisplayStorageForCharacter(Character character)
         {
             EmoMountMod.Log.LogMessage($"Displaying Storage UI for {character.Name}");
@@ -155,7 +152,7 @@ namespace EmoMount
                     GameObject mountSelectionInstance = GameObject.Instantiate<GameObject>(StorageUIPrefab);
                     MountSelectionElement mountSelectionElement = mountSelectionInstance.AddComponent<MountSelectionElement>();
 
-                    mountSelectionElement.SetNameLabel(item.MountName);
+                    mountSelectionElement.SetNameLabel($"{item.MountName} ({item.MountSpecies.SpeciesName})");
                     mountSelectionElement.SetFoodLabel($"Food : {item.CurrentFood} / {item.MaximumFood}");
                     mountSelectionElement.RetrieveButton.onClick.AddListener(() =>
                     {

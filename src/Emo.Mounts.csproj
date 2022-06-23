@@ -360,6 +360,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogueCharacter.cs" />
+    <Compile Include="Node Canvas Nodes\DismissMountActionNode.cs" />
+    <Compile Include="Node Canvas Nodes\DisplayMountStorageListNode.cs" />
     <Compile Include="Interaction Components\DismissMountInteraction.cs" />
     <Compile Include="Interaction Components\PetMountInteraction.cs" />
     <Compile Include="Mounted States\BaseMountedState.cs" />
@@ -395,5 +397,6 @@
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.CodeFixes.dll" />
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

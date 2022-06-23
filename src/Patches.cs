@@ -72,8 +72,9 @@ namespace EmoMount
 
                 if (characterMount != null)
                 {
+                    
                     characterMount.ActiveMount.MountFood.Feed(__instance.m_pendingItem.ItemID, 1);
-                    owner.Inventory.RemoveItem(__instance.m_pendingItem.ItemID, 1);
+                    __instance.m_pendingItem.ParentContainer.RemoveItem(__instance.m_pendingItem);
                 }
             }
         }

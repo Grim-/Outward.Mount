@@ -19,6 +19,8 @@ namespace EmoMount
 
         //movement
         public float MoveSpeed;
+        //used by nav mesh agent
+        public float Acceleration;
         public float RotateSpeed;
 
         public Vector3 CameraOffset;

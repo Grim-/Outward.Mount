@@ -35,24 +35,53 @@ namespace EmoMount
             ActiveMount = newMount;
         }
 
+
+        /// <summary>
+        /// Serialize a BasicMountController Instance into MountInstanceData, add it to the StoredMounts List then Destroy it's GameObject.
+        /// </summary>
+        /// <param name="MountToStore"></param>
         public void StoreMount(BasicMountController MountToStore)
         {
             if (!HasStoredMount(MountToStore.MountUID))
             {
                 MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
+                // EmoMountMod.MountManager.SerializeMountBagContents(mountInstanceData, MountToStore);
+                DropAllStoredItems(MountToStore);
                 StoredMounts.Add(mountInstanceData);
+                MountToStore.DestroyBagContainer();
                 EmoMountMod.MountManager.DestroyActiveMount(Character);
                 SetActiveMount(null);
             }
         }
 
+        //TODO : This
+        private void DropAllStoredItems(BasicMountController MountToStore)
+        {
+            if (MountToStore.BagContainer != null && (MountToStore.BagContainer as Bag).m_container.ItemCount > 0)
+            {
+                foreach (var item in (MountToStore.BagContainer as Bag).m_container.GetContainedItems().ToList())
+                {
+                    EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {(MountToStore.BagContainer as Bag).m_container.UID}");
+                    (MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
+                    item.transform.position = MountToStore.transform.position;
+                }
+            }
+        }
+
+        /// <summary>
+        /// DeSerialize a MountInstanceData and create a BasicMountController from the data.
+        /// </summary>
+        /// <param name="MountUID"></param>
+        /// <returns></returns>
         public BasicMountController RetrieveStoredMount(string MountUID)
         {
             if (StoredMounts != null && HasStoredMount(MountUID))
             {
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
-                EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
+                BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
+                EmoMountMod.MountManager.DeSerializeMountBagContents(mountInstanceData, basicMountController);
                 StoredMounts.Remove(mountInstanceData);
+                return basicMountController;
             }
 
             return null;

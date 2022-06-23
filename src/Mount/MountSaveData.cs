@@ -1,4 +1,5 @@
 ﻿using SideLoader.SaveData;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,9 +58,13 @@ namespace EmoMount
         {
             EmoMountMod.Log.LogMessage("Saving Active Mount Data");
             this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
+            EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
+
         }
 
-        private void SaveStoredMounts(Character character, CharacterMount characterMount)
+
+
+        public void SaveStoredMounts(Character character, CharacterMount characterMount)
         {
             EmoMountMod.Log.LogMessage("Saving Stored Mount Data");
             StoredMounts.Clear();
@@ -86,10 +91,17 @@ namespace EmoMount
         private void LoadActiveMount(Character character, CharacterMount characterMount)
         {
             EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
-            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance);
+            character.StartCoroutine(LateLoading(character, characterMount));
         }
 
 
+        private IEnumerator LateLoading(Character character, CharacterMount characterMount)
+        {
+            yield return new WaitForSeconds(10f);
+            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance);
+            EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);
+            yield break;
+        }
     }
 
     [System.Serializable]
@@ -98,10 +110,12 @@ namespace EmoMount
         public string MountName;
         public string MountUID;
         public MountSpecies MountSpecies;
-        public string BagID;
+        public string BagUID;
         public float CurrentFood;
         public float MaximumFood;
         public Vector3 Position;
         public Vector3 Rotation;
+
+        public List<BasicSaveData> ItemSaveData;
     }
 }
