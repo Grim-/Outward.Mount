@@ -153,7 +153,7 @@ namespace EmoMount
 
                 MountControllers.Add(_affectedCharacter, basicMountController);
 
-                basicMountController.NavMesh.Warp(Position);
+                basicMountController.Teleport(Position, Rotation);
                 return basicMountController;
             }
 
@@ -259,50 +259,6 @@ namespace EmoMount
 
             return null;
         }
-        //public Item CreateMountBag(BasicMountController mountController, string bagItemID, string bagUID)
-        //{
-        //    Item Bag = ResourcesPrefabManager.Instance.GenerateItem(bagItemID);
-
-        //    if (Bag != null)
-        //    {
-        //        if (!string.IsNullOrEmpty(bagUID))
-        //        {
-        //            EmoMountMod.Log.LogMessage($"Setting bag UID to {bagUID}.");
-        //            Bag.UID = bagUID;
-        //        }
-
-        //        if (Bag is Bag)
-        //        {
-        //            Rigidbody bagRigidbody = Bag.gameObject.GetComponent<Rigidbody>();
-
-        //            if (bagRigidbody)
-        //            {
-        //                bagRigidbody.isKinematic = true;
-        //                bagRigidbody.useGravity = false;
-        //            }
-
-        //            RigidbodySuspender rigidbodySuspender = Bag.gameObject.GetComponentInChildren<RigidbodySuspender>();
-
-        //            if (rigidbodySuspender)
-        //            {
-        //                rigidbodySuspender.enabled = false;
-        //                GameObject.Destroy(rigidbodySuspender);
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            EmoMountMod.Log.LogMessage($"Create Bag For Mount : ItemID {bagItemID} is not a bag.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Create Bag For Mount : ItemID {bagItemID} prefab was not found.");
-        //    }
-
-        //    return Bag;
-        //}
-
 
         public void DestroyAllMountInstances()
         {

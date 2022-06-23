@@ -126,7 +126,7 @@ namespace EmoMount
             }
 
 
-            EmoMountMod.Log.LogMessage($"Removing Item");
+           // EmoMountMod.Log.LogMessage($"Removing Item");
             item.ParentContainer.RemoveItem(item);
 
 

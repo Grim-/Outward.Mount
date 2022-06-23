@@ -28,7 +28,7 @@ namespace EmoMount
             if (characterMount != null && characterMount.HasActiveMount)
             {
                 EmoMountMod.Log.LogMessage($"Warping {characterMount.ActiveMount.MountName} with {characterMount.Character.Name}");
-                characterMount.ActiveMount.NavMesh.Warp(_pos);
+                characterMount.ActiveMount.Teleport(_pos, _rot);
             }
         }
     }

@@ -100,7 +100,7 @@ namespace EmoMount
         public Vector3 MountedCameraOffset;
 
 
-        public float FoodLostPerMountedDistance = 5f;
+        public float FoodLostPerMountedDistance = 2f;
         public float MountedDistanceFoodThreshold = 40f;
         private Vector3 OriginalPlayerCameraOffset;
 
@@ -533,6 +533,25 @@ namespace EmoMount
         {
             NavMesh.enabled = false;
         }
+
+        public void Teleport(Vector3 Position, Vector3 Rotation)
+        {
+            EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
+            DisableNavMeshAgent();
+            transform.position = Position;
+            transform.rotation = Quaternion.Euler(Rotation);
+            EnableNavMeshAgent();
+        }
+
+        //private IEnumerator TeleportRoutine(Vector3 Position, Vector3 Rotation)
+        //{
+        //    EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
+        //    DisableNavMeshAgent();
+        //    transform.position = Position;
+        //    transform.rotation = Quaternion.Euler(Rotation);
+        //    EnableNavMeshAgent();
+        //    yield break;
+        //}
     }
 
     public enum MountAnimations

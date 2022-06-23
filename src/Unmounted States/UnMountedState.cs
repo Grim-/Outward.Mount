@@ -40,22 +40,6 @@ namespace EmoMount
         {
             base.OnUpdate(MountController);
 
-            if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_DISMOUNT_KEY))
-            {
-                ShowDismissInteraction = !ShowDismissInteraction;
-
-
-                if (ShowDismissInteraction)
-                {
-                    MountController.interactionActivator.AddBasicInteractionOverride(MountController.dismissMountInteraction);
-                }
-                else
-                {
-                    MountController.interactionActivator.RemoveBasicInteractionOverride(MountController.dismissMountInteraction);
-                }
-
-            }
-
             if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_FOLLOW_WAIT_TOGGLE))
             {
                 StayStill = !StayStill;
@@ -69,6 +53,9 @@ namespace EmoMount
                     MountController.DisplayNotification($"{MountController.MountName}, to me.");
                 }
             }
+
+
+
 
 
             if (!StayStill)

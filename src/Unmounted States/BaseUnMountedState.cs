@@ -8,25 +8,31 @@ namespace EmoMount
     /// </summary>
     public class BaseUnMountedState : BaseState<BasicMountController>
     {
-        public override void OnEnter(BasicMountController controller)
+        public override void OnEnter(BasicMountController MountController)
         {
           
         }
 
-        public override void OnExit(BasicMountController controller)
+        public override void OnExit(BasicMountController MountController)
         {
           
         }
 
-        public override void OnFixedUpdate(BasicMountController controller)
+        public override void OnFixedUpdate(BasicMountController MountController)
         {
            
         }
 
-        public override void OnUpdate(BasicMountController controller)
+        public override void OnUpdate(BasicMountController MountController)
         {
-            UpdateAnimator(controller);
+            UpdateAnimator(MountController);
+
+            if (!MountController.NavMesh.isOnNavMesh)
+            {
+                return;
+            }
         }
+
 
         public void UpdateAnimator(BasicMountController MountController)
         {

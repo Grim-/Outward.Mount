@@ -24,6 +24,10 @@ namespace EmoMount
             {
                 SaveActiveMount(character, characterMount);
             }
+            else
+            {
+                this.ActiveMountInstance = null;
+            }
 
             if (characterMount != null && characterMount.StoredMounts.Count > 0)
             {
@@ -39,13 +43,12 @@ namespace EmoMount
             //needs redoing
             CharacterMount characterMount = character.gameObject.GetComponent<CharacterMount>();
 
-            if (!string.IsNullOrEmpty(this.ActiveMountInstance.MountName) && !string.IsNullOrEmpty(this.ActiveMountInstance.MountUID))
+ 
+            if (this.ActiveMountInstance != null)
             {
-                if (this.ActiveMountInstance.MountSpecies != null)
-                {
-                    LoadActiveMount(character, characterMount);
-                }
+                LoadActiveMount(character, characterMount);
             }
+            
 
             if (StoredMounts.Count > 0)
             {
@@ -56,10 +59,12 @@ namespace EmoMount
 
         private void SaveActiveMount(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage("Saving Active Mount Data");
-            this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
-            EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
-
+            if (characterMount.HasActiveMount)
+            {
+                EmoMountMod.Log.LogMessage("Saving Active Mount Data");
+                this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
+                EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
+            }
         }
 
 
@@ -72,17 +77,18 @@ namespace EmoMount
             foreach (var storedMount in characterMount.StoredMounts)
             {
                 StoredMounts.Add(storedMount);
+                EmoMountMod.Log.LogMessage($"Saving {storedMount.MountName}");
             }
             
         }
 
         private void LoadStoredMounts(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage("LoadingStored Mount Data");
+            EmoMountMod.Log.LogMessage($"LoadingStored Mount Data Stored Mounts{StoredMounts.Count}");
             characterMount.StoredMounts.Clear();
-
             foreach (var storedMount in StoredMounts)
             {
+                EmoMountMod.Log.LogMessage($"Loading {storedMount.MountName} Mount Data");
                 characterMount.StoredMounts.Add(storedMount);
             }
 
