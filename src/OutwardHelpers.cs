@@ -54,5 +54,69 @@ namespace EmoMount
             }
             return list;
         }
+
+        public static void AddDamageType(DamageList Damage, DamageType.Types damageType, float value)
+        {
+
+            if (!HasDamageType(Damage, damageType))
+            {
+                Damage.Add(damageType);
+                Damage[damageType].Damage = value;
+            }
+        }
+        public static void RemoveDamageType(DamageList Damage, DamageType.Types damageType)
+        {
+            if (HasDamageType(Damage, damageType))
+            {
+                Damage.Remove(damageType);
+            }
+        }
+        public static DamageType GetDamageTypeDamage(DamageList Damage, DamageType.Types damageType)
+        {
+            return Damage[damageType];
+        }
+
+        public static void AddDamageToDamageType(DamageList Damage, DamageType.Types damageType, float value, bool addIfNotExist = true)
+        {
+            if (HasDamageType(Damage, damageType))
+            {
+                GetDamageTypeDamage(Damage, damageType).Damage += value;
+            }
+            else
+            {
+                if (addIfNotExist) AddDamageType(Damage, damageType, value);
+            }
+        }
+        public static void RemoveDamageFromDamageType(DamageList Damage, DamageType.Types damageType, float value)
+        {
+            if (HasDamageType(Damage, damageType))
+            {
+                GetDamageTypeDamage(Damage, damageType).Damage -= value;
+
+                if (Damage[damageType].Damage <= 0)
+                {
+                    RemoveDamageType(Damage, damageType);
+                }
+            }
+        }
+
+        public static bool HasDamageType(DamageList Damage, DamageType.Types damageType)
+        {
+            return Damage[damageType] != null;
+        }
+
+        public static Tag GetTagDefinition(string TagName)
+        {
+            foreach (var item in TagSourceManager.Instance.m_tags)
+            {
+
+                if (item.TagName == TagName)
+                {
+                    return item;
+                }
+            }
+
+            return default(Tag);
+        }
     }
 }

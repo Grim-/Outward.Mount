@@ -26,6 +26,7 @@ namespace EmoMount
         public Vector3 CameraOffset;
 
         //Food
+        public List<string> FoodTags = new List<string>();
         public List<MountFoodData> FavouriteFoods = new List<MountFoodData>();
         public List<MountFoodData> HatedFoods = new List<MountFoodData>();
 

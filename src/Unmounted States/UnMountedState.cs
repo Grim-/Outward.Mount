@@ -18,7 +18,7 @@ namespace EmoMount
             {
                 MountController.DisplayNotification($"{MountController.MountName}, entered Leash State");
             }
-           
+            MountController.IsMounted = false;
         }
 
         public override void OnExit(BasicMountController MountController)

@@ -126,6 +126,7 @@ namespace EmoMount
 
                 basicMountController.SetOwner(_affectedCharacter);
                 basicMountController.SetSpecies(MountSpecies);
+                basicMountController.SetFoodTags(MountSpecies.FoodTags);
                 basicMountController.SetFavouriteFoods(MountSpecies.FavouriteFoods);
                 basicMountController.SetHatedFoods(MountSpecies.HatedFoods);
 

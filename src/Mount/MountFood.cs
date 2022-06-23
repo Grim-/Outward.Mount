@@ -19,6 +19,7 @@ namespace EmoMount
         public float FoodAsNormalizedPercent => CurrentFood / MaximumFood;
 
         //itemid, food mod value
+        public List<Tag> FoodTags = new List<Tag>();
         public Dictionary<int, float> FavouriteFoods = new Dictionary<int, float>();
         public Dictionary<int, float> HatedFoods = new Dictionary<int, float>();
 
@@ -56,7 +57,6 @@ namespace EmoMount
             CurrentFood = MaximumFood;
             //gaberry
             MountController = GetComponent<BasicMountController>();
-            FavouriteFoods.Add(4000010, 1.5f);
         }
 
 
@@ -72,20 +72,46 @@ namespace EmoMount
             }
         }
 
-        public void Feed(int itemID, float foodAmount)
+        public bool CanEat(Item item)
         {
+           // EmoMountMod.Log.LogMessage($"{item.Name} Item Tags");
+            //foreach (var tag in item.Tags)
+            //{
+            //    //EmoMountMod.Log.LogMessage($"Tag : {tag.TagName}");
+            //}
+
+            if (item.HasTag(FoodTags, false))
+            {
+                //EmoMountMod.Log.LogMessage($"{MountController.MountName} Can Eat {item.Name}");
+                return true;
+            }
+            //EmoMountMod.Log.LogMessage($"{MountController.MountName} Cannot Eat {item.Name}");
+            return false;
+        }
+
+        public void Feed(Item item, float foodAmount)
+        {
+            MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
+
+            if (!CanEat(item))
+            {
+                MountController.DisplayNotification($"{MountController.MountName} can't eat this type of food!");
+                MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
+                return;
+            }
+
             float finalFoodValue = foodAmount;
 
-            if (IsFavouriteFood(itemID))
+            if (IsFavouriteFood(item.ItemID))
             {
-                finalFoodValue *= FavouriteFoods[itemID];
+                finalFoodValue *= FavouriteFoods[item.ItemID];
 
                 MountController.DisplayNotification($"{MountController.MountName} loves this food!");
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
             }
-            else if (IsHatedFood(itemID))
+            else if (IsHatedFood(item.ItemID))
             {
-                finalFoodValue *= HatedFoods[itemID];
+                finalFoodValue *= HatedFoods[item.ItemID];
                 MountController.DisplayNotification($"{MountController.MountName} HATES this food!");
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
             }
@@ -98,6 +124,10 @@ namespace EmoMount
                 CurrentFood = MaximumFood;
                 OnFullHandler();
             }
+
+
+            EmoMountMod.Log.LogMessage($"Removing Item");
+            item.ParentContainer.RemoveItem(item);
 
 
             OnFoodAddedHandler();
@@ -122,8 +152,17 @@ namespace EmoMount
 
         public void OnHungerTickHandler()
         {
+            if (MountController.IsMounted)
+            {
+                float halfAgain = FoodTakenPerTick * 0.5f;
+                Remove(FoodTakenPerTick + halfAgain);
+            }
+            else
+            {
+                Remove(FoodTakenPerTick);
+            }
+
             OnHungerTick?.Invoke();
-            Remove(FoodTakenPerTick);
         }
 
 

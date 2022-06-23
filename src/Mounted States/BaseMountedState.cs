@@ -7,6 +7,12 @@ namespace EmoMount
     {
         private Character MountedCharacter;
 
+
+        private Vector3 StartPosition;
+        private Vector3 EndPosition;
+        private float Timer = 0;
+
+
         public BaseMountedState(Character mountedCharacter)
         {
             MountedCharacter = mountedCharacter;
@@ -20,6 +26,8 @@ namespace EmoMount
             }
 
             MountController.DisableNavMeshAgent();
+            MountController.IsMounted = true;
+            StartPosition = MountController.transform.position;
         }
 
         public override void OnExit(BasicMountController MountController)
@@ -37,6 +45,17 @@ namespace EmoMount
 
         public override void OnUpdate(BasicMountController MountController)
         {
+            float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
+            
+
+            if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
+            {
+                MountController.DisplayNotification($"{DistanceBetweenStartAndEnd} Distance between start and End");
+                StartPosition = MountController.transform.position;
+                MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);
+            }
+
+
             if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_DISMOUNT_KEY))
             {
                 MountController.DismountCharacter(MountedCharacter);

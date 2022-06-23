@@ -22,12 +22,12 @@ namespace EmoMount
                     foundFoodFavourites.AddRange(_character.Inventory.GetOwnedItems(favFood.Key));
                 }
 
-                if (foundFoodFavourites.Count > 0)
-                {
-                    _character.Inventory.RemoveItem(foundFoodFavourites[0].ItemID, 1);
-                    MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
-                    MountController.MountFood.Feed(foundFoodFavourites[0].ItemID, MountController.MountFood.FavouriteFoods[foundFoodFavourites[0].ItemID]);
-                }
+                //if (foundFoodFavourites.Count > 0)
+                //{
+                //    _character.Inventory.RemoveItem(foundFoodFavourites[0].ItemID, 1);
+                //    MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
+                //    MountController.MountFood.Feed(foundFoodFavourites[0], MountController.MountFood.FavouriteFoods[foundFoodFavourites[0].ItemID]);
+                //}
             }
         }
     }

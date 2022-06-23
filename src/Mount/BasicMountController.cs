@@ -100,9 +100,8 @@ namespace EmoMount
         public Vector3 MountedCameraOffset;
 
 
-        //how often is food taken while mounted
-        private float MountedHungerTickTime = 30f;
-        private float MountedHungerTimer = 0;
+        public float FoodLostPerMountedDistance = 5f;
+        public float MountedDistanceFoodThreshold = 40f;
         private Vector3 OriginalPlayerCameraOffset;
 
 
@@ -111,7 +110,8 @@ namespace EmoMount
             get; private set;
         }
 
-
+        public bool IsMounted;
+        public bool IsMoving;
         public float MountTotalWeight => BagContainer != null && BagContainer.ParentContainer != null ? BagContainer.ParentContainer.TotalContentWeight : 0;
 
         //Input - tidy up doesnt need this many calls or new v3s
@@ -153,6 +153,8 @@ namespace EmoMount
             MountFSM.AddState("Base", new UnMountedState());
             MountFSM.PushState("Base");
         }
+
+
 
         private void SetupInteractionComponents()
         {
@@ -202,12 +204,33 @@ namespace EmoMount
             SetCameraOffset(MountSpecies.CameraOffset);
         }
 
+        public void SetFoodTags(List<string> foodTags)
+        {
+            this.MountFood.FoodTags = new List<Tag>();
+
+            foreach (var item in foodTags)
+            {
+                Tag TagDef = OutwardHelpers.GetTagDefinition(item);
+
+                if (TagDef != default(Tag))
+                {
+                    EmoMountMod.Log.LogMessage($"Adding Tag {TagDef.TagName}");
+                    this.MountFood.FoodTags.Add(TagDef);
+                }  
+            }
+
+            EmoMountMod.Log.LogMessage(this.MountFood.FoodTags[0].TagName);
+        }
+
+
+
         public void SetFavouriteFoods(List<MountFoodData> newFavourites)
         {
             MountFood.FavouriteFoods.Clear();
 
             foreach (var item in newFavourites)
             {
+
                 MountFood.FavouriteFoods.Add(item.ItemID, item.FoodValue);
             }
 
@@ -378,6 +401,8 @@ namespace EmoMount
 
             return true;
         }
+
+
         
 
         /// <summary>
@@ -423,36 +448,6 @@ namespace EmoMount
                 _affectedCharacter.transform.localPosition = Vector3.zero;
                 _affectedCharacter.transform.localEulerAngles = Vector3.zero;
 
-            }
-        }
-
-        //Im not sure if this should be distance travelled between ticks or just a regular tick
-        private void UpdateMountedHunger()
-        {
-            MountedHungerTimer += Time.deltaTime;
-
-            if (MountedHungerTimer > MountedHungerTickTime)
-            {
-                MountedHungerTimer = 0;
-                OnMountedHungerTick();
-            }
-        }
-
-        private void OnMountedHungerTick()
-        {
-            //if at 75% weight capaicty
-            if (WeightAsNormalizedPercent > .75f)
-            {
-                MountFood.Remove(5f);
-            }
-            //if above 60 but below 75
-            else if (WeightAsNormalizedPercent < .75 && WeightAsNormalizedPercent > .6f)
-            {
-                MountFood.Remove(3.5f);
-            }
-            else
-            {
-                MountFood.Remove(2f);
             }
         }
 
