@@ -34,6 +34,12 @@ Everything currently eats either Vegetables or Meat.
 The value on the UI for the food is the amount it will restore. With Favourite foods restoring more and making your mount happy.
 
 
+#### Current Food Prefences
+
+- Wolf/Dragonboar - Meat items - Loves Jewel Bird Meat
+- Golems - Vegetables - Loves MarshMelons.
+
+
 ### Utility
 Mounts also come with a bag, mounts like the player have a carry limit, which is a combination of the things in the mounts bag and your own inventory. 
 Generally mounts can carry more than the player can over longer distances quicker, with the draw back they need feeding more. 
