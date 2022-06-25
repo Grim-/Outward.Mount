@@ -41,9 +41,11 @@ The mount should also fully save including all its bag contents, please let me k
 
 ## Notes 
 There is no mounted combat, the mounts were designed to help with moving between areas in Outward without fast travel.
-
-
+I have set the mod up so others can add mounts later on, I have yet to document this but it is possible.
 
 ## Known Issues
 - You can steal the mounts bag by pressing "take all" with no items in the inventory, aslong as this bag is not destroyed or sold it should reattach itself to the mount on reload.
 - The Mount currently teleports to you while using combat teleports, this isn't intended and is a side effect of me trying to keep the mount with the player between area changes, it will hopefully be fixed.
+
+## Potential Future Updates
+ - Lanterns, pets that can act as cooking pots and other things. 
