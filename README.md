@@ -16,7 +16,7 @@ I'll leave it to people to find them in-game, currently they are world drops tha
 
 The numbers will be adjusted later.
 
-You must also set the three required keybinds(Follow/Wait, GoTo, Dismount) in the keybind options.
+#### You must also set the three required keybinds(Follow/Wait, GoTo, Dismount) in the keybind options.
 
 
 ### Getting a mount
