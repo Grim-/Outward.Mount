@@ -39,6 +39,10 @@ Generally mounts can carry more than the player can over longer distances quicke
 The mount should also fully save including all its bag contents, please let me know if you run across any bugs.
 
 
+## Notes 
+There is no mounted combat, the mounts were designed to help with moving between areas in Outward without fast travel.
+
+
 
 ## Known Issues
 - You can steal the mounts bag by pressing "take all" with no items in the inventory, aslong as this bag is not destroyed or sold it should reattach itself to the mount on reload.
