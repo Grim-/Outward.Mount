@@ -29,7 +29,9 @@ You can still mount and ride them pretty much anywhere you would expect the play
 
 The mounts require feeding they lose a little bit of food passively over time and a little for X distance travelled while mounted, most of these settings can be changed in the XML files found in "MountSpecies" folder. 
 
-Everything currently eats either Vegatables or Meat. The value on the UI for the food is the amount it will restore. With Favourite foods restoring more and making your mount happy.
+Everything currently eats either Vegetables or Meat. 
+
+The value on the UI for the food is the amount it will restore. With Favourite foods restoring more and making your mount happy.
 
 
 ### Utility
