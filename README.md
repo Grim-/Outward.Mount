@@ -51,7 +51,7 @@ I have set the mod up so others can add mounts later on, I have yet to document 
 
 ## Potential Future Updates
  - Lanterns, pets that can act as cooking pots and other things. 
-
+ - Update the UI.
 
 ## Credits
 
