@@ -38,6 +38,6 @@ The mount should also fully save including all its bag contents, please let me k
 
 
 
-
 ## Known Issues
 - You can steal the mounts bag by pressing "take all" with no items in the inventory, aslong as this bag is not destroyed or sold it should reattach itself to the mount on reload.
+- The Mount currently teleports to you while using combat teleports, this isn't intended and is a side effect of me trying to keep the mount with the player between area changes, it will hopefully be fixed.
