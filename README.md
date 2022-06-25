@@ -55,7 +55,8 @@ I have set the mod up so others can add mounts later on, I have yet to document 
 
 ## Credits
 
--- Iggy + Sinai for allowing me to use some of the code from his Alternate Start mod for the NPCs .
+-- Iggy + Sinai for allowing me to use some of the code from his Alternate Start mod for the NPCs.
+
 -- Faeryn for their patches allowing mounts to be fed by right clicking the item in your inventory.
 
 -- AlienVsYourMom and Avrixel for testing and providing feedback.
