@@ -26,7 +26,20 @@ namespace EmoMount
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
         public const string MOUNT_MOVE_TO_KEY = "MountMod_MoveTo_Toggle";
 
-        public static bool Debug = true;
+        public static int[] MountWhistleIDs = new int[]
+        {
+            -26100,
+            -26101,
+            -26102,
+            -26103,
+            -26104,
+            -26105,
+            -26106,
+            -26107,
+            -26108
+        };
+
+        public static bool Debug = false;
 
         internal static ManualLogSource Log;
         public static Canvas MainCanvas
@@ -58,7 +71,7 @@ namespace EmoMount
             MountManager = new MountManager(RootFolder);
             SL.OnPacksLoaded += InitializeCanvas;
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
-            SetupTestCharacter();
+            SetupNPCs();
             new Harmony(GUID).PatchAll();
         }
 
@@ -78,23 +91,36 @@ namespace EmoMount
             CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings);
         }
 
-        internal static DialogueCharacter levantGuard;
-        private void SetupTestCharacter()
+        public static int GetRandomWhistleID()
         {
-            levantGuard = new()
+            return EmoMountMod.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.MountWhistleIDs.Length)];
+        }
+        private void SetupNPCs()
+        {
+
+            SetupLevantNPC();
+            SetupBergNPC();
+            SetupCierzoNPC();
+            SetupMonsoonNPC();
+        }
+
+        private void SetupLevantNPC()
+        {
+            ///levant
+            DialogueCharacter levantGuard = new()
             {
-                UID = "emomount.mountcharacter",
-                Name = "Levant Guard",
-                SpawnSceneBuildName = "Abrassar",
-                SpawnPosition = new(-159.4f, 131.8f, -532.7f),
-                SpawnRotation = new(0, 43.7f, 0),
+                UID = "emomount.mountcharacterlevant",
+                Name = "Ianis, Levant Stable Master",
+                SpawnSceneBuildName = "Levant",             
+                SpawnPosition = new(-39.7222f, 0.2239f, 120.0354f),
+                SpawnRotation = new(0, 218f, 0),
                 HelmetID = 3000115,
                 ChestID = 3000112,
                 BootsID = 3000118,
                 WeaponID = 2130305,
                 StartingPose = Character.SpellCastType.IdleAlternate,
             };
-            
+
 
             // Create and apply the template
             var template = levantGuard.CreateAndApplyTemplate();
@@ -104,6 +130,92 @@ namespace EmoMount
 
             // Add this func to determine if our character should actually spawn
             template.ShouldSpawn = () => true;
+        }
+        private void SetupBergNPC()
+        {
+            ///berg
+            DialogueCharacter BergNPC = new()
+            {
+                UID = "emomount.mountcharacterberg",
+                Name = "Iggy the Wild, Berg Stable Master",
+                SpawnSceneBuildName = "Berg",
+                SpawnPosition = new(1191.945f, -13.7222f, 1383.581f),
+                SpawnRotation = new(0, 72f, 0),
+                HelmetID = 3000115,
+                ChestID = 3000112,
+                BootsID = 3000118,
+                WeaponID = 2130305,
+                StartingPose = Character.SpellCastType.IdleAlternate,
+            };
+
+
+            // Create and apply the template
+            var bergTemplate = BergNPC.CreateAndApplyTemplate();
+
+            // Add a listener to set up our dialogue
+            BergNPC.OnSetupDialogueGraph += TestCharacter_OnSetupDialogueGraph;
+
+            // Add this func to determine if our character should actually spawn
+            bergTemplate.ShouldSpawn = () => true;
+        }
+        private void SetupCierzoNPC()
+        {
+            ///ciezro
+            DialogueCharacter CierzoNPC = new()
+            {
+                UID = "emomount.mountcharactercierzo",
+                Name = "Emo, Cierzo Stable Master",
+                SpawnSceneBuildName = "CierzoNewTerrain",      
+                SpawnPosition = new(1421.29f, 5.5604f, 1686.195f),
+                SpawnRotation = new(0, 270f, 0),
+                HelmetID = 3000115,
+                ChestID = 3000112,
+                BootsID = 3000118,
+                WeaponID = 2130305,
+                StartingPose = Character.SpellCastType.IdleAlternate,
+            };
+
+
+            // Create and apply the template
+            var cierzotemplate = CierzoNPC.CreateAndApplyTemplate();
+
+            // Add a listener to set up our dialogue
+            CierzoNPC.OnSetupDialogueGraph += TestCharacter_OnSetupDialogueGraph;
+
+            // cierzotemplate this func to determine if our character should actually spawn
+            cierzotemplate.ShouldSpawn = () => true;
+        }
+        private void SetupMonsoonNPC()
+        {
+
+            ///monsoon
+            DialogueCharacter MonsoonNPC = new()
+            {
+                UID = "emomount.mountcharactermonsoon",
+                Name = "Faeryn, Monsoon Stable Master",
+                SpawnSceneBuildName = "Monsoon",
+                SpawnPosition = new(82.0109f, -5.1698f, 140.1947f),
+                SpawnRotation = new(0, 254.089f, 0),
+                HelmetID = 3000115,
+                ChestID = 3000112,
+                BootsID = 3000118,
+                WeaponID = 2130305,
+                CharVisualData =
+                {
+                    Gender =  Character.Gender.Female
+                },
+                StartingPose = Character.SpellCastType.IdleAlternate,
+            };
+
+
+            // Create and apply the template
+            var monsoontemplate = MonsoonNPC.CreateAndApplyTemplate();
+
+            // Add a listener to set up our dialogue
+            MonsoonNPC.OnSetupDialogueGraph += TestCharacter_OnSetupDialogueGraph;
+
+            // cierzotemplate this func to determine if our character should actually spawn
+            monsoontemplate.ShouldSpawn = () => true;
         }
 
         private void TestCharacter_OnSetupDialogueGraph(DialogueTree graph, Character character)
@@ -117,7 +229,7 @@ namespace EmoMount
 
             // Add our root statement
             var InitialStatement = graph.AddNode<StatementNodeExt>();
-            InitialStatement.statement = new("Yo dwag, I heard yu liek dogs so I got dogs.");
+            InitialStatement.statement = new($"Welcome, can I store a mount for you perphaps in our stables?");
             InitialStatement.SetActorName(ourActor.name);
 
             // Add a multiple choice
@@ -144,7 +256,7 @@ namespace EmoMount
             answer1.SetActorName(ourActor.name);
 
             var answer2 = graph.AddNode<StatementNodeExt>();
-            answer2.statement = new("Take a look at what you have stored.");
+            answer2.statement = new("Here's a list of what you have in my stables.");
             answer2.SetActorName(ourActor.name);
 
             DismissMountActionNode dismissMountActionNode = new DismissMountActionNode();

@@ -50,7 +50,6 @@ namespace EmoMount
 
             if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
             {
-                MountController.DisplayNotification($"{DistanceBetweenStartAndEnd} Distance between start and End");
                 StartPosition = MountController.transform.position;
                 MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);
             }

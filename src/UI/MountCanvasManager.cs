@@ -129,7 +129,7 @@ namespace EmoMount
                 return;
             }
 
-            SideLoader.Helpers.ForceUnlockCursor.AddUnlockSource();
+          
 
             CharacterMount characterMount = character.GetComponent<CharacterMount>();
 
@@ -144,6 +144,7 @@ namespace EmoMount
                     return;
                 }
 
+                SideLoader.Helpers.ForceUnlockCursor.AddUnlockSource();
 
                 foreach (var item in characterMount.StoredMounts)
                 {

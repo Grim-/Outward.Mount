@@ -70,9 +70,19 @@ namespace EmoMount
                 Character owner = __instance.m_characterUI.TargetCharacter;
                 CharacterMount characterMount = owner.GetComponent<CharacterMount>();
 
-                if (characterMount != null)
-                {   
-                    characterMount.ActiveMount.MountFood.Feed(__instance.m_pendingItem, 1);
+                if (characterMount != null && __instance.m_pendingItem is Food)
+                {
+                    Food foodItem = (Food)__instance.m_pendingItem;
+                    float foodValue = 0;
+
+                    foreach (var item in foodItem.m_affectFoodEffects)
+                    {
+                        foodValue += item.m_affectQuantity * item.m_totalPotency;
+                    }
+
+                    //EmoMountMod.Log.LogMessage($"Final Food Value? {foodValue} from {foodItem.Name}");
+
+                    characterMount.ActiveMount.MountFood.Feed(__instance.m_pendingItem, foodValue);
                 }
             }
         }
@@ -93,6 +103,22 @@ namespace EmoMount
                 return false;
             }
             return true;
+        }
+
+
+
+        [HarmonyPatch(typeof(ItemDropper), "GenerateItem")]
+        public class ItemDropper_GenerateItem
+        {
+            [HarmonyPrefix]
+            public static void Prefix(ItemDropper __instance, ItemContainer _container, BasicItemDrop _itemDrop, int _spawnAmount)
+            {
+                if (UnityEngine.Random.Range(1, 500) <= 1)
+                {
+                    Item item = ItemManager.Instance.GenerateItemNetwork(EmoMountMod.GetRandomWhistleID());
+                    item.ChangeParent(_container.transform);
+                }
+            }
         }
     }
 }

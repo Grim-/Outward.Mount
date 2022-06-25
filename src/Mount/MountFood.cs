@@ -54,7 +54,6 @@ namespace EmoMount
         /// </summary>
         public void Init()
         {
-            CurrentFood = MaximumFood;
             //gaberry
             MountController = GetComponent<BasicMountController>();
         }
@@ -91,14 +90,14 @@ namespace EmoMount
 
         public void Feed(Item item, float foodAmount)
         {
-            MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
-
             if (!CanEat(item))
             {
                 MountController.DisplayNotification($"{MountController.MountName} can't eat this type of food!");
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
                 return;
             }
+
+            MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
 
             float finalFoodValue = foodAmount;
 
@@ -126,7 +125,6 @@ namespace EmoMount
             }
 
 
-           // EmoMountMod.Log.LogMessage($"Removing Item");
             item.ParentContainer.RemoveItem(item);
 
 
@@ -207,6 +205,19 @@ namespace EmoMount
             }
 
             return false;
+        }
+
+        public void SetMaximumFood(float MaxFood, bool UpdateCurrent = true)
+        {
+            float oldMax = MaximumFood;
+            MaximumFood = MaxFood;
+
+            if (UpdateCurrent)
+            {
+                float currentAsPercent = CurrentFood / oldMax;
+                CurrentFood = MaxFood * currentAsPercent;
+            }
+
         }
     }
 

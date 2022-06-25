@@ -10,9 +10,6 @@ namespace EmoMount
         {
             public override Status OnExecute(Component agent, IBlackboard bb)
             {
-                //EmoMountMod.Log.LogMessage("Summon Mount action called");
-
-
                 Character PlayerTalking = bb.GetVariable<Character>("gInstigator").GetValue();
 
                 CharacterMount characterMount = PlayerTalking.GetComponentInChildren<CharacterMount>();
@@ -20,9 +17,12 @@ namespace EmoMount
                 if (characterMount != null && !characterMount.HasActiveMount)
                 {
                     EmoMountMod.MainCanvasManager.DisplayStorageForCharacter(PlayerTalking);
+                    return Status.Success;
                 }
-
-                return Status.Success;
+                else
+                {
+                    return Status.Failure;
+                }       
             }
         }
     }

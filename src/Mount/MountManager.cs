@@ -129,6 +129,12 @@ namespace EmoMount
                 basicMountController.SetFoodTags(MountSpecies.FoodTags);
                 basicMountController.SetFavouriteFoods(MountSpecies.FavouriteFoods);
                 basicMountController.SetHatedFoods(MountSpecies.HatedFoods);
+                basicMountController.MountFood.SetMaximumFood(MountSpecies.MaximumFood);
+
+                basicMountController.MaxCarryWeight = MountSpecies.MaximumCarryWeight;
+                basicMountController.EncumberenceSpeedModifier = MountSpecies.EncumberenceSpeedModifier;
+                basicMountController.MountFood.FoodTakenPerTick = MountSpecies.FoodTakenPerTick;
+                basicMountController.MountFood.HungerTickTime = MountSpecies.HungerTickTime;
 
                 CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
 

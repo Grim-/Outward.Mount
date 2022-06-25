@@ -63,8 +63,8 @@ namespace EmoMount
                 {
                     EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {(MountToStore.BagContainer as Bag).m_container.UID}");
                     
-                    item.ChangeParent(null, MountToStore.CharacterOwner. transform.position + new Vector3(0, 1f, 0));
-                    item.ResetTargetMove();
+                    item.ChangeParent(null, MountToStore.CharacterOwner.transform.position + new Vector3(0, 1f, 0));
+                    //item.ResetTargetMove();
                     (MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
                 }
             }

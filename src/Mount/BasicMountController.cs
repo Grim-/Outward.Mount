@@ -121,7 +121,6 @@ namespace EmoMount
         public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
 
         public MountUpInteraction mountInteraction { get; private set; }
-        public FeedMountInteraction feedMountInteraction { get; private set; }
         public PetMountInteraction petMountInteraction { get; private set; }
         public DismissMountInteraction dismissMountInteraction { get; private set; }
         public InteractionActivator interactionActivator { get; private set; }
@@ -135,6 +134,7 @@ namespace EmoMount
             MountFood = gameObject.AddComponent<MountFood>();
             SetupInteractionComponents();
 
+            //needs to be done this way to avoid the jillion racetime errors
             MountFood.Init();
 
             NavMesh.stoppingDistance = 1f;
@@ -160,7 +160,6 @@ namespace EmoMount
         {
             EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
             mountInteraction = gameObject.AddComponent<MountUpInteraction>();
-            feedMountInteraction = gameObject.AddComponent<FeedMountInteraction>();
             petMountInteraction = gameObject.AddComponent<PetMountInteraction>();
             dismissMountInteraction = gameObject.AddComponent<DismissMountInteraction>();
             interactionActivator = gameObject.AddComponent<InteractionActivator>();
@@ -169,7 +168,7 @@ namespace EmoMount
             interactionActivator.BasicInteraction = mountInteraction;
             //interactionActivator.AddBasicInteractionOverride(petMountInteraction);
             interactionActivator.m_defaultHoldInteraction = petMountInteraction;
-            interactionTriggerBase.DetectionColliderRadius = 1.2f;
+            interactionTriggerBase.DetectionColliderRadius = 1f;
         }
 
         #region Setters
@@ -214,12 +213,12 @@ namespace EmoMount
 
                 if (TagDef != default(Tag))
                 {
-                    EmoMountMod.Log.LogMessage($"Adding Tag {TagDef.TagName}");
+                    //EmoMountMod.Log.LogMessage($"Adding Tag {TagDef.TagName}");
                     this.MountFood.FoodTags.Add(TagDef);
                 }  
             }
 
-            EmoMountMod.Log.LogMessage(this.MountFood.FoodTags[0].TagName);
+           // EmoMountMod.Log.LogMessage(this.MountFood.FoodTags[0].TagName);
         }
 
 
@@ -543,15 +542,6 @@ namespace EmoMount
             EnableNavMeshAgent();
         }
 
-        //private IEnumerator TeleportRoutine(Vector3 Position, Vector3 Rotation)
-        //{
-        //    EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
-        //    DisableNavMeshAgent();
-        //    transform.position = Position;
-        //    transform.rotation = Quaternion.Euler(Rotation);
-        //    EnableNavMeshAgent();
-        //    yield break;
-        //}
     }
 
     public enum MountAnimations
