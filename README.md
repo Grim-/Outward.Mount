@@ -1,5 +1,9 @@
 # Emo's Outward Mount Mod
 
+![image](https://user-images.githubusercontent.com/3288858/175751166-ab3d6da0-a3a6-4aa6-880d-aa6197d8a627.png)
+
+
+
 Currently I consider this 'early access' as there quite a few moving parts, I hope to have caught the majority of them but I can't promise a bug-free experience so you might want to back up your saves before installing it, I have found nothing game breaking so far...
 
 The base mod comes with 3 types of mounts each with a few variations. 
@@ -34,6 +38,6 @@ The mount should also fully save including all its bag contents, please let me k
 
 
 
-
 ## Known Issues
 - You can steal the mounts bag by pressing "take all" with no items in the inventory, aslong as this bag is not destroyed or sold it should reattach itself to the mount on reload.
+- The Mount currently teleports to you while using combat teleports, this isn't intended and is a side effect of me trying to keep the mount with the player between area changes, it will hopefully be fixed.
