@@ -57,9 +57,15 @@ namespace EmoMount
     public static class ItemDisplayOptionPanelPatches
     {
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActiveActions)), HarmonyPostfix]
-        private static void EquipmentMenu_GetActiveActions_Postfix(GameObject pointerPress, ref List<int> __result)
+        private static void EquipmentMenu_GetActiveActions_Postfix(ItemDisplayOptionPanel __instance, GameObject pointerPress, ref List<int> __result)
         {
-            __result.Add(69696969);
+            CharacterMount characterMount = __instance.LocalCharacter.GetComponent<CharacterMount>();
+
+            if (characterMount && characterMount.ActiveMount)
+            {
+                __result.Add(69696969);
+            }
+
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.ActionHasBeenPressed)), HarmonyPrefix]
@@ -95,13 +101,14 @@ namespace EmoMount
                 Character owner = __instance.m_characterUI.TargetCharacter;
                 CharacterMount characterMount = owner.GetComponent<CharacterMount>();
 
-                if (characterMount != null)
+                if (characterMount != null && characterMount.ActiveMount != null)
                 {
                     __result = $"Feed {characterMount.ActiveMount.MountName}";                 
                 }
 
                 return false;
             }
+
             return true;
         }
 
@@ -121,5 +128,33 @@ namespace EmoMount
                 }
             }
         }
+
+
+        //[HarmonyPatch(typeof(CharacterSkillKnowledge), nameof(CharacterSkillKnowledge.AddItem))]
+        //public class LeylineAbandonmentLearnedPatch
+        //{
+        //    static bool Prefix(CharacterSkillKnowledge __instance, Item _item)
+        //    {
+        //        //I used 'armour training' as the test
+        //        ///BloodMage.LeylineAbandonment 
+        //        if (_item.ItemID == 8205220)
+        //        {
+        //            EmoMountMod.Log.LogMessage("Learning Leyline Abandonment, resetting investment.");
+
+
+        //            //player has this much mana when learning your skill
+        //            float CurrentMana = __instance.m_character.Stats.MaxMana;
+        //            __instance.m_character.Stats.SetManaPoint(0);
+
+
+        //            float PercentHp = CurrentMana * 0.2f;
+        //            float PercentStamina = CurrentMana * 0.5f;
+
+        //            __instance.m_character.Stats.m_maxHealthStat.BaseValue = __instance.m_character.Stats.m_maxHealthStat.BaseValue + PercentHp;
+        //            __instance.m_character.Stats.m_maxStamina.BaseValue = __instance.m_character.Stats.m_maxStamina.BaseValue + PercentStamina;
+        //        }
+        //        return true;
+        //    }
+        //}
     }
 }
