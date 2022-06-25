@@ -6,7 +6,7 @@
 For any bug reports please visit the mount-mod channel of the [Outward Modding Discord](https://discord.gg/zKyfGmy7TR). 
 
 
-### Due to a mistake on my part in setting up the mod package correctly, you may need to uninstall the mod entirely and reinstall version 1.0.3 or greater. Sorry for this!
+### Due to a mistake on my part in setting up the mod package correctly, you may need to uninstall the mod entirely and reinstall version 1.0.2 or greater. Sorry for this!
 
 **Currently I consider this 'early access' as there quite a few moving parts, I hope to have caught the majority of them but I can't promise a bug-free experience so you might want to back up your saves before installing it, I have found nothing game breaking so far...**
 
