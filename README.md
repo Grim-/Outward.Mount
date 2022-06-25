@@ -21,11 +21,11 @@ The numbers will be adjusted later.
 
 ### Getting a mount
 
-First you must acquire a whistle in order to summon a mount for the first time, after that it will follow you wherever you go with the caveat it can't follow you into places where there is no "NavMesh" for it to use these are usually places you would find no moving NPCs, one example at the start is the player house in Ciezro. 
+First you must acquire a whistle in order to summon a mount for the first time these are currently world drops with a small chance, after that it will follow you wherever you go with the caveat it can't follow you into places where there is no "NavMesh" for it to use these are usually places you would find no moving NPCs, one example at the start is the player house in Ciezro. 
 
 You can still mount and ride them pretty much anywhere you would expect the player to be able to go.
 
-### Feeding the mount
+### Feeding
 
 The mounts require feeding they lose a little bit of food passively over time and a little for X distance travelled while mounted, most of these settings can be changed in the XML files found in "MountSpecies" folder. 
 
