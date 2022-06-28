@@ -45,8 +45,19 @@ namespace EmoMount
 
         public override void OnUpdate(BasicMountController MountController)
         {
+            if (MountedCharacter == null)
+            {
+                EmoMountMod.Log.LogMessage($"we somehow ended up in the MountedState without a Mounted Character dismounting character owner and popping state.");
+                MountController.DismountCharacter(MountController.CharacterOwner);
+                //if we somehow ended up in the MountedState without a Mounted Character
+                Parent.PopState();
+                return;
+            }
             float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
-            
+
+
+
+
 
             if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
             {

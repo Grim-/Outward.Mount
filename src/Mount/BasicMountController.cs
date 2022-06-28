@@ -427,6 +427,7 @@ namespace EmoMount
             _affectedCharacter.transform.position = transform.position;
             _affectedCharacter.transform.eulerAngles = Vector3.zero;
 
+            MountFSM.PopState();
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
         }
 

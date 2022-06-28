@@ -17,6 +17,19 @@ namespace EmoMount
         }
     }
 
+    [HarmonyPatch(typeof(DefeatScenariosManager), nameof(DefeatScenariosManager.ActivateDefeatScenario))]
+    public class DefeatScenarioPatch
+    {
+        static void Prefix(DefeatScenariosManager __instance, DefeatScenario _scenario)
+        {
+            foreach (var item in EmoMountMod.MountManager.MountControllers)
+            {
+                EmoMountMod.Log.LogMessage($"Dismount {item.Key} from {item.Value.MountName} before defeat scenario");
+                item.Value.DismountCharacter(item.Value.CharacterOwner);
+            }
+        }
+    }
+
 
     [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3) })]
     public class CharacterTeleport
@@ -129,32 +142,5 @@ namespace EmoMount
             }
         }
 
-
-        //[HarmonyPatch(typeof(CharacterSkillKnowledge), nameof(CharacterSkillKnowledge.AddItem))]
-        //public class LeylineAbandonmentLearnedPatch
-        //{
-        //    static bool Prefix(CharacterSkillKnowledge __instance, Item _item)
-        //    {
-        //        //I used 'armour training' as the test
-        //        ///BloodMage.LeylineAbandonment 
-        //        if (_item.ItemID == 8205220)
-        //        {
-        //            EmoMountMod.Log.LogMessage("Learning Leyline Abandonment, resetting investment.");
-
-
-        //            //player has this much mana when learning your skill
-        //            float CurrentMana = __instance.m_character.Stats.MaxMana;
-        //            __instance.m_character.Stats.SetManaPoint(0);
-
-
-        //            float PercentHp = CurrentMana * 0.2f;
-        //            float PercentStamina = CurrentMana * 0.5f;
-
-        //            __instance.m_character.Stats.m_maxHealthStat.BaseValue = __instance.m_character.Stats.m_maxHealthStat.BaseValue + PercentHp;
-        //            __instance.m_character.Stats.m_maxStamina.BaseValue = __instance.m_character.Stats.m_maxStamina.BaseValue + PercentStamina;
-        //        }
-        //        return true;
-        //    }
-        //}
     }
 }
