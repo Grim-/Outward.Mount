@@ -213,12 +213,9 @@ namespace EmoMount
 
                 if (TagDef != default(Tag))
                 {
-                    //EmoMountMod.Log.LogMessage($"Adding Tag {TagDef.TagName}");
                     this.MountFood.FoodTags.Add(TagDef);
                 }  
             }
-
-           // EmoMountMod.Log.LogMessage(this.MountFood.FoodTags[0].TagName);
         }
 
 
@@ -244,6 +241,8 @@ namespace EmoMount
                 MountFood.HatedFoods.Add(item.ItemID, item.FoodValue);
             }
         }
+
+
         private IEnumerator SetUpBag(Item bag)
         {
             if (EmoMountMod.Debug)
@@ -281,18 +280,7 @@ namespace EmoMount
             }
 
             EmoMountMod.Log.LogMessage($"Updating Bag Position");
-            
-            ///default bag position move later
-            bag.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
-            bag.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
-
-            if (bag.m_rigidBody)
-            {
-                bag.m_rigidBody.isKinematic = true;
-                bag.m_rigidBody.useGravity = false;
-                bag.m_rigidBody.freezeRotation = true;
-            }
-
+            UpdateBagPosition();
             yield break;
         }
 
@@ -339,11 +327,17 @@ namespace EmoMount
                 MountFSM.Update();
             }
 
+            UpdateBagPosition();
+        }
+
+        public void UpdateBagPosition()
+        {
             ///Bag takes way too long to instantiate and set up (multiple frames) resulting in IsKinematic being disabled by the RigidbodySuspender, so for now, force the settings.
             if (BagContainer)
             {
-                BagContainer.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
-                BagContainer.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
+                BagContainer.transform.localPosition = Vector3.zero;
+                //BagContainer.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
+                //BagContainer.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
 
                 if (BagContainer.m_rigidBody)
                 {
@@ -536,11 +530,22 @@ namespace EmoMount
 
         public void Teleport(Vector3 Position, Vector3 Rotation)
         {
+            StartCoroutine(DelayTeleport(Position, Rotation));
+        }
+
+
+        private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation)
+        {
             EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
             DisableNavMeshAgent();
+            yield return null;
+            yield return null;
+
             transform.position = Position;
             transform.rotation = Quaternion.Euler(Rotation);
             EnableNavMeshAgent();
+            UpdateBagPosition();
+            yield break;
         }
 
     }

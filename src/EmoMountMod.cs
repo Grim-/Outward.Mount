@@ -19,8 +19,8 @@ namespace EmoMount
     public partial class EmoMountMod : BaseUnityPlugin
     {
         public const string GUID = "emo.mountmod";
-        public const string NAME = "Emo's Mount Mod";
-        public const string VERSION = "1.0.0";
+        public const string NAME = "EmoMountMod";
+        public const string VERSION = "1.0.3";
 
         public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
@@ -36,8 +36,16 @@ namespace EmoMount
             -26105,
             -26106,
             -26107,
-            -26108
+            -26108,
+            -26109,
+            -26110,
+            -26111,
+            -26112,
+            -26113,
+            -26114,
+            -26115,
         };
+
 
         public static bool Debug = false;
 
@@ -60,6 +68,9 @@ namespace EmoMount
 
         public static string RootFolder;
 
+        public static ConfigEntry<float> WorldDropChanceThreshold;
+        public static ConfigEntry<float> WorldDropChanceMinimum;
+        public static ConfigEntry<float> WorldDropChanceMaximum;
 
         // Awake is called when your plugin is created. Use this to set up your mod.
         internal void Awake()
@@ -71,6 +82,11 @@ namespace EmoMount
             MountManager = new MountManager(RootFolder);
             SL.OnPacksLoaded += InitializeCanvas;
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+
+
+            WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "The number you need to get");
+            WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
+            WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
             SetupNPCs();
             new Harmony(GUID).PatchAll();
         }
@@ -245,10 +261,14 @@ namespace EmoMount
                 statement = new Statement("I want to retrieve a mount.")
             };
 
+            MultipleChoiceNodeExt.Choice LearnSkillsChoice = new MultipleChoiceNodeExt.Choice()
+            {
+                statement = new Statement("Can you teach me some mount skills?")
+            };
 
             multiChoice1.availableChoices.Add(DismissChoice);
             multiChoice1.availableChoices.Add(SummonChoice);
-
+            multiChoice1.availableChoices.Add(LearnSkillsChoice);
 
             // Add our answers
             var answer1 = graph.AddNode<StatementNodeExt>();
@@ -261,6 +281,7 @@ namespace EmoMount
 
             DismissMountActionNode dismissMountActionNode = new DismissMountActionNode();
             DisplayMountStorageListNode displayStorageListNode = new DisplayMountStorageListNode();
+            LearnMountSkillsNode learnMountSkillsNode = new LearnMountSkillsNode();
 
             // ===== finalize nodes =====
             graph.allNodes.Clear();
@@ -272,6 +293,7 @@ namespace EmoMount
             graph.allNodes.Add(answer2);
             graph.allNodes.Add(dismissMountActionNode);
             graph.allNodes.Add(displayStorageListNode);
+            graph.allNodes.Add(learnMountSkillsNode);
             // setup our connections
             graph.ConnectNodes(InitialStatement, multiChoice1);    // prime node triggers the multiple choice
 
@@ -283,6 +305,8 @@ namespace EmoMount
             graph.ConnectNodes(multiChoice1, answer2, 1);      
             graph.ConnectNodes(answer2, displayStorageListNode);
             graph.ConnectNodes(answer2, InitialStatement);
+
+            graph.ConnectNodes(multiChoice1, learnMountSkillsNode, 2);
         }
 
         private void InitializeCanvas()

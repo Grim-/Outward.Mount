@@ -81,6 +81,7 @@ namespace EmoMount
             {
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
                 BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
+                basicMountController.Teleport(Character.transform.position, mountInstanceData.Rotation);
                 //EmoMountMod.MountManager.DeSerializeMountBagContents(mountInstanceData, basicMountController);
                 StoredMounts.Remove(mountInstanceData);
                 return basicMountController;

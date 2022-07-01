@@ -96,32 +96,27 @@ namespace EmoMount
 
         private void LoadActiveMount(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
-            character.StartCoroutine(LateLoading(character, characterMount));
+            if (this.ActiveMountInstance != null)
+            {
+                EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
+                character.StartCoroutine(LateLoading(character, characterMount, this.ActiveMountInstance));
+            }
+       
         }
 
 
-        private IEnumerator LateLoading(Character character, CharacterMount characterMount)
+        private IEnumerator LateLoading(Character character, CharacterMount characterMount, MountInstanceData mountInstanceData)
         {
             yield return new WaitForSeconds(10f);
-            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance);
+            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, mountInstanceData);
+
+            if (basicMountController == null)
+            {
+                EmoMountMod.Log.LogMessage("Late Loading Basic Mount Controller was null");
+                yield break;
+            }
             EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);
             yield break;
         }
-    }
-
-    [System.Serializable]
-    public class MountInstanceData
-    {
-        public string MountName;
-        public string MountUID;
-        public MountSpecies MountSpecies;
-        public string BagUID;
-        public float CurrentFood;
-        public float MaximumFood;
-        public Vector3 Position;
-        public Vector3 Rotation;
-
-        public List<BasicSaveData> ItemSaveData;
     }
 }

@@ -359,7 +359,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom SL Effect\SL_DismissActiveMount.cs" />
+    <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="DialogueCharacter.cs" />
+    <Compile Include="Mount\MountInstanceData.cs" />
     <Compile Include="Node Canvas Nodes\DismissMountActionNode.cs" />
     <Compile Include="Node Canvas Nodes\DisplayMountStorageListNode.cs" />
     <Compile Include="Interaction Components\DismissMountInteraction.cs" />

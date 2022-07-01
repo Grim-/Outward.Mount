@@ -174,7 +174,23 @@ namespace EmoMount
         /// <returns></returns>
         public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, bool SetAsActive = true)
         {
+            EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Creating from MountInstanceData for ");
+
+            if (mountInstanceData == null)
+            {
+                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Mount Instance data is null");
+                return null;
+            }
+
             BasicMountController basicMountController = CreateMountFor(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation, mountInstanceData.BagUID);
+
+
+            if (basicMountController == null)
+            {
+                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Failed to Create Mount");
+                return null;
+            }
+
             basicMountController.MountName = mountInstanceData.MountName;
             basicMountController.MountUID = mountInstanceData.MountUID;
             basicMountController.MountFood.CurrentFood = mountInstanceData.CurrentFood;
@@ -213,10 +229,7 @@ namespace EmoMount
             EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
 
             Bag itemAsBag = (Bag)basicMountController.BagContainer;
-
-
-
-         
+        
             MountInstanceData.ItemSaveData = new List<BasicSaveData>();
             if (itemAsBag.m_container == null)
             {
@@ -256,7 +269,7 @@ namespace EmoMount
 
             return false;
         }
-        public BasicMountController GetControllerForCharacter(Character _affectedCharacter)
+        public BasicMountController GetActiveMount(Character _affectedCharacter)
         {
             if (MountControllers.ContainsKey(_affectedCharacter))
             {

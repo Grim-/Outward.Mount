@@ -9,6 +9,10 @@ using UnityEngine.UI;
 
 namespace EmoMount.UI
 {
+
+    /// <summary>
+    /// A UI Element for the Mount Retrieval Sceen
+    /// </summary>
     public class MountSelectionElement : MonoBehaviour
     {
         public Text NameLabel;

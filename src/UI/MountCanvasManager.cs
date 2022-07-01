@@ -103,7 +103,7 @@ namespace EmoMount
         }
 
       
-        public void Show()
+        public void ShowMountHud()
         {
             if (UIContainerGroup != null)
             {
@@ -214,13 +214,18 @@ namespace EmoMount
                 MountUI mountUI = MountUIInstance.AddComponent<MountUI>();
                 mountUI.SetTargetMount(mountController);
                 MountUIInstances.Add(mountController, mountUI);
-                Show();
+                ShowMountHud();
                 return mountUI;
             }
 
             return null;
         }
 
+        /// <summary>
+        /// Unregister a Mount Controller with the MountCanvasManager, this destroys the MountUI Instance for the MountController.
+        /// </summary>
+        /// <param name="mountController"></param>
+        /// <returns></returns>
         public void UnRegisterMount(BasicMountController mountController)
         {
             if (MountUIInstances.ContainsKey(mountController))

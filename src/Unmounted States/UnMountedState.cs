@@ -97,6 +97,11 @@ namespace EmoMount
 
         private void MoveToTargetPosition(BasicMountController MountController, Vector3 MoveToTarget)
         {
+            if (!MountController.NavMesh.isOnNavMesh)
+            {
+                return;
+            }
+
             StayStill = false;
 
             if (MoveToTarget != Vector3.zero)

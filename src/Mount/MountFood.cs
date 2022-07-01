@@ -73,18 +73,10 @@ namespace EmoMount
 
         public bool CanEat(Item item)
         {
-           // EmoMountMod.Log.LogMessage($"{item.Name} Item Tags");
-            //foreach (var tag in item.Tags)
-            //{
-            //    //EmoMountMod.Log.LogMessage($"Tag : {tag.TagName}");
-            //}
-
             if (item.HasTag(FoodTags, false))
             {
-                //EmoMountMod.Log.LogMessage($"{MountController.MountName} Can Eat {item.Name}");
                 return true;
             }
-            //EmoMountMod.Log.LogMessage($"{MountController.MountName} Cannot Eat {item.Name}");
             return false;
         }
 
@@ -207,17 +199,10 @@ namespace EmoMount
             return false;
         }
 
-        public void SetMaximumFood(float MaxFood, bool UpdateCurrent = true)
+        public void SetMaximumFood(float MaxFood)
         {
-            float oldMax = MaximumFood;
             MaximumFood = MaxFood;
-
-            if (UpdateCurrent)
-            {
-                float currentAsPercent = CurrentFood / oldMax;
-                CurrentFood = MaxFood * currentAsPercent;
-            }
-
+            CurrentFood = MaxFood;
         }
     }
 

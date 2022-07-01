@@ -53,11 +53,9 @@ namespace EmoMount
                 Parent.PopState();
                 return;
             }
+
+
             float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
-
-
-
-
 
             if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
             {

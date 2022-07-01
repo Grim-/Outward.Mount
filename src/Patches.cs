@@ -134,7 +134,7 @@ namespace EmoMount
             [HarmonyPrefix]
             public static void Prefix(ItemDropper __instance, ItemContainer _container, BasicItemDrop _itemDrop, int _spawnAmount)
             {
-                if (UnityEngine.Random.Range(1, 500) <= 1)
+                if (UnityEngine.Random.Range(EmoMountMod.WorldDropChanceMinimum.Value, EmoMountMod.WorldDropChanceMaximum.Value) <= EmoMountMod.WorldDropChanceThreshold.Value)
                 {
                     Item item = ItemManager.Instance.GenerateItemNetwork(EmoMountMod.GetRandomWhistleID());
                     item.ChangeParent(_container.transform);
