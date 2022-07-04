@@ -21,7 +21,7 @@ namespace EmoMount
     {
         public const string GUID = "emo.mountmod";
         public const string NAME = "EmoMountMod";
-        public const string VERSION = "1.0.3";
+        public const string VERSION = "1.0.4";
 
         public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
@@ -45,7 +45,9 @@ namespace EmoMount
             -26113,
             -26114,
             -26115,
-            -26116
+            -26116,
+            -26117,
+            -26118
         };
 
 
@@ -89,7 +91,7 @@ namespace EmoMount
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
 
-            WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "The number you need to get");
+            WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "You need to roll this number or less in order for a whistle to drop.");
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
 

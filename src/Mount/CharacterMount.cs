@@ -57,18 +57,21 @@ namespace EmoMount
             }
         }
 
-        //TODO : This
+
         private void DropAllStoredItems(BasicMountController MountToStore)
-        {
-            if (MountToStore.BagContainer != null && (MountToStore.BagContainer as Bag).m_container.ItemCount > 0)
+        {      
+            if (MountToStore.BagContainer != null && MountToStore.BagContainer is Bag)
             {
-                foreach (var item in (MountToStore.BagContainer as Bag).m_container.GetContainedItems().ToList())
+                Bag ContainerBag = MountToStore.BagContainer as Bag;
+
+
+                foreach (var item in ContainerBag.Container.GetContainedItems().ToList())
                 {
-                    EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {(MountToStore.BagContainer as Bag).m_container.UID}");
+                    EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {ContainerBag.Container.UID}");
                     
-                    item.ChangeParent(null, MountToStore.CharacterOwner.transform.position + new Vector3(0, 1f, 0));
-                    //item.ResetTargetMove();
-                    (MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
+                    item.ChangeParent(null, MountToStore.CharacterOwner.transform.position + new Vector3(0, 2f, 0));
+                    ContainerBag.Container.RemoveItem(item);
+                    //(MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
                 }
             }
         }

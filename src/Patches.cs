@@ -77,6 +77,7 @@ namespace EmoMount
             if (characterMount && characterMount.ActiveMount)
             {
                 __result.Add(69696969);
+                // __result.Add(69696968);
             }
 
         }
@@ -104,6 +105,19 @@ namespace EmoMount
                     characterMount.ActiveMount.MountFood.Feed(__instance.m_pendingItem, foodValue);
                 }
             }
+            //else if (_actionID == 69696968)
+            //{
+            //    Character owner = __instance.m_characterUI.TargetCharacter;
+            //    CharacterMount characterMount = owner.GetComponent<CharacterMount>();
+
+            //    if (characterMount != null)
+            //    {
+            //        if (characterMount.ActiveMount.CanCarryWeight(__instance.m_pendingItem.Weight))
+            //        {
+            //            characterMount.ActiveMount.AddItemToBag(__instance.m_pendingItem);
+            //        }
+            //    }
+            //}
         }
 
         [HarmonyPatch(nameof(ItemDisplayOptionPanel.GetActionText)), HarmonyPrefix]
@@ -121,6 +135,18 @@ namespace EmoMount
 
                 return false;
             }
+            //else if (_actionID == 69696968)
+            //{
+            //    Character owner = __instance.m_characterUI.TargetCharacter;
+            //    CharacterMount characterMount = owner.GetComponent<CharacterMount>();
+
+            //    if (characterMount != null && characterMount.ActiveMount != null && characterMount.ActiveMount.BagContainer != null)
+            //    {
+            //        __result = $"Move To {characterMount.ActiveMount.MountName} Bag";
+            //    }
+
+            //    return false;
+            //}
 
             return true;
         }

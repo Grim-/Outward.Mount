@@ -145,7 +145,6 @@ namespace EmoMount
 
                 Item Bag = ResourcesPrefabManager.Instance.GenerateItem("5300000");
 
-
                 if (Bag)
                 {
                     if (!string.IsNullOrEmpty(bagUID))
@@ -156,6 +155,7 @@ namespace EmoMount
 
                     basicMountController.SetInventory(Bag);
                 }
+
 
                 MountControllers.Add(_affectedCharacter, basicMountController);
 

@@ -182,7 +182,7 @@ namespace EmoMount
         {
             BagContainer = bag;
         
-            if (BagContainer != null)
+            if (BagContainer != null && BagContainer is Bag)
             {
                 StartCoroutine(SetUpBag(BagContainer));
             }           
@@ -250,8 +250,9 @@ namespace EmoMount
                 EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(6f);
 
+            bag.SaveType = Item.SaveTypes.NonSavable;
 
             Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
             Transform ItemHighlight = bag.gameObject.transform.FindInAllChildren("ItemHighlight");
@@ -272,7 +273,6 @@ namespace EmoMount
             }
 
             RigidbodySuspender rigidbodySuspender = bag.gameObject.GetComponentInChildren<RigidbodySuspender>();
-
             if (rigidbodySuspender)
             {
                 rigidbodySuspender.enabled = false;
@@ -280,10 +280,17 @@ namespace EmoMount
 
 
             SafeFalling safeFalling = bag.gameObject.GetComponentInChildren<SafeFalling>();
-
             if (safeFalling)
             {
                 safeFalling.enabled = false;
+            }
+
+
+            MultipleUsage multipleUsage = bag.gameObject.GetComponentInChildren<MultipleUsage>();
+            if (multipleUsage)
+            {
+                EmoMountMod.Log.LogMessage($"Disabling Auto Save");
+                multipleUsage.Savable = false;
             }
 
             EmoMountMod.Log.LogMessage($"Updating Bag Position");
@@ -482,9 +489,9 @@ namespace EmoMount
 
         public void AddItemToBag(Item item)
         {
-            if (BagContainer != null)
+            if (BagContainer != null && BagContainer is Bag)
             {
-                BagContainer.ParentContainer.AddItem(item);
+                (BagContainer as Bag).Container.AddItem(item);
                 //GameObject.Destroy(item.gameObject);
             }
             else
