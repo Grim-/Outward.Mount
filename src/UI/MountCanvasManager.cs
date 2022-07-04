@@ -77,8 +77,8 @@ namespace EmoMount
             }
 
 
-            StorageContainer = transform.Find("StorageContainer").GetComponent<RectTransform>();
-            StorageContainerGroup = StorageContainer.GetComponent<CanvasGroup>();
+            StorageContainer = transform.Find("UIStorage/Viewport/StorageContainer").GetComponent<RectTransform>();
+            StorageContainerGroup = transform.Find("UIStorage").GetComponent<CanvasGroup>();
 
 
             if (StorageContainer == null)

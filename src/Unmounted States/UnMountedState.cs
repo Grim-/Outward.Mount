@@ -85,8 +85,6 @@ namespace EmoMount
 
         private void MoveToOwner(BasicMountController MountController)
         {
-            StayStill = true;
-
             Vector3 LeashPosition = MountController.CharacterOwner.transform.position + (Vector3)Random.insideUnitCircle * MountController.LeashPointRadius;
 
             if (LeashPosition != Vector3.zero)

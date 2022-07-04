@@ -65,6 +65,10 @@ namespace EmoMount
                 this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
                 EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
             }
+            else
+            {
+                this.ActiveMountInstance = null;
+            }
         }
 
 
@@ -96,7 +100,7 @@ namespace EmoMount
 
         private void LoadActiveMount(Character character, CharacterMount characterMount)
         {
-            if (this.ActiveMountInstance != null)
+            if (!string.IsNullOrEmpty(this.ActiveMountInstance.MountUID))
             {
                 EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
                 character.StartCoroutine(LateLoading(character, characterMount, this.ActiveMountInstance));

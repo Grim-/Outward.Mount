@@ -370,6 +370,7 @@
     <Compile Include="Mounted States\BaseMountedState.cs" />
     <Compile Include="FSM\BaseState.cs" />
     <Compile Include="Mount\MountSpecies.cs" />
+    <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="UI\MountSelectionElement.cs" />
     <Compile Include="Unmounted States\BaseUnMountedState.cs" />
@@ -377,7 +378,6 @@
     <Compile Include="Mount\CharacterMount.cs" />
     <Compile Include="EmoMountMod.cs" />
     <Compile Include="Mount\MountFood.cs" />
-    <Compile Include="Interaction Components\FeedMountInteraction.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
     <Compile Include="Unmounted States\NYI_UnMountedFetchItemState.cs" />
     <Compile Include="Unmounted States\UnMountedState.cs" />

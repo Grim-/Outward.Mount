@@ -89,7 +89,7 @@ namespace EmoMount
                 return;
             }
 
-            MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
+           // MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
 
             float finalFoodValue = foodAmount;
 
@@ -142,6 +142,11 @@ namespace EmoMount
 
         public void OnHungerTickHandler()
         {
+            if (!EmoMountMod.EnableFoodNeed.Value)
+            {
+                return;
+            }
+
             if (MountController.IsMounted)
             {
                 float halfAgain = FoodTakenPerTick * 0.5f;

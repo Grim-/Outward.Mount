@@ -5,6 +5,7 @@ using HarmonyLib;
 using NodeCanvas.DialogueTrees;
 using SideLoader;
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,7 @@ namespace EmoMount
             -26113,
             -26114,
             -26115,
+            -26116
         };
 
 
@@ -72,6 +74,9 @@ namespace EmoMount
         public static ConfigEntry<float> WorldDropChanceMinimum;
         public static ConfigEntry<float> WorldDropChanceMaximum;
 
+
+        public static ConfigEntry<bool> EnableFoodNeed;
+        public static ConfigEntry<bool> EnableWeightLimit;
         // Awake is called when your plugin is created. Use this to set up your mod.
         internal void Awake()
         {
@@ -87,6 +92,10 @@ namespace EmoMount
             WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "The number you need to get");
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
+
+            EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
+            EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
+
             SetupNPCs();
             new Harmony(GUID).PatchAll();
         }
@@ -157,9 +166,9 @@ namespace EmoMount
                 SpawnSceneBuildName = "Berg",
                 SpawnPosition = new(1191.945f, -13.7222f, 1383.581f),
                 SpawnRotation = new(0, 72f, 0),
-                HelmetID = 3000115,
-                ChestID = 3000112,
-                BootsID = 3000118,
+                HelmetID = 3200031,
+                ChestID = 3100230,
+                BootsID = 3100232,
                 WeaponID = 2130305,
                 StartingPose = Character.SpellCastType.IdleAlternate,
             };
@@ -167,7 +176,6 @@ namespace EmoMount
 
             // Create and apply the template
             var bergTemplate = BergNPC.CreateAndApplyTemplate();
-
             // Add a listener to set up our dialogue
             BergNPC.OnSetupDialogueGraph += TestCharacter_OnSetupDialogueGraph;
 
@@ -279,6 +287,10 @@ namespace EmoMount
             answer2.statement = new("Here's a list of what you have in my stables.");
             answer2.SetActorName(ourActor.name);
 
+            var answer3 = graph.AddNode<StatementNodeExt>();
+            answer3.statement = new("Heres watcha do...");
+            answer3.SetActorName(ourActor.name);
+
             DismissMountActionNode dismissMountActionNode = new DismissMountActionNode();
             DisplayMountStorageListNode displayStorageListNode = new DisplayMountStorageListNode();
             LearnMountSkillsNode learnMountSkillsNode = new LearnMountSkillsNode();
@@ -291,6 +303,7 @@ namespace EmoMount
             graph.allNodes.Add(multiChoice1);
             graph.allNodes.Add(answer1);
             graph.allNodes.Add(answer2);
+            graph.allNodes.Add(answer3);
             graph.allNodes.Add(dismissMountActionNode);
             graph.allNodes.Add(displayStorageListNode);
             graph.allNodes.Add(learnMountSkillsNode);
@@ -306,7 +319,9 @@ namespace EmoMount
             graph.ConnectNodes(answer2, displayStorageListNode);
             graph.ConnectNodes(answer2, InitialStatement);
 
-            graph.ConnectNodes(multiChoice1, learnMountSkillsNode, 2);
+            graph.ConnectNodes(multiChoice1, answer3, 2);
+            graph.ConnectNodes(answer3, learnMountSkillsNode);
+            graph.ConnectNodes(answer3, InitialStatement);
         }
 
         private void InitializeCanvas()

@@ -9,8 +9,8 @@ namespace EmoMount.Custom_SL_Effect
 {
     public class SL_SummonActiveMount : SL_Effect, ICustomModel
     {
-        public Type SLTemplateModel => typeof(SL_SpawnMount);
-        public Type GameModel => typeof(SLEx_SpawnMount);
+        public Type SLTemplateModel => typeof(SL_SummonActiveMount);
+        public Type GameModel => typeof(SummonActiveMount);
 
         public override void ApplyToComponent<T>(T component)
         {
@@ -25,16 +25,27 @@ namespace EmoMount.Custom_SL_Effect
 
     public class SummonActiveMount : Effect, ICustomModel
     {
-        public Type SLTemplateModel => typeof(SL_SpawnMount);
-        public Type GameModel => typeof(SLEx_SpawnMount);
+        public Type SLTemplateModel => typeof(SL_SummonActiveMount);
+        public Type GameModel => typeof(SummonActiveMount);
 
         public string SpeciesName;
 
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
-            if (EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
+            CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
+
+
+            if (characterMount != null && characterMount.HasActiveMount)
             {
-                EmoMountMod.MountManager.GetActiveMount(_affectedCharacter).Teleport(_affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
+                if (characterMount.ActiveMountDisabled)
+                {
+                    characterMount.EnableActiveMount();
+                }
+                else
+                {
+                    characterMount.ActiveMount.Teleport(_affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
+                }
+              
             }
             else
             {

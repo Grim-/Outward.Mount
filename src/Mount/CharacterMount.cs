@@ -28,6 +28,9 @@ namespace EmoMount
             }
         }
 
+
+        public bool ActiveMountDisabled { get; private set; }
+
         public Character Character => GetComponent<Character>();
 
         public void SetActiveMount(BasicMountController newMount)
@@ -89,6 +92,26 @@ namespace EmoMount
 
             return null;
         }
+
+        public void EnableActiveMount()
+        {
+            if (HasActiveMount)
+            {
+                this.ActiveMount.gameObject.SetActive(true);
+                this.ActiveMount.Teleport(Character.transform.position, Character.transform.eulerAngles);
+                ActiveMountDisabled = false;
+            }
+        }
+
+        public void DisableActiveMount()
+        {
+            if (HasActiveMount)
+            {
+                this.ActiveMount.gameObject.SetActive(false);
+                ActiveMountDisabled = true;
+            }
+        }
+
 
         public MountInstanceData GetStoredMountData(string MountUID)
         {

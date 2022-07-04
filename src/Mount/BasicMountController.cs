@@ -250,7 +250,7 @@ namespace EmoMount
                 EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
             }
 
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(1f);
 
 
             Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
@@ -276,7 +276,14 @@ namespace EmoMount
             if (rigidbodySuspender)
             {
                 rigidbodySuspender.enabled = false;
-                GameObject.Destroy(rigidbodySuspender);
+            }
+
+
+            SafeFalling safeFalling = bag.gameObject.GetComponentInChildren<SafeFalling>();
+
+            if (safeFalling)
+            {
+                safeFalling.enabled = false;
             }
 
             EmoMountMod.Log.LogMessage($"Updating Bag Position");
@@ -380,13 +387,13 @@ namespace EmoMount
 
         public bool CanMount(Character character)
         {
-            if (MountFood.FoodAsNormalizedPercent < 0.3f)
+            if (MountFood.FoodAsNormalizedPercent < 0.3f && EmoMountMod.EnableFoodNeed.Value)
             {
                 DisplayNotification($"{MountName} is too hungry!");
                 return false;
             }
 
-            if (!CanCarryWeight(character.Inventory.TotalWeight))
+            if (!CanCarryWeight(character.Inventory.TotalWeight) && EmoMountMod.EnableWeightLimit.Value)
             {
                 DisplayNotification($"You are carrying too much weight to mount {MountName}");
                 return false;
@@ -405,7 +412,7 @@ namespace EmoMount
         /// <returns></returns>
         public bool CanCarryWeight(float weightToCarry)
         {
-            return this.MountTotalWeight + weightToCarry < MaxCarryWeight;
+            return EmoMountMod.EnableWeightLimit.Value ?  this.MountTotalWeight + weightToCarry < MaxCarryWeight : true;
         }
 
         public void DismountCharacter(Character _affectedCharacter)
