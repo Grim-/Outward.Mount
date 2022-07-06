@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SideLoader;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace EmoMount
 {
@@ -45,34 +47,64 @@ namespace EmoMount
         /// <param name="MountToStore"></param>
         public void StoreMount(BasicMountController MountToStore)
         {
+
+            EmoMountMod.Log.LogMessage($"Storing Mount {MountToStore.MountName}");
             if (!HasStoredMount(MountToStore.MountUID))
             {
                 MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
-                // EmoMountMod.MountManager.SerializeMountBagContents(mountInstanceData, MountToStore);
                 DropAllStoredItems(MountToStore);
                 StoredMounts.Add(mountInstanceData);
                 MountToStore.DestroyBagContainer();
                 EmoMountMod.MountManager.DestroyActiveMount(Character);
                 SetActiveMount(null);
             }
+            else
+            {
+                EmoMountMod.Log.LogMessage($"A Mount by this name is already stored {MountToStore.MountName}, updating");
+
+                MountInstanceData StoredData = StoredMounts.Find(x => x.MountUID == MountToStore.MountUID);
+
+
+                if (StoredData != null)
+                {
+
+                    MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
+                    DropAllStoredItems(MountToStore);
+                    StoredData = mountInstanceData;
+
+                    MountToStore.DestroyBagContainer();
+                    EmoMountMod.MountManager.DestroyActiveMount(Character);
+                    SetActiveMount(null);
+                }
+                else
+                {
+                    EmoMountMod.Log.LogMessage($"Mount Stored Data is null?");
+                }
+
+            }
         }
 
 
         private void DropAllStoredItems(BasicMountController MountToStore)
         {      
-            if (MountToStore.BagContainer != null && MountToStore.BagContainer is Bag)
+            if (MountToStore.BagContainer != null)
             {
-                Bag ContainerBag = MountToStore.BagContainer as Bag;
-
-
-                foreach (var item in ContainerBag.Container.GetContainedItems().ToList())
+                if (MountToStore.BagContainer is Bag)
                 {
-                    EmoMountMod.Log.LogMessage($"Dropping {item.Name} from Mount Bag {ContainerBag.Container.UID}");
-                    
-                    item.ChangeParent(null, MountToStore.CharacterOwner.transform.position + new Vector3(0, 2f, 0));
-                    ContainerBag.Container.RemoveItem(item);
-                    //(MountToStore.BagContainer as Bag).m_container.RemoveItem(item);
+                    Bag ContainerBag = MountToStore.BagContainer as Bag;
+                    EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer Contained Item Count {ContainerBag.Container.GetContainedItems().Count}");
+                    MountToStore.CharacterOwner.Inventory.TakeAllContent(ContainerBag.Container, true);
+                    MountToStore.DisplayNotification("Mount Inventory contents added to your Inventory.");
                 }
+                else
+                {
+                    EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer isnt a bag.");
+                }
+
+            }
+            else
+            {
+                EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer is null.");
             }
         }
 
@@ -88,7 +120,6 @@ namespace EmoMount
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
                 BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
                 basicMountController.Teleport(Character.transform.position, mountInstanceData.Rotation);
-                //EmoMountMod.MountManager.DeSerializeMountBagContents(mountInstanceData, basicMountController);
                 StoredMounts.Remove(mountInstanceData);
                 return basicMountController;
             }

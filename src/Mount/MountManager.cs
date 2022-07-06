@@ -49,7 +49,7 @@ namespace EmoMount
             foreach (var item in filePaths)
             {
                 EmoMountMod.Log.LogMessage($"MountManager MountSpecies Reading {item} data.");
-                MountSpecies mountSpecies = Deserialize<MountSpecies>(item);
+                MountSpecies mountSpecies = DeserializeFromXML<MountSpecies>(item);
 
                 if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
                 {
@@ -82,7 +82,7 @@ namespace EmoMount
             writer.Close();
         }
 
-        public static T Deserialize<T>(string path)
+        public static T DeserializeFromXML<T>(string path)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             StreamReader reader = new StreamReader(path);
@@ -142,6 +142,7 @@ namespace EmoMount
                 {
                     characterMount.SetActiveMount(basicMountController);
                 }
+
 
                 Item Bag = ResourcesPrefabManager.Instance.GenerateItem("5300000");
 
@@ -224,6 +225,7 @@ namespace EmoMount
             mountInstanceData.Rotation = characterMount.transform.eulerAngles;
             return mountInstanceData;
         }
+
         public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
         {
             EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
@@ -269,7 +271,7 @@ namespace EmoMount
 
             return false;
         }
-        public BasicMountController GetActiveMount(Character _affectedCharacter)
+        public BasicMountController GetActiveMountForCharacter(Character _affectedCharacter)
         {
             if (MountControllers.ContainsKey(_affectedCharacter))
             {
@@ -278,7 +280,6 @@ namespace EmoMount
 
             return null;
         }
-
         public void DestroyAllMountInstances()
         {
             EmoMountMod.Log.LogMessage($"Destroying All Mount Instances...");

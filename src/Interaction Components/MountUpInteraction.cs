@@ -19,7 +19,6 @@ namespace EmoMount
                 {
                     MountController.MountCharacter(_character);
                 }
-
             }
         }
 

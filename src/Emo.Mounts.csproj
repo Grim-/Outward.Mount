@@ -365,7 +365,7 @@
     <Compile Include="Mount\MountInstanceData.cs" />
     <Compile Include="Node Canvas Nodes\DismissMountActionNode.cs" />
     <Compile Include="Node Canvas Nodes\DisplayMountStorageListNode.cs" />
-    <Compile Include="Interaction Components\DismissMountInteraction.cs" />
+    <Compile Include="Interaction Components\StoreMountInteraction.cs" />
     <Compile Include="Interaction Components\PetMountInteraction.cs" />
     <Compile Include="Mounted States\BaseMountedState.cs" />
     <Compile Include="FSM\BaseState.cs" />

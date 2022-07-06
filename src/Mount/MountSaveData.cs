@@ -111,12 +111,13 @@ namespace EmoMount
 
         private IEnumerator LateLoading(Character character, CharacterMount characterMount, MountInstanceData mountInstanceData)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(EmoMountMod.SCENE_LOAD_DELAY);
+
             BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, mountInstanceData);
 
             if (basicMountController == null)
             {
-                EmoMountMod.Log.LogMessage("Late Loading Basic Mount Controller was null");
+                EmoMountMod.Log.LogMessage("Late Loading failed to create a MountController");
                 yield break;
             }
             EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);

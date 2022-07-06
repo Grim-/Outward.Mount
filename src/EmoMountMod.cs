@@ -21,7 +21,7 @@ namespace EmoMount
     {
         public const string GUID = "emo.mountmod";
         public const string NAME = "EmoMountMod";
-        public const string VERSION = "1.0.4";
+        public const string VERSION = "1.0.3";
 
         public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
@@ -50,7 +50,8 @@ namespace EmoMount
             -26118
         };
 
-
+        public static float BAG_LOAD_DELAY = 10f;
+        public static float SCENE_LOAD_DELAY = 10f;
         public static bool Debug = false;
 
         internal static ManualLogSource Log;
@@ -102,6 +103,33 @@ namespace EmoMount
             new Harmony(GUID).PatchAll();
         }
 
+
+
+        private void InitializeCanvas()
+        {
+            Log.LogMessage("EmoMountMod Initalizing Canvas..");
+            GameObject CanvasPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "MountCanvas");
+
+            if (CanvasPrefab != null)
+            {
+                MainCanvas = GameObject.Instantiate(CanvasPrefab).GetComponent<Canvas>();
+                MainCanvasManager = MainCanvas.gameObject.AddComponent<MountCanvasManager>();
+                DontDestroyOnLoad(MainCanvas);
+                Log.LogMessage("EmoMountMod Canvas Initialized..");
+            }
+            else
+            {
+                Log.LogMessage("EmoMountMod CanvasPrefab was null");
+            }
+
+        }
+
+        private void InitKeybinds()
+        {
+            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings);
+        }
         private void SceneManager_sceneLoaded(Scene Scene, LoadSceneMode LoadMode)
         {
             if (Scene.name == "MainMenu_Empty")
@@ -110,21 +138,8 @@ namespace EmoMount
             }
         }
 
-
-        private void InitKeybinds()
-        {
-            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings);
-        }
-
-        public static int GetRandomWhistleID()
-        {
-            return EmoMountMod.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.MountWhistleIDs.Length)];
-        }
         private void SetupNPCs()
         {
-
             SetupLevantNPC();
             SetupBergNPC();
             SetupCierzoNPC();
@@ -141,10 +156,10 @@ namespace EmoMount
                 SpawnSceneBuildName = "Levant",             
                 SpawnPosition = new(-39.7222f, 0.2239f, 120.0354f),
                 SpawnRotation = new(0, 218f, 0),
-                HelmetID = 3000115,
-                ChestID = 3000112,
-                BootsID = 3000118,
-                WeaponID = 2130305,
+                HelmetID = 3100091,
+                ChestID = 3100090,
+                BootsID = 3100092,
+                WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
             };
 
@@ -168,10 +183,10 @@ namespace EmoMount
                 SpawnSceneBuildName = "Berg",
                 SpawnPosition = new(1191.945f, -13.7222f, 1383.581f),
                 SpawnRotation = new(0, 72f, 0),
-                HelmetID = 3200031,
-                ChestID = 3100230,
-                BootsID = 3100232,
-                WeaponID = 2130305,
+                HelmetID = 3100091,
+                ChestID = 3100090,
+                BootsID = 3100092,
+                WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
             };
 
@@ -194,10 +209,10 @@ namespace EmoMount
                 SpawnSceneBuildName = "CierzoNewTerrain",      
                 SpawnPosition = new(1421.29f, 5.5604f, 1686.195f),
                 SpawnRotation = new(0, 270f, 0),
-                HelmetID = 3000115,
-                ChestID = 3000112,
-                BootsID = 3000118,
-                WeaponID = 2130305,
+                HelmetID = 3100091,
+                ChestID = 3100090,
+                BootsID = 3100092,
+                WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
             };
 
@@ -222,10 +237,10 @@ namespace EmoMount
                 SpawnSceneBuildName = "Monsoon",
                 SpawnPosition = new(82.0109f, -5.1698f, 140.1947f),
                 SpawnRotation = new(0, 254.089f, 0),
-                HelmetID = 3000115,
-                ChestID = 3000112,
-                BootsID = 3000118,
-                WeaponID = 2130305,
+                HelmetID = 3100091,
+                ChestID = 3100090,
+                BootsID = 3100092,
+                WeaponID = 2100030,
                 CharVisualData =
                 {
                     Gender =  Character.Gender.Female
@@ -325,24 +340,9 @@ namespace EmoMount
             graph.ConnectNodes(answer3, learnMountSkillsNode);
             graph.ConnectNodes(answer3, InitialStatement);
         }
-
-        private void InitializeCanvas()
+        public static int GetRandomWhistleID()
         {
-            Log.LogMessage("EmoMountMod Initalizing Canvas..");
-            GameObject CanvasPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "MountCanvas");
-
-            if (CanvasPrefab != null)
-            {
-                MainCanvas = GameObject.Instantiate(CanvasPrefab).GetComponent<Canvas>();
-                MainCanvasManager = MainCanvas.gameObject.AddComponent<MountCanvasManager>();
-                DontDestroyOnLoad(MainCanvas);
-                Log.LogMessage("EmoMountMod Canvas Initialized..");
-            }
-            else
-            {
-                Log.LogMessage("EmoMountMod CanvasPrefab was null");
-            }
-
+            return EmoMountMod.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.MountWhistleIDs.Length)];
         }
     }
 }

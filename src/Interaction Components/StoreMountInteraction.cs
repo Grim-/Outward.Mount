@@ -1,6 +1,6 @@
 ﻿namespace EmoMount
 {
-    public class DismissMountInteraction : InteractionBase
+    public class StoreMountInteraction : InteractionBase
     {
         private BasicMountController MountController => GetComponentInParent<BasicMountController>();
         public override string DefaultHoldText => MountController != null ? $"Dismiss {MountController.MountName}" : "Dismiss Mount";
