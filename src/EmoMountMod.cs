@@ -314,7 +314,9 @@ namespace EmoMount
 
             // ===== finalize nodes =====
             graph.allNodes.Clear();
-            // add the nodes we want to use
+
+
+            // add ALLL the nodes we want to use, remember this is a literal graph, the nodes must be on the graph to draw connections between them
             graph.allNodes.Add(InitialStatement);
             graph.primeNode = InitialStatement;
             graph.allNodes.Add(multiChoice1);
@@ -324,15 +326,18 @@ namespace EmoMount
             graph.allNodes.Add(dismissMountActionNode);
             graph.allNodes.Add(displayStorageListNode);
             graph.allNodes.Add(learnMountSkillsNode);
+
+
+
             // setup our connections
-            graph.ConnectNodes(InitialStatement, multiChoice1);    // prime node triggers the multiple choice
+            graph.ConnectNodes(InitialStatement, multiChoice1);    // Connect Initial node to MultiChoice node
 
 
-            graph.ConnectNodes(multiChoice1, answer1, 0);       // choice1: answer1
-            graph.ConnectNodes(answer1, dismissMountActionNode);
-            graph.ConnectNodes(answer1, InitialStatement);         // - choice1 goes back to root node
+            graph.ConnectNodes(multiChoice1, answer1, 0);        //connect MultiChoice port 0 to answer 1
+            graph.ConnectNodes(answer1, dismissMountActionNode); //connect answer 1 to dismiss mount node
+            graph.ConnectNodes(answer1, InitialStatement);         // go back to start
 
-            graph.ConnectNodes(multiChoice1, answer2, 1);      
+            graph.ConnectNodes(multiChoice1, answer2, 1);      ///repeat for answer 2 and its actions
             graph.ConnectNodes(answer2, displayStorageListNode);
             graph.ConnectNodes(answer2, InitialStatement);
 
