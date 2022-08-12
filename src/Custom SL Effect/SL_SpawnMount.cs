@@ -45,7 +45,7 @@ namespace EmoMount
 
                 if (mountSpecies != null)
                 {
-                   BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFor(_affectedCharacter, mountSpecies, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
+                   BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, mountSpecies, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
                    basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
                 }
                 else

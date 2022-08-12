@@ -126,9 +126,9 @@ namespace EmoMount
 
         private void InitKeybinds()
         {
-            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings);
-            CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings);
+            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings, ControlType.Both);
+            CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings, ControlType.Both);
+            CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings, ControlType.Both);
         }
         private void SceneManager_sceneLoaded(Scene Scene, LoadSceneMode LoadMode)
         {

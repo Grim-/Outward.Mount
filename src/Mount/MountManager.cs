@@ -105,7 +105,7 @@ namespace EmoMount
         /// <param name="Position"></param>
         /// <param name="Rotation"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFor(Character _affectedCharacter, MountSpecies MountSpecies, Vector3 Position, Vector3 Rotation, string bagUID = "")
+        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, MountSpecies MountSpecies, Vector3 Position, Vector3 Rotation, string bagUID = "")
         {
             GameObject Prefab = OutwardHelpers.GetFromAssetBundle<GameObject>(MountSpecies.SLPackName, MountSpecies.AssetBundleName, MountSpecies.PrefabName);
             GameObject MountInstance = null;
@@ -183,7 +183,7 @@ namespace EmoMount
                 return null;
             }
 
-            BasicMountController basicMountController = CreateMountFor(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation, mountInstanceData.BagUID);
+            BasicMountController basicMountController = CreateMountFromSpecies(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation, mountInstanceData.BagUID);
 
 
             if (basicMountController == null)
@@ -310,6 +310,8 @@ namespace EmoMount
                 }
             }
         }
+
+
         public void DestroyMount(Character character, BasicMountController basicMountController)
         {
             EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");

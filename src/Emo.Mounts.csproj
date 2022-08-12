@@ -379,10 +379,7 @@
     <Compile Include="EmoMountMod.cs" />
     <Compile Include="Mount\MountFood.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
-    <Compile Include="Unmounted States\NYI_UnMountedFetchItemState.cs" />
     <Compile Include="Unmounted States\UnMountedState.cs" />
-    <Compile Include="Unmounted States\NYI_UnMountedMoveToState.cs" />
-    <Compile Include="Unmounted States\NYI_UnMountedStayState.cs" />
     <Compile Include="Mount\MountManager.cs" />
     <Compile Include="Mount\MountSaveData.cs" />
     <Compile Include="UI\MountCanvasManager.cs" />
