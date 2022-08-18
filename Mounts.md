@@ -23,7 +23,7 @@
 | -26116  | Golem (Cosmic)  |
 | -26117  | DragonBoar (Chameleon)  |
 | -26118  | Raptor (Chameleon)  |
-| -26119  | Raptor (Chameleon)  |
+| -26119  | Manticore (Base)  |
 
 ### Skills
 | Item ID | Skill Name |
