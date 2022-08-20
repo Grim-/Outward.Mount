@@ -24,6 +24,8 @@
 | -26117  | DragonBoar (Chameleon)  |
 | -26118  | Raptor (Chameleon)  |
 | -26119  | Manticore (Base)  |
+| -26120  | PearlBird (Base)  |
+
 
 ### Skills
 | Item ID | Skill Name |
