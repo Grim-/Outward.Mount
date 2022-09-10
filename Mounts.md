@@ -24,8 +24,8 @@
 | -26117  | DragonBoar (Chameleon)  |
 | -26118  | Raptor (Chameleon)  |
 | -26119  | Manticore (Base)  |
-| -26120  | PearlBird (Base)  |
-
+| -26120  | Alpha Coral Horn (Base)  |
+| -26121  | Beast Golem (Base)  |
 
 ### Skills
 | Item ID | Skill Name |
