@@ -26,6 +26,8 @@
 | -26119  | Manticore (Base)  |
 | -26120  | Alpha Coral Horn (Base)  |
 | -26121  | Beast Golem (Base)  |
+| -26122  | -------------  |
+| -26123  | Alpha Tuanosaur (Base) |
 
 ### Skills
 | Item ID | Skill Name |
