@@ -21,7 +21,7 @@ namespace EmoMount
     {
         public const string GUID = "emo.mountmod";
         public const string NAME = "EmoMountMod";
-        public const string VERSION = "1.0.3";
+        public const string VERSION = "1.0.4";
 
         public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";

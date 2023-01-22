@@ -11,7 +11,7 @@
 		<y>0</y>
 		<z>-4</z>
 	</CameraOffset>
-	<MoveSpeed>9</MoveSpeed>
+	<MoveSpeed>12</MoveSpeed>
 	<RotateSpeed>90</RotateSpeed>
         <Acceleration>5</Acceleration>
 	<MaximumCarryWeight>70</MaximumCarryWeight>
