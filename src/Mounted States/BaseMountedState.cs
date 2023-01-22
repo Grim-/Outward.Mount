@@ -57,7 +57,7 @@ namespace EmoMount
 
             float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
 
-            if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
+            if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold && EmoMountMod.EnableFoodNeed.Value)
             {
                 StartPosition = MountController.transform.position;
                 MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);

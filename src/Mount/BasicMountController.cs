@@ -79,11 +79,22 @@ namespace EmoMount
 
         //Mount Movement Settings
         public float MoveSpeed { get; private set; }
-        public float ActualMoveSpeed => WeightAsNormalizedPercent > WeightEncumberenceLimit ? MoveSpeed * EncumberenceSpeedModifier : MoveSpeed;
+        public float ActualMoveSpeed
+        {
+            get
+            {
+                if (!EmoMountMod.EnableWeightLimit.Value)
+                {
+                    return MoveSpeed;
+                }
+
+                return  WeightAsNormalizedPercent > WeightEncumberenceLimit ? MoveSpeed * EncumberenceSpeedModifier : MoveSpeed;
+            }
+        }
         public float RotateSpeed { get; private set; }
-        public float LeashDistance = 6f;
+        public float LeashDistance => EmoMountMod.LeashDistance.Value;
         //A Point is randomly chosen in LeashPointRadius around player to leash to.
-        public float LeashPointRadius = 2.3f;
+        public float LeashPointRadius => EmoMountMod.LeashRadius.Value;
         public float TargetStopDistance = 1.4f;
         public float MoveToRayCastDistance = 20f;
         public LayerMask MoveToLayerMask => LayerMask.GetMask("LargeTerrainEnvironment", "WorldItems");
@@ -100,8 +111,8 @@ namespace EmoMount
         public Vector3 MountedCameraOffset;
 
 
-        public float FoodLostPerMountedDistance = 2f;
-        public float MountedDistanceFoodThreshold = 40f;
+        public float FoodLostPerMountedDistance => EmoMountMod.FoodLostTravelling.Value;
+        public float MountedDistanceFoodThreshold => EmoMountMod.TravelDistanceThreshold.Value;
         private Vector3 OriginalPlayerCameraOffset;
 
 

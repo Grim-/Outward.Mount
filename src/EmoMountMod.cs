@@ -77,9 +77,20 @@ namespace EmoMount
         public static ConfigEntry<float> WorldDropChanceMinimum;
         public static ConfigEntry<float> WorldDropChanceMaximum;
 
+        public static ConfigEntry<float> LeashDistance;
+        public static ConfigEntry<float> LeashRadius;
+
+        public static ConfigEntry<float> FoodLostTravelling;
+        public static ConfigEntry<float> TravelDistanceThreshold;
+
+        public static ConfigEntry<float> EncumberenceSpeedModifier;
 
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
+
+
+        public static ConfigEntry<float> WeightLimitOverride;
+
         // Awake is called when your plugin is created. Use this to set up your mod.
         internal void Awake()
         {
@@ -91,6 +102,14 @@ namespace EmoMount
             SL.OnPacksLoaded += InitializeCanvas;
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
+            WeightLimitOverride = Config.Bind<float>(NAME, "Weight Limit Override", 0, "If this value is anything other than 0 then all mounts will use the specified value as their weight limit instead of the values from the MountSpecies XML.");
+            EncumberenceSpeedModifier = Config.Bind<float>(NAME, "Encumberence Speed Modifier Override", 0, "If this value is anything other than 0 then all mounts will use the specifiec value as their encumberence speed modifier (0.5 is 50% speed penalty) instead of the values from the MountSpecies XML.");
+
+            LeashDistance = Config.Bind<float>(NAME, "Leash Distance", 6f, "The maximum distance allowed between you and your mount before it will attempt to move to you.");
+            LeashRadius = Config.Bind<float>(NAME, "Leash Radius", 2.3f, "The mount will attempt to move to a random point in the specified radius around you.");
+
+            TravelDistanceThreshold = Config.Bind<float>(NAME, "Travel Distance Threshold", 40f, "Everytime your mount covers this distance, food is taken.");
+            FoodLostTravelling = Config.Bind<float>(NAME, "Food lost traveling", 2f, "The amount of food taken per 'travel' distance.");
 
             WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "You need to roll this number or less in order for a whistle to drop.");
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
@@ -258,19 +277,17 @@ namespace EmoMount
             // cierzotemplate this func to determine if our character should actually spawn
             monsoontemplate.ShouldSpawn = () => true;
         }
-
         private void TestCharacter_OnSetupDialogueGraph(DialogueTree graph, Character character)
         {
             BuildDialouge(graph, character);
         }
-
         private void BuildDialouge(DialogueTree graph, Character character)
         {
             var ourActor = graph.actorParameters[0];
 
             // Add our root statement
             var InitialStatement = graph.AddNode<StatementNodeExt>();
-            InitialStatement.statement = new($"Welcome, can I store a mount for you perphaps in our stables?");
+            InitialStatement.statement = new($"Welcome, can I store a mount for you in our stables?");
             InitialStatement.SetActorName(ourActor.name);
 
             // Add a multiple choice

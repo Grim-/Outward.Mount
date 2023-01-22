@@ -131,8 +131,8 @@ namespace EmoMount
                 basicMountController.SetHatedFoods(MountSpecies.HatedFoods);
                 basicMountController.MountFood.SetMaximumFood(MountSpecies.MaximumFood);
 
-                basicMountController.MaxCarryWeight = MountSpecies.MaximumCarryWeight;
-                basicMountController.EncumberenceSpeedModifier = MountSpecies.EncumberenceSpeedModifier;
+                basicMountController.MaxCarryWeight = EmoMountMod.WeightLimitOverride.Value > 0 ? EmoMountMod.WeightLimitOverride.Value : MountSpecies.MaximumCarryWeight;
+                basicMountController.EncumberenceSpeedModifier = EmoMountMod.EncumberenceSpeedModifier.Value > 0 ? MountSpecies.EncumberenceSpeedModifier : 0.5f;
                 basicMountController.MountFood.FoodTakenPerTick = MountSpecies.FoodTakenPerTick;
                 basicMountController.MountFood.HungerTickTime = MountSpecies.HungerTickTime;
 
@@ -205,7 +205,6 @@ namespace EmoMount
 
             return basicMountController;
         }
-
         /// <summary>
         /// Returns the SaveData for the BasicMountController
         /// </summary>
@@ -225,7 +224,6 @@ namespace EmoMount
             mountInstanceData.Rotation = characterMount.transform.eulerAngles;
             return mountInstanceData;
         }
-
         public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
         {
             EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
@@ -251,7 +249,6 @@ namespace EmoMount
                 }
             }
         }
-
         public void DeSerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
         {
             EmoMountMod.Log.LogMessage($"Loading Mount Bag Contents For {MountInstanceData.MountName}");
@@ -310,8 +307,6 @@ namespace EmoMount
                 }
             }
         }
-
-
         public void DestroyMount(Character character, BasicMountController basicMountController)
         {
             EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");

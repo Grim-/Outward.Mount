@@ -127,6 +127,12 @@ namespace EmoMount
 
         public void Remove(float foodAmount)
         {
+            if (!EmoMountMod.EnableFoodNeed.Value)
+            {
+                return;
+            }
+           
+
             CurrentFood -= foodAmount;
 
             if (CurrentFood <= 0)
