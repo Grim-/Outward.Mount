@@ -1,4 +1,4 @@
-<MountSpecies>
+<MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<SpeciesName>SandShark</SpeciesName>
 	<SLPackName>mount</SLPackName>
 	<AssetBundleName>mount_original</AssetBundleName>
@@ -11,9 +11,9 @@
 		<y>0</y>
 		<z>-4</z>
 	</CameraOffset>
-	<MoveSpeed>12</MoveSpeed>
-	<RotateSpeed>90</RotateSpeed>
-        <Acceleration>5</Acceleration>
+	<MoveSpeed>18</MoveSpeed>
+	<RotateSpeed>240</RotateSpeed>
+	<Acceleration>4</Acceleration>
 	<MaximumCarryWeight>70</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
 	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
@@ -26,9 +26,24 @@
 			<FoodValue>5</FoodValue>
 		</MountFoodData>
 	</FavouriteFoods>
-  <HatedFoods>
-  </HatedFoods>
+	<HatedFoods>
+	</HatedFoods>
 	<MaximumFood>200</MaximumFood>
 	<FoodTakenPerTick>10</FoodTakenPerTick>
 	<HungerTickTime>200</HungerTickTime>
+	<MountComponents>
+			<MountCompProp CompName="DetectionComp" xsi:type="DetectionCompProp">
+					<DetectionRadius>50</DetectionRadius>
+					<BaseIntensity>2</BaseIntensity>
+					<MinIntensity>0</MinIntensity>
+					<MaxIntensity>25</MaxIntensity>
+					<DetectionInterval>0.5</DetectionInterval>
+			</MountCompProp>
+			<MountCompProp CompName="AgeComp" xsi:type="AgeCompProp">
+					<AgeModifier>2</AgeModifier>
+			</MountCompProp>
+			<MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
+					<SprintModifier>3</SprintModifier>
+			</MountCompProp>
+	</MountComponents>
 </MountSpecies>

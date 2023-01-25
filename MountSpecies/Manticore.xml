@@ -14,7 +14,7 @@
 	<MoveSpeed>12</MoveSpeed>
 	<RotateSpeed>90</RotateSpeed>
         <Acceleration>5</Acceleration>
-	<MaximumCarryWeight>70</MaximumCarryWeight>
+	<MaximumCarryWeight>120</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
 	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
 	<FoodTags>

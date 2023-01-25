@@ -48,7 +48,7 @@
           <Delay>0</Delay>
           <SyncType>OwnerSync</SyncType>
           <OverrideCategory>None</OverrideCategory>
-	  <SpeciesName>PearlBird</SpeciesName>
+	        <SpeciesName>PearlBird</SpeciesName>
         </SL_Effect>
       </Effects>
       <EffectConditions />

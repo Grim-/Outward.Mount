@@ -14,7 +14,7 @@
 	</CameraOffset>
 	<MoveSpeed>12</MoveSpeed>
 	<RotateSpeed>90</RotateSpeed>
-        <Acceleration>5</Acceleration>
+	<Acceleration>5</Acceleration>
 	<MaximumCarryWeight>70</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
 	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
@@ -27,8 +27,8 @@
 			<FoodValue>5</FoodValue>
 		</MountFoodData>
 	</FavouriteFoods>
-  <HatedFoods>
-  </HatedFoods>
+	<HatedFoods>
+	</HatedFoods>
 	<MaximumFood>200</MaximumFood>
 	<FoodTakenPerTick>10</FoodTakenPerTick>
 	<HungerTickTime>200</HungerTickTime>
