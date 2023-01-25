@@ -27,6 +27,8 @@
 
 
 ### Base Game Whistle Items
+| Item ID | Whistle Name |
+| --------| ------------- |
 | -26300  | PearlBird  |
 | -26301  | Alpha Coralhorn  |
 | -26302  | Manticore  |
