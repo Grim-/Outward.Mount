@@ -23,11 +23,17 @@
 | -26116  | Golem (Cosmic)  |
 | -26117  | DragonBoar (Chameleon)  |
 | -26118  | Raptor (Chameleon)  |
-| -26119  | Manticore (Base)  |
-| -26120  | Alpha Coral Horn (Base)  |
-| -26121  | Beast Golem (Base)  |
-| -26122  | -------------  |
-| -26123  | Alpha Tuanosaur (Base) |
+| -26119  | Dragon Boar (Cosmic)  |
+
+
+### Base Game Whistle Items
+| -26300  | PearlBird  |
+| -26301  | Alpha Coralhorn  |
+| -26302  | Manticore  |
+| -26303  | Alpha Tuanosaur |
+| -26304  | SandShark |
+| -26305  | Beast Golem |
+| -26306  | Obsidian Elemental |
 
 ### Skills
 | Item ID | Skill Name |
