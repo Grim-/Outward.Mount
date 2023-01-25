@@ -41,17 +41,17 @@ namespace EmoMount
         {
             if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
             {
-                MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);
+                //MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);
 
-                if (mountSpecies != null)
-                {
-                   BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, mountSpecies, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
-                   basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
-                }
-                else
-                {
-                    EmoMountMod.Log.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
-                }
+                //if (mountSpecies != null)
+                //{
+                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
+                    basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
+                //}
+                //else
+                //{
+                //    EmoMountMod.Log.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
+                //}
             }
             else
             {

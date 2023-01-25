@@ -25,12 +25,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>E:\Games\Outward\Mod stuff\OutwardDe\profiles\Others\BepInEx\plugins\Emo-EmoMountMod\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.5.7.0, Culture=neutral, processorArchitecture=MSIL">
@@ -87,6 +88,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -362,14 +364,23 @@
     <Compile Include="Custom SL Effect\SL_DismissActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="DialogueCharacter.cs" />
-    <Compile Include="Mount\MountInstanceData.cs" />
+    <Compile Include="DialogueTreeBuilder.cs" />
+    <Compile Include="Mount Components\GlideComp.cs" />
+    <Compile Include="Mount Components\MountComp.cs" />
+    <Compile Include="Mount Components\AgeComp.cs" />
+    <Compile Include="Mount Components\DetectionComp.cs" />
+    <Compile Include="Mount Properties\MountCompProp.cs" />
+    <Compile Include="XML\MountComponentFactory.cs" />
+    <Compile Include="XML\MountFoodData.cs" />
+    <Compile Include="Save\MountInstanceData.cs" />
+    <Compile Include="Mount\SerializableDictionary.cs" />
     <Compile Include="Node Canvas Nodes\DismissMountActionNode.cs" />
     <Compile Include="Node Canvas Nodes\DisplayMountStorageListNode.cs" />
     <Compile Include="Interaction Components\StoreMountInteraction.cs" />
     <Compile Include="Interaction Components\PetMountInteraction.cs" />
     <Compile Include="Mounted States\BaseMountedState.cs" />
     <Compile Include="FSM\BaseState.cs" />
-    <Compile Include="Mount\MountSpecies.cs" />
+    <Compile Include="XML\MountSpecies.cs" />
     <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="UI\MountSelectionElement.cs" />
@@ -377,11 +388,11 @@
     <Compile Include="Mount\BasicMountController.cs" />
     <Compile Include="Mount\CharacterMount.cs" />
     <Compile Include="EmoMountMod.cs" />
-    <Compile Include="Mount\MountFood.cs" />
+    <Compile Include="Mount Components\MountFood.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
     <Compile Include="Unmounted States\UnMountedState.cs" />
     <Compile Include="Mount\MountManager.cs" />
-    <Compile Include="Mount\MountSaveData.cs" />
+    <Compile Include="Save\MountSaveData.cs" />
     <Compile Include="UI\MountCanvasManager.cs" />
     <Compile Include="Interaction Components\MountUpInteraction.cs" />
     <Compile Include="UI\MountUI.cs" />

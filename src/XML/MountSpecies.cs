@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -9,7 +10,6 @@ using UnityEngine;
 
 namespace EmoMount
 {
-    [System.Serializable]
     public class MountSpecies
     {
         public string SpeciesName;
@@ -18,10 +18,10 @@ namespace EmoMount
         public string PrefabName;
 
         //movement
-        public float MoveSpeed;
+        public float MoveSpeed = 12f;
         //used by nav mesh agent
-        public float Acceleration;
-        public float RotateSpeed;
+        public float Acceleration = 7f;
+        public float RotateSpeed = 100f;
 
         public Vector3 CameraOffset;
 
@@ -41,17 +41,15 @@ namespace EmoMount
         public float CarryWeightEncumberenceLimit;
         public float EncumberenceSpeedModifier;
 
+
+        [XmlArray("MountComponents"), XmlArrayItem(typeof(MountCompProp), ElementName = "MountCompProp")]
+        public List<MountCompProp> MountComponents { get; set; }
+        //public List<MountCompProp> MountComponents = new List<MountCompProp>();
+
         public string GetRandomName()
         {
             return Names[UnityEngine.Random.Range(0, Names.Count)];
         }
     }
-
-
-    [System.Serializable]
-    public class MountFoodData
-    {
-        public int ItemID;
-        public float FoodValue;
-    }
 }
+

@@ -35,7 +35,12 @@ namespace EmoMount.Custom_SL_Effect
 
             if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMountDisabled)
             {
-                characterMount.DisableActiveMount();        
+
+                if (!characterMount.ActiveMount.IsMounted)
+                {
+                    characterMount.DisableActiveMount();
+                }
+                else _affectedCharacter.CharacterUI.ShowInfoNotification($"{characterMount.ActiveMount.CurrentlyMountedCharacter} is riding this mount!");
             }
             else
             {

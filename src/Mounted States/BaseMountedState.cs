@@ -64,7 +64,7 @@ namespace EmoMount
             }
 
 
-            if (CustomKeybindings.GetKeyDown(EmoMountMod.MOUNT_DISMOUNT_KEY))
+            if (ControlsInput.Interact(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
                 MountController.DismountCharacter(MountedCharacter);
                 Parent.PopState();

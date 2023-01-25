@@ -39,7 +39,12 @@ namespace EmoMount
             get; private set;
         }
 
-        public MountSpecies MountSpecies
+        //public MountSpecies MountSpecies
+        //{
+        //    get; private set;
+        //}
+
+        public string SpeciesName
         {
             get; private set;
         }
@@ -75,6 +80,11 @@ namespace EmoMount
             get; set;
         }
 
+        public Character CurrentlyMountedCharacter
+        {
+            get; private set;
+        }
+
         #endregion
 
         //Mount Movement Settings
@@ -85,12 +95,14 @@ namespace EmoMount
             {
                 if (!EmoMountMod.EnableWeightLimit.Value)
                 {
-                    return MoveSpeed;
+                    return MoveSpeed * MoveSpeedModifier;
                 }
 
-                return  WeightAsNormalizedPercent > WeightEncumberenceLimit ? MoveSpeed * EncumberenceSpeedModifier : MoveSpeed;
+                return  WeightAsNormalizedPercent > WeightEncumberenceLimit ? (MoveSpeed * EncumberenceSpeedModifier) * MoveSpeedModifier : MoveSpeed * MoveSpeedModifier;
             }
         }
+
+        public float MoveSpeedModifier = 1f;
         public float RotateSpeed { get; private set; }
         public float LeashDistance => EmoMountMod.LeashDistance.Value;
         //A Point is randomly chosen in LeashPointRadius around player to leash to.
@@ -102,7 +114,7 @@ namespace EmoMount
         //weight
         public float CurrentCarryWeight = 0;
         //no idea on a reasonable number for any of this
-        public float MaxCarryWeight = 90f;
+        public float MaxCarryWeight = 120f;
         public float WeightEncumberenceLimit = 0.75f;
         public float EncumberenceSpeedModifier = 0.5f;
         public float WeightAsNormalizedPercent => CurrentCarryWeight / MaxCarryWeight;
@@ -204,12 +216,16 @@ namespace EmoMount
 
         public void SetSpecies(MountSpecies mountSpecies)
         {
-            MountSpecies = mountSpecies;
-            SetMoveSpeed(MountSpecies.MoveSpeed);
-            SetRotationSpeed(MountSpecies.RotateSpeed);
-            SetNavMeshMoveSpeed(MountSpecies.MoveSpeed);
-            SetNavMeshAcceleration(MountSpecies.Acceleration);
-            SetCameraOffset(MountSpecies.CameraOffset);
+            SpeciesName = mountSpecies.SpeciesName;
+            PrefabName = mountSpecies.PrefabName;
+            SLPackName = mountSpecies.SLPackName;
+            AssetBundleName = mountSpecies.AssetBundleName;
+
+            SetMoveSpeed(mountSpecies.MoveSpeed);
+            SetRotationSpeed(mountSpecies.RotateSpeed);
+            SetNavMeshMoveSpeed(mountSpecies.MoveSpeed);
+            SetNavMeshAcceleration(mountSpecies.Acceleration);
+            SetCameraOffset(mountSpecies.CameraOffset);
         }
 
         #endregion
@@ -235,7 +251,6 @@ namespace EmoMount
 
             foreach (var item in newFavourites)
             {
-
                 MountFood.FavouriteFoods.Add(item.ItemID, item.FoodValue);
             }
 
@@ -258,7 +273,7 @@ namespace EmoMount
             if (NavMesh != null)
             {
                 NavMesh.speed = newSpeed;
-
+                EmoMountMod.Log.LogMessage($"{MountName} setting MoveSpeed to {newSpeed}");
             }
         }
         public void SetNavMeshAcceleration(float acceleration)
@@ -271,15 +286,19 @@ namespace EmoMount
         public void SetMoveSpeed(float newSpeed)
         {
             MoveSpeed = newSpeed;
+            NavMesh.speed = newSpeed;
         }
         public void SetRotationSpeed(float newSpeed)
         {
             RotateSpeed = newSpeed;
+            NavMesh.angularSpeed = newSpeed;
         }
+
         public void SetCameraOffset(Vector3 newOffset)
         {
             MountedCameraOffset = newOffset;
         }
+
         public void SetCharacterCameraOffset(Character _affectedCharacter, Vector3 NewOffset)
         {
             _affectedCharacter.CharacterCamera.Offset = NewOffset;
@@ -441,6 +460,8 @@ namespace EmoMount
         }
         public void MountCharacter(Character _affectedCharacter)
         {
+            CurrentlyMountedCharacter = _affectedCharacter;
+
             PrepareCharacter(_affectedCharacter);
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
@@ -459,7 +480,9 @@ namespace EmoMount
             _affectedCharacter.transform.parent = null;
             _affectedCharacter.transform.position = transform.position;
             _affectedCharacter.transform.eulerAngles = Vector3.zero;
-
+            _affectedCharacter.SetAnimMove(0, 1);
+            _affectedCharacter.SpellCastAnim(Character.SpellCastType.AxeLeap, Character.SpellCastModifier.Mobile, 1);
+            CurrentlyMountedCharacter = null;
             MountFSM.PopState();
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
         }
@@ -520,7 +543,6 @@ namespace EmoMount
         {
             StartCoroutine(DelayTeleport(Position, Rotation));
         }
-
         private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation)
         {
             EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");

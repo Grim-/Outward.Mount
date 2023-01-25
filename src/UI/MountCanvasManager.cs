@@ -153,11 +153,12 @@ namespace EmoMount
                     GameObject mountSelectionInstance = GameObject.Instantiate<GameObject>(StorageUIPrefab);
                     MountSelectionElement mountSelectionElement = mountSelectionInstance.AddComponent<MountSelectionElement>();
 
-                    mountSelectionElement.SetNameLabel($"{item.MountName} ({item.MountSpecies.SpeciesName})");
+                    mountSelectionElement.SetNameLabel($"{item.MountName} ({item.MountSpecies})");
                     mountSelectionElement.SetFoodLabel($"Food : {item.CurrentFood} / {item.MaximumFood}");
                     mountSelectionElement.RetrieveButton.onClick.AddListener(() =>
                     {
-                        BasicMountController basicMountController = characterMount.RetrieveStoredMount(item.MountUID);
+                        var cachedItem = item;
+                        BasicMountController basicMountController = characterMount.RetrieveStoredMount(cachedItem.MountUID);
                         HideStorage();
                         SideLoader.Helpers.ForceUnlockCursor.RemoveUnlockSource();
                     });

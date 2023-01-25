@@ -17,6 +17,15 @@ namespace EmoMount
         }
     }
 
+    [HarmonyPatch(typeof(EnvironmentConditions), nameof(EnvironmentConditions.OnHour))]
+    public class EnvironmentConditionsOnHourPatch
+    {
+        static void Postfix(EnvironmentConditions __instance)
+        {
+            EmoMountMod.Instance.OnGameHourPassed?.Invoke(TOD_Sky.Instance.Cycle.Hour);
+        }
+    }
+
     [HarmonyPatch(typeof(DefeatScenariosManager), nameof(DefeatScenariosManager.ActivateDefeatScenario))]
     public class DefeatScenarioPatch
     {

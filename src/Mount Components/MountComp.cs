@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace EmoMount.Mount_Components
+{
+    public class MountComp : MonoBehaviour
+    {
+        public BasicMountController Controller
+        {
+            get; private set;
+        }
+
+        public SkinnedMeshRenderer SkinnedMesh
+        {
+            get
+            {
+                if (Controller)
+                {
+                    return Controller.GetComponentInChildren<SkinnedMeshRenderer>();
+                }
+
+                return null;
+            }
+        }
+
+        public void Awake()
+        {
+
+        }
+
+        public virtual void Update()
+        {
+
+        }
+
+
+        public virtual void OnApply(BasicMountController BasicMountController)
+        {
+            Controller = BasicMountController;
+        }
+
+        public virtual void OnRemove(BasicMountController Controller)
+        {
+            Controller = null;
+        }
+    }
+}

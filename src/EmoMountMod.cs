@@ -3,9 +3,12 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using NodeCanvas.DialogueTrees;
+using NodeCanvas.Framework;
+using NodeCanvas.Tasks.Conditions;
 using SideLoader;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,7 +26,6 @@ namespace EmoMount
         public const string NAME = "EmoMountMod";
         public const string VERSION = "1.0.4";
 
-        public const string MOUNT_DISMOUNT_KEY = "MountMod_Dismount";
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
         public const string MOUNT_MOVE_TO_KEY = "MountMod_MoveTo_Toggle";
 
@@ -91,17 +93,35 @@ namespace EmoMount
 
         public static ConfigEntry<float> WeightLimitOverride;
 
+        public static EmoMountMod Instance;
+
+
+        public Action<float> OnGameHourPassed;
+
+
         // Awake is called when your plugin is created. Use this to set up your mod.
         internal void Awake()
         {
             Log = this.Logger;
+            Instance = this;
             //this cannot be the way lol
             RootFolder = this.Info.Location.Replace("EmoMount.dll", "");
             InitKeybinds();
-            MountManager = new MountManager(RootFolder);
+
             SL.OnPacksLoaded += InitializeCanvas;
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
 
+            BindConfigEntries();
+
+            MountManager = new MountManager(RootFolder);
+
+            SetupNPCs();
+            new Harmony(GUID).PatchAll();
+        }
+
+
+        private void BindConfigEntries()
+        {
             WeightLimitOverride = Config.Bind<float>(NAME, "Weight Limit Override", 0, "If this value is anything other than 0 then all mounts will use the specified value as their weight limit instead of the values from the MountSpecies XML.");
             EncumberenceSpeedModifier = Config.Bind<float>(NAME, "Encumberence Speed Modifier Override", 0, "If this value is anything other than 0 then all mounts will use the specifiec value as their encumberence speed modifier (0.5 is 50% speed penalty) instead of the values from the MountSpecies XML.");
 
@@ -117,12 +137,7 @@ namespace EmoMount
 
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
-
-            SetupNPCs();
-            new Harmony(GUID).PatchAll();
         }
-
-
 
         private void InitializeCanvas()
         {
@@ -145,7 +160,6 @@ namespace EmoMount
 
         private void InitKeybinds()
         {
-            CustomKeybindings.AddAction(MOUNT_DISMOUNT_KEY, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings, ControlType.Both);
             CustomKeybindings.AddAction(MOUNT_MOVE_TO_KEY, KeybindingsCategory.CustomKeybindings, ControlType.Both);
         }
@@ -164,7 +178,6 @@ namespace EmoMount
             SetupCierzoNPC();
             SetupMonsoonNPC();
         }
-
         private void SetupLevantNPC()
         {
             ///levant
@@ -283,8 +296,59 @@ namespace EmoMount
         }
         private void BuildDialouge(DialogueTree graph, Character character)
         {
-            var ourActor = graph.actorParameters[0];
+            DialogueTreeBuilder dialogueTreeBuilder = new DialogueTreeBuilder(graph);
 
+
+            //You must always set the intial statement
+            StatementNodeExt InitialStatement =  dialogueTreeBuilder.SetInitialStatement("Welcome traveler.");
+
+
+            //Now you can add the next node
+            MultipleChoiceNodeExt initialChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
+            {
+                "Can you look after my current mount?",
+                "I want to retrieve a mount.",
+                "Can you teach me some mount skills?",
+                "Give me another multi choice (this option shows up in the morning only)"
+            },
+            new ConditionTask[]
+            {
+                null,
+                null,
+                null,
+                null
+             });
+   
+            //you must connect the inital statement and inital node
+            graph.ConnectNodes(InitialStatement, initialChoice);
+
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 0, "Aye, that I can do.", new DismissMountActionNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 1, "Here's a list of what you have in my stables.", new DisplayMountStorageListNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 2, "Heres watcha do...", new LearnMountSkillsNode());
+
+            MultipleChoiceNodeExt secondChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
+            {
+                "opt 1",
+                "opt 2",
+            });
+
+
+            //Last option of the first multi-choice takes you to the second multi choice
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, "Heres watcha do...", secondChoice);
+
+
+
+            //Option 1 will say 'Ending Conversation' then end the dialogue.
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 0, "Ending the conversation", new FinishNode());
+            //Option 2 chains three statements together, then ends the conversation.
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 1, "Going back to start of conversation", null)
+                .ConnectTo(graph, dialogueTreeBuilder.CreateStatementNode("Ok I have a little more to say"))
+                .ConnectTo(graph, dialogueTreeBuilder.CreateStatementNode("PRAISE CTHULHU")).ConnectTo(graph, new FinishNode());
+
+        }
+        private void Old_BuildDialouge(DialogueTree graph, Character character)
+        {
+            var ourActor = graph.actorParameters[0];
             // Add our root statement
             var InitialStatement = graph.AddNode<StatementNodeExt>();
             InitialStatement.statement = new($"Welcome, can I store a mount for you in our stables?");
@@ -311,6 +375,25 @@ namespace EmoMount
             multiChoice1.availableChoices.Add(DismissChoice);
             multiChoice1.availableChoices.Add(SummonChoice);
             multiChoice1.availableChoices.Add(LearnSkillsChoice);
+
+
+            //var multiChoice2 = graph.AddNode<MultipleChoiceNodeExt>();
+
+            //MultipleChoiceNodeExt.Choice choice1 = new MultipleChoiceNodeExt.Choice()
+            //{
+            //    statement = new Statement("Multiple Choice 1")
+            //};
+
+            //var answertochoiceOne = graph.AddNode<StatementNodeExt>();
+            //answertochoiceOne.statement = new("Reply to choice 1");
+            //answertochoiceOne.SetActorName(ourActor.name);
+
+            //multiChoice2.availableChoices.Add(choice1);
+            //graph.allNodes.Add(multiChoice2);
+            //graph.allNodes.Add(answertochoiceOne);
+
+            //graph.ConnectNodes(multiChoice1, multiChoice2, 0);
+            //graph.ConnectNodes(multiChoice2, answertochoiceOne, 0);
 
             // Add our answers
             var answer1 = graph.AddNode<StatementNodeExt>();
@@ -361,7 +444,9 @@ namespace EmoMount
             graph.ConnectNodes(multiChoice1, answer3, 2);
             graph.ConnectNodes(answer3, learnMountSkillsNode);
             graph.ConnectNodes(answer3, InitialStatement);
+
         }
+
         public static int GetRandomWhistleID()
         {
             return EmoMountMod.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.MountWhistleIDs.Length)];

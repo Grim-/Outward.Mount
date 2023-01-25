@@ -8,7 +8,7 @@ namespace EmoMount
     {
         public string MountName;
         public string MountUID;
-        public MountSpecies MountSpecies;
+        public string MountSpecies;
         public string BagUID;
         public float CurrentFood;
         public float MaximumFood;
