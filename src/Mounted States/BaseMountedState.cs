@@ -86,7 +86,7 @@ namespace EmoMount
         public void UpdateAnimator(BasicMountController MountController)
         {
             MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
-            MountController.Animator.SetFloat("Move Z", MountController.BaseInput.z != 0 ? 1f : 0f, 5f, 5f);
+            MountController.Animator.SetFloat("Move Z", MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0 ? 1f : 0f, 2f, 0.75f);
         }
 
         private void UpdateMenuInputs(BasicMountController MountController)

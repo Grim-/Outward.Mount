@@ -30,10 +30,10 @@ namespace EmoMount
         {
             get; private set;
         }
-        public Item BagContainer
-        {
-            get; private set;
-        }
+        //public Item BagContainer
+        //{
+        //    get; private set;
+        //}
         public MountFood MountFood
         {
             get; private set;
@@ -85,6 +85,12 @@ namespace EmoMount
             get; private set;
         }
 
+
+        public SkinnedMeshRenderer SkinnedMeshRenderer => GetComponentInChildren<SkinnedMeshRenderer>();
+
+        public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
+        public Color CurrentEmissionColor => SkinnedMeshRenderer.material.GetColor("_EmissionColor");
+
         #endregion
 
         //Mount Movement Settings
@@ -135,7 +141,7 @@ namespace EmoMount
 
         public bool IsMounted;
         public bool IsMoving;
-        public float MountTotalWeight => BagContainer != null && BagContainer.ParentContainer != null ? BagContainer.ParentContainer.TotalContentWeight : 0;
+        public float MountTotalWeight => 0;
 
         //Input - tidy up doesnt need this many calls or new v3s
         public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
@@ -144,7 +150,7 @@ namespace EmoMount
         public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
 
         public MountUpInteraction mountInteraction { get; private set; }
-        public PetMountInteraction petMountInteraction { get; private set; }
+        public ShowStashMountInteraction petMountInteraction { get; private set; }
         public StoreMountInteraction dismissMountInteraction { get; private set; }
         public InteractionActivator interactionActivator { get; private set; }
         public InteractionTriggerBase interactionTriggerBase { get; private set; }
@@ -181,8 +187,8 @@ namespace EmoMount
         {
             EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
             mountInteraction = gameObject.AddComponent<MountUpInteraction>();
-            petMountInteraction = gameObject.AddComponent<PetMountInteraction>();
-            dismissMountInteraction = gameObject.AddComponent<StoreMountInteraction>();
+            petMountInteraction = gameObject.AddComponent<ShowStashMountInteraction>();
+            //dismissMountInteraction = gameObject.AddComponent<StoreMountInteraction>();
             interactionActivator = gameObject.AddComponent<InteractionActivator>();
             interactionTriggerBase = gameObject.AddComponent<InteractionTriggerBase>();
 
@@ -199,15 +205,15 @@ namespace EmoMount
             CharacterOwner = mountTarget;
         }
 
-        public void SetInventory(Item BagItem)
-        {
-            BagContainer = BagItem;
+        //public void SetInventory(Item BagItem)
+        //{
+        //    BagContainer = BagItem;
 
-            if (BagItem != null && BagItem is Bag)
-            {           
-                StartCoroutine(SetUpBag(BagItem));
-            }           
-        }
+        //    if (BagItem != null && BagItem is Bag)
+        //    {
+        //        StartCoroutine(SetUpBag(BagItem));
+        //    }
+        //}
 
         public void SetMountUI(MountUI mountUI)
         {
@@ -228,6 +234,20 @@ namespace EmoMount
             SetCameraOffset(mountSpecies.CameraOffset);
         }
 
+        public void SetTintColor(Color TintColor)
+        {
+            if (SkinnedMeshRenderer)
+            {
+                SkinnedMeshRenderer.material.SetColor("_TintColor", TintColor);
+            }
+        }
+        public void SetEmissionColor(Color EmissionColor)
+        {
+            if (SkinnedMeshRenderer)
+            {
+                SkinnedMeshRenderer.material.SetColor("_EmissionColor", EmissionColor);
+            }
+        }
         #endregion
 
         #region Food
@@ -319,102 +339,102 @@ namespace EmoMount
         {
             return EmoMountMod.EnableWeightLimit.Value ? this.MountTotalWeight + weightToCarry < MaxCarryWeight : true;
         }
-        public void DestroyBagContainer()
-        {
-            if (BagContainer != null)
-            {
-                EmoMountMod.Log.LogMessage($"Destroying Mount Bag");
+        //public void DestroyBagContainer()
+        //{
+        //    if (BagContainer != null)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"Destroying Mount Bag");
 
-                ItemManager.Instance.DestroyItem(BagContainer.UID);
-                SetInventory(null);
-            }
-        }
-        public void AddItemToBag(Item item)
-        {
-            if (BagContainer != null && BagContainer is Bag)
-            {
-                (BagContainer as Bag).Container.AddItem(item);
-                //GameObject.Destroy(item.gameObject);
-            }
-            else
-            {
-                //has no bag
-            }
-        }
-        public void UpdateBagPosition()
-        {
-            ///Bag takes way too long to instantiate and set up (multiple frames) resulting in IsKinematic being disabled by the RigidbodySuspender, so for now, force the settings.
-            if (BagContainer)
-            {
-                ////Its really difficult to make the bag stay in place after a reload, so this is to try force that.
+        //        ItemManager.Instance.DestroyItem(BagContainer.UID);
+        //        SetInventory(null);
+        //    }
+        //}
+        //public void AddItemToBag(Item item)
+        //{
+        //    if (BagContainer != null && BagContainer is Bag)
+        //    {
+        //        (BagContainer as Bag).Container.AddItem(item);
+        //        //GameObject.Destroy(item.gameObject);
+        //    }
+        //    else
+        //    {
+        //        //has no bag
+        //    }
+        //}
+        //public void UpdateBagPosition()
+        //{
+        //    ///Bag takes way too long to instantiate and set up (multiple frames) resulting in IsKinematic being disabled by the RigidbodySuspender, so for now, force the settings.
+        //    if (BagContainer)
+        //    {
+        //        ////Its really difficult to make the bag stay in place after a reload, so this is to try force that.
 
-                BagContainer.transform.localPosition = Vector3.zero;
-                //BagContainer.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
-                //BagContainer.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
+        //        BagContainer.transform.localPosition = Vector3.zero;
+        //        //BagContainer.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
+        //        //BagContainer.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
 
-                if (BagContainer.m_rigidBody)
-                {
-                    BagContainer.m_rigidBody.isKinematic = true;
-                    BagContainer.m_rigidBody.useGravity = false;
-                    BagContainer.m_rigidBody.freezeRotation = true;
-                }
-            }
-        }
-        private IEnumerator SetUpBag(Item BagItem)
-        {
-            if (EmoMountMod.Debug)
-            {
-                EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
-            }
+        //        if (BagContainer.m_rigidBody)
+        //        {
+        //            BagContainer.m_rigidBody.isKinematic = true;
+        //            BagContainer.m_rigidBody.useGravity = false;
+        //            BagContainer.m_rigidBody.freezeRotation = true;
+        //        }
+        //    }
+        //}
+        //private IEnumerator SetUpBag(Item BagItem)
+        //{
+        //    if (EmoMountMod.Debug)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
+        //    }
 
-            yield return new WaitForSeconds(EmoMountMod.BAG_LOAD_DELAY);
+        //    yield return new WaitForSeconds(EmoMountMod.BAG_LOAD_DELAY);
 
-            BagItem.SaveType = Item.SaveTypes.NonSavable;
+        //    BagItem.SaveType = Item.SaveTypes.NonSavable;
 
-            Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
-            Transform ItemHighlight = BagItem.gameObject.transform.FindInAllChildren("ItemHighlight");
+        //    Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
+        //    Transform ItemHighlight = BagItem.gameObject.transform.FindInAllChildren("ItemHighlight");
 
-            if (ItemHighlight)
-            {
-                EmoMountMod.Log.LogMessage($"Item Highlight found, disabling");
-                ItemHighlight.gameObject.SetActive(false);
-            }
+        //    if (ItemHighlight)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"Item Highlight found, disabling");
+        //        ItemHighlight.gameObject.SetActive(false);
+        //    }
 
-            if (mountPointTransform != null)
-            {
-                BagContainer.transform.parent = mountPointTransform;
-            }
-            else
-            {
-                BagContainer.transform.parent = transform;
-            }
+        //    if (mountPointTransform != null)
+        //    {
+        //        BagContainer.transform.parent = mountPointTransform;
+        //    }
+        //    else
+        //    {
+        //        BagContainer.transform.parent = transform;
+        //    }
 
-            RigidbodySuspender rigidbodySuspender = BagItem.gameObject.GetComponentInChildren<RigidbodySuspender>();
-            if (rigidbodySuspender)
-            {
-                rigidbodySuspender.enabled = false;
-            }
-
-
-            SafeFalling safeFalling = BagItem.gameObject.GetComponentInChildren<SafeFalling>();
-            if (safeFalling)
-            {
-                safeFalling.enabled = false;
-            }
+        //    RigidbodySuspender rigidbodySuspender = BagItem.gameObject.GetComponentInChildren<RigidbodySuspender>();
+        //    if (rigidbodySuspender)
+        //    {
+        //        rigidbodySuspender.enabled = false;
+        //    }
 
 
-            MultipleUsage multipleUsage = BagItem.gameObject.GetComponentInChildren<MultipleUsage>();
-            if (multipleUsage)
-            {
-                EmoMountMod.Log.LogMessage($"Disabling Auto Save");
-                multipleUsage.Savable = false;
-            }
+        //    SafeFalling safeFalling = BagItem.gameObject.GetComponentInChildren<SafeFalling>();
+        //    if (safeFalling)
+        //    {
+        //        safeFalling.enabled = false;
+        //    }
 
-            EmoMountMod.Log.LogMessage($"Updating Bag Position");
-            UpdateBagPosition();
-            BagContainer = BagItem;
-            yield break;
-        }
+
+        //    MultipleUsage multipleUsage = BagItem.gameObject.GetComponentInChildren<MultipleUsage>();
+        //    if (multipleUsage)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"Disabling Auto Save");
+        //        multipleUsage.Savable = false;
+        //    }
+
+        //    EmoMountMod.Log.LogMessage($"Updating Bag Position");
+        //    UpdateBagPosition();
+        //    BagContainer = BagItem;
+        //    yield break;
+        //}
         #endregion
 
         #region Unity
@@ -426,7 +446,7 @@ namespace EmoMount
                 MountFSM.Update();
             }
 
-            UpdateBagPosition();
+            //UpdateBagPosition();
         }
 
 
@@ -465,9 +485,24 @@ namespace EmoMount
             PrepareCharacter(_affectedCharacter);
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
-            MountFSM.PushDynamicState(new BaseMountedState(_affectedCharacter));
+            MountFSM.PushDynamicState(new BaseMountedState(CurrentlyMountedCharacter));
         }
-
+        /// <summary>
+        /// Prepares a Character for mounting to the MountGameObject
+        /// </summary>
+        /// <param name="character"></param>
+        private void PrepareCharacter(Character character)
+        {
+            character.CharMoveBlockCollider.enabled = false;
+            character.CharacterController.enabled = false;
+            character.CharacterControl.enabled = false;
+            //cancel movement in animator
+            character.SetAnimMove(0, 0);
+            character.SpellCastAnim(Character.SpellCastType.Sit, Character.SpellCastModifier.Immobilized, 1);
+            TryToParent(character, gameObject);
+            OriginalPlayerCameraOffset = character.CharacterCamera.Offset;
+            SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
+        }
         public void DismountCharacter(Character _affectedCharacter)
         {
             _affectedCharacter.enabled = true;
@@ -539,11 +574,11 @@ namespace EmoMount
             NavMesh.enabled = false;
         }
 
-        public void Teleport(Vector3 Position, Vector3 Rotation)
+        public void Teleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
             StartCoroutine(DelayTeleport(Position, Rotation));
         }
-        private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation)
+        private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
             EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
             DisableNavMeshAgent();
@@ -553,7 +588,10 @@ namespace EmoMount
             transform.position = Position;
             transform.rotation = Quaternion.Euler(Rotation);
             EnableNavMeshAgent();
-            UpdateBagPosition();
+            yield return null;
+            yield return null;
+            //UpdateBagPosition();
+            OnTeleported?.Invoke();
             yield break;
         }
 
@@ -579,22 +617,7 @@ namespace EmoMount
             }
         }
 
-        /// <summary>
-        /// Prepares a Character for mounting to the MountGameObject
-        /// </summary>
-        /// <param name="character"></param>
-        private void PrepareCharacter(Character character)
-        {
-            character.CharMoveBlockCollider.enabled = false;
-            character.CharacterController.enabled = false;
-            character.CharacterControl.enabled = false;
-            //cancel movement in animator
-            character.SetAnimMove(0, 0);
-            character.SpellCastAnim(Character.SpellCastType.Sit, Character.SpellCastModifier.Immobilized, 1);
-            TryToParent(character, gameObject);
-            OriginalPlayerCameraOffset = character.CharacterCamera.Offset;
-            SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
-        }
+
 
     }
 

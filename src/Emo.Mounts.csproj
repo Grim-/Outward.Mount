@@ -361,15 +361,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom SL Effect\SL_ChangeMountEmissionColor.cs" />
+    <Compile Include="Custom SL Effect\SL_ChangeMountTint.cs" />
     <Compile Include="Custom SL Effect\SL_DismissActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="DialogueCharacter.cs" />
     <Compile Include="DialogueTreeBuilder.cs" />
+    <Compile Include="Mount Components\ColorableComp.cs" />
     <Compile Include="Mount Components\GlideComp.cs" />
     <Compile Include="Mount Components\MountComp.cs" />
     <Compile Include="Mount Components\AgeComp.cs" />
     <Compile Include="Mount Components\DetectionComp.cs" />
     <Compile Include="Mount Properties\MountCompProp.cs" />
+    <Compile Include="Node Canvas Nodes\SetMountColor.cs" />
+    <Compile Include="Node Canvas Nodes\SetMountEmissionColor.cs" />
+    <Compile Include="WeightedItem.cs" />
     <Compile Include="XML\MountComponentFactory.cs" />
     <Compile Include="XML\MountFoodData.cs" />
     <Compile Include="Save\MountInstanceData.cs" />

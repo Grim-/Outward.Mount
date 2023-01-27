@@ -1,6 +1,7 @@
 ﻿using EmoMount.UI;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace EmoMount
@@ -153,7 +154,20 @@ namespace EmoMount
                     GameObject mountSelectionInstance = GameObject.Instantiate<GameObject>(StorageUIPrefab);
                     MountSelectionElement mountSelectionElement = mountSelectionInstance.AddComponent<MountSelectionElement>();
 
-                    mountSelectionElement.SetNameLabel($"{item.MountName} ({item.MountSpecies})");
+
+
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    stringBuilder.Append($"{item.MountName} ({item.MountSpecies})");
+                    if (item.TintColor != Color.clear)
+                    {
+                        stringBuilder.Append($" [Color {item.TintColor}]");
+                    }
+
+                    mountSelectionElement.NameLabel.color = Color.black;
+                    mountSelectionElement.FoodLabel.color = Color.black;
+
+                    mountSelectionElement.SetNameLabel(stringBuilder.ToString());
                     mountSelectionElement.SetFoodLabel($"Food : {item.CurrentFood} / {item.MaximumFood}");
                     mountSelectionElement.RetrieveButton.onClick.AddListener(() =>
                     {

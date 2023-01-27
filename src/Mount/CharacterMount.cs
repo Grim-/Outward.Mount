@@ -52,9 +52,9 @@ namespace EmoMount
             if (!HasStoredMount(MountToStore.MountUID))
             {
                 MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
-                DropAllStoredItems(MountToStore);
+                //DropAllStoredItems(MountToStore);
                 StoredMounts.Add(mountInstanceData);
-                MountToStore.DestroyBagContainer();
+                //MountToStore.DestroyBagContainer();
                 EmoMountMod.MountManager.DestroyActiveMount(Character);
                 SetActiveMount(null);
             }
@@ -69,10 +69,10 @@ namespace EmoMount
                 {
 
                     MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
-                    DropAllStoredItems(MountToStore);
+                    //DropAllStoredItems(MountToStore);
                     StoredData = mountInstanceData;
 
-                    MountToStore.DestroyBagContainer();
+                    //MountToStore.DestroyBagContainer();
                     EmoMountMod.MountManager.DestroyActiveMount(Character);
                     SetActiveMount(null);
                 }
@@ -85,28 +85,28 @@ namespace EmoMount
         }
 
 
-        private void DropAllStoredItems(BasicMountController MountToStore)
-        {      
-            if (MountToStore.BagContainer != null)
-            {
-                if (MountToStore.BagContainer is Bag)
-                {
-                    Bag ContainerBag = MountToStore.BagContainer as Bag;
-                    EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer Contained Item Count {ContainerBag.Container.GetContainedItems().Count}");
-                    MountToStore.CharacterOwner.Inventory.TakeAllContent(ContainerBag.Container, true);
-                    MountToStore.DisplayNotification("Mount Inventory contents added to your Inventory.");
-                }
-                else
-                {
-                    EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer isnt a bag.");
-                }
+        //private void DropAllStoredItems(BasicMountController MountToStore)
+        //{      
+        //    if (MountToStore.BagContainer != null)
+        //    {
+        //        if (MountToStore.BagContainer is Bag)
+        //        {
+        //            Bag ContainerBag = MountToStore.BagContainer as Bag;
+        //            EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer Contained Item Count {ContainerBag.Container.GetContainedItems().Count}");
+        //            MountToStore.CharacterOwner.Inventory.TakeAllContent(ContainerBag.Container, true);
+        //            MountToStore.DisplayNotification("Mount Inventory contents added to your Inventory.");
+        //        }
+        //        else
+        //        {
+        //            EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer isnt a bag.");
+        //        }
 
-            }
-            else
-            {
-                EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer is null.");
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer is null.");
+        //    }
+        //}
 
         /// <summary>
         /// DeSerialize a MountInstanceData and create a BasicMountController from the data.

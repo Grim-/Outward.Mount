@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace EmoMount.Custom_SL_Effect
 {
@@ -33,9 +34,8 @@ namespace EmoMount.Custom_SL_Effect
         {
             CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
 
-            if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMountDisabled)
+            if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMountDisabled && characterMount.ActiveMount.CharacterOwner == _affectedCharacter)
             {
-
                 if (!characterMount.ActiveMount.IsMounted)
                 {
                     characterMount.DisableActiveMount();
@@ -51,4 +51,8 @@ namespace EmoMount.Custom_SL_Effect
            
         }
     }
+
+
+
+
 }

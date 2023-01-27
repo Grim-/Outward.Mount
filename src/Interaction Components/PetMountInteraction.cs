@@ -9,8 +9,6 @@ namespace EmoMount
 
         public override void Activate(Character _character)
         {
-            CharacterMount characterMount = _character.GetComponent<CharacterMount>();
-
             int rand = Random.Range(0, 10);
 
             if (rand > 8)
@@ -21,7 +19,17 @@ namespace EmoMount
             {
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
             }
-           
+
+        }
+    }
+
+    public class ShowStashMountInteraction : InteractionBase
+    {
+        public override string DefaultHoldText => $"Open Stash";
+
+        public override void Activate(Character _character)
+        {
+            _character.CharacterUI.StashPanel.Show();
         }
     }
 }

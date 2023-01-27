@@ -76,5 +76,18 @@ namespace EmoMount
             DT.ConnectNodes(sourceNode, TargetNode);
             return TargetNode;
         }
+
+
+
+        //public static DTNode ConnectFailureNode(this MultipleChoiceNodeExt sourceNode, DialogueTree DT, DTNode TargetNode)
+        //{
+        //    DT.ConnectNodes(sourceNode, TargetNode, -1, 1);
+        //    if (!DT.allNodes.Contains(TargetNode))
+        //    {
+        //        DT.allNodes.Add(TargetNode);
+        //    }
+        //    sourceNode.availableChoices.
+        //    return TargetNode;
+        //}
     }
 }

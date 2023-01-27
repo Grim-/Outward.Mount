@@ -14,6 +14,8 @@ namespace EmoMount
         public float MaximumFood;
         public Vector3 Position;
         public Vector3 Rotation;
+        public Color TintColor;
+        public Color EmissionColor;
 
         public List<BasicSaveData> ItemSaveData;
     }

@@ -34,6 +34,17 @@ namespace EmoMount
 
             return SL.GetSLPack(SLPackName).AssetBundles[AssetBundle].LoadAsset<T>(key);
         }
+        public static List<WeightedItem<Color>> ConvertToWeightedItemList(List<MountColorChance> mountColorChances)
+        {
+            List<WeightedItem<Color>> weightedItems = new List<WeightedItem<Color>>();
+            foreach (var mountColorChance in mountColorChances)
+            {
+                Color newCol;
+                if (ColorUtility.TryParseHtmlString(mountColorChance.Color, out newCol))
+                    weightedItems.Add(new WeightedItem<Color>(mountColorChance.Chance, newCol));        
+            }
+            return weightedItems;
+        }
 
         public static Vector3 GetPositionAroundCharacter(Character _affectedCharacter, Vector3 PositionOffset = default(Vector3))
         {

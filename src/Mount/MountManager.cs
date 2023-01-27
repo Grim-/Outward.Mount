@@ -1,4 +1,5 @@
 ﻿using EmoMount.Mount_Components;
+using SideLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,12 +16,10 @@ namespace EmoMount
     /// </summary>
     public class MountManager
     {
-
         public Dictionary<string, MountSpecies> SpeciesData
         {
             get; private set;
         }
-        //private List<MountSpecies> SpeciesData = new List<MountSpecies>();
 
         public Dictionary<Character, BasicMountController> MountControllers
         {
@@ -38,13 +37,12 @@ namespace EmoMount
             MountControllers = new Dictionary<Character, BasicMountController>();
             MountComponentFactory.Initialize();
             LoadAllSpeciesDataFiles();
-            //MountComponentFactory.Initialize();
         }
 
         private void LoadAllSpeciesDataFiles()
         {
             SpeciesData = new Dictionary<string, MountSpecies>();
-            EmoMountMod.Log.LogMessage($"MountManager Initalising Species Definitions..");
+            EmoMountMod.Log.LogMessage($"MountManager Loading Species Definitions..");
 
             if (!HasFolder(SpeciesFolder))
             {
@@ -52,8 +50,8 @@ namespace EmoMount
                 Directory.CreateDirectory(SpeciesFolder);
             }
 
-            string[] filePaths = Directory.GetFiles(SpeciesFolder, "*.xml");
-            EmoMountMod.Log.LogMessage($"MountManager MountSpecies Definitions [{filePaths.Length}] Found.");
+            string[] filePaths = Directory.GetFiles(SpeciesFolder, "*.xml", SearchOption.AllDirectories);
+            EmoMountMod.Log.LogMessage($"MountManager MountSpecies [{filePaths.Length}] Definitions found.");
 
 
             foreach (var item in filePaths)
@@ -64,8 +62,46 @@ namespace EmoMount
 
                 if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
                 {
+                    EmoMountMod.Log.LogMessage($"MountManager Creating Species Definition...");
+                    EmoMountMod.Log.LogMessage($"Species Name : {mountSpecies.SpeciesName}");
+                    EmoMountMod.Log.LogMessage($"TargetItemID : { mountSpecies.TargetItemID}");
+                    EmoMountMod.Log.LogMessage($"New_ItemID : { mountSpecies.WhistleItemID}");
+
+                    string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
+
+
+                    if (mountSpecies.WhistleItemID != -1 || mountSpecies.WhistleItemID != 0)
+                    {
+                        EmoMountMod.Log.LogMessage($"MountManager Creating Whistle Item For Species");
+                        SL_Item WhistleItem = new SL_Item()
+                        {
+                            Target_ItemID = mountSpecies.TargetItemID,
+                            New_ItemID = mountSpecies.WhistleItemID,
+                            Name = $"{NiceName} Whistle",
+                            Description = $"Can be used to call upon a tame {NiceName}.",
+                            EffectTransforms = new SL_EffectTransform[]
+                            {
+                            new SL_EffectTransform()
+                            {
+                                TransformName = "Normal",
+                                Effects = new SL_Effect[]
+                                {
+                                    new SL_SpawnMount()
+                                    {
+                                        SpeciesName = mountSpecies.SpeciesName
+                                    }
+                                }
+                            }
+                            }
+
+                        };
+
+                        WhistleItem.ApplyTemplate();
+                    }
+
+
+
                     SpeciesData.Add(mountSpecies.SpeciesName, mountSpecies);
-                    EmoMountMod.Log.LogMessage($"MountManager MountSpecies Added MountComponents [{mountSpecies.MountComponents.Count}]");
                 }           
             }
         }
@@ -74,44 +110,14 @@ namespace EmoMount
         {
             if (SpeciesData.ContainsKey(SpeciesName))
             {
-                //EmoMountMod.Log.LogMessage($"MountManager has a Definition for {SpeciesName}");
                 return true;
             }
-
-
             return false;
         }
-        private static XmlSerializer CreateCustomSerializer<T>()
-        {
-
-            // Create overrides that allow each Brass or Woodwind object
-            // to be read from and written as members of an Instruments
-            // collection.  
-            // Oddly enough, an override is also needed to allow an
-            // Instrument to be read/written as an Instrument. 
-            var xAttrs = new XmlAttributes();
-
-
-            foreach (var compType in MountComponentFactory.AllComponentTypes)
-            {
-                xAttrs.XmlArrayItems.Add(
-                  new XmlArrayItemAttribute(compType));
-            }
-
-
-            var overrides = new XmlAttributeOverrides();
-            overrides.Add(typeof(MountCompProp), "MountComponents", xAttrs);
-
-            var serializer =
-              new XmlSerializer(typeof(T), overrides);
-            return serializer;
-        }
-
         public MountSpecies GetSpeciesDefinitionByName(string SpeciesName)
         {
             if (HasSpeciesDefinition(SpeciesName))
             {
-               // EmoMountMod.Log.LogMessage($"{SpeciesName} moveSpeed {SpeciesData[SpeciesName].MoveSpeed}");
                 return SpeciesData[SpeciesName];
             }
 
@@ -145,7 +151,7 @@ namespace EmoMount
         /// <param name="Position"></param>
         /// <param name="Rotation"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, string bagUID = "")
+        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color))
         {
             if (string.IsNullOrEmpty(mountSpecies))
             {
@@ -194,6 +200,17 @@ namespace EmoMount
             basicMountController.MountFood.FoodTakenPerTick = MountSpecies.FoodTakenPerTick;
             basicMountController.MountFood.HungerTickTime = MountSpecies.HungerTickTime;
 
+
+            if (TintColor != default(Color))
+            {
+                basicMountController.SetTintColor(TintColor);
+            }
+
+            if (EmissionColor != default(Color))
+            {
+                basicMountController.SetEmissionColor(EmissionColor);
+            }
+
             if (MountSpecies.MountComponents != null)
             {
                 EmoMountMod.Log.LogMessage($"Attempting to parse MountComps [{MountSpecies.MountComponents.Count}]");
@@ -229,18 +246,18 @@ namespace EmoMount
             }
 
 
-            Item Bag = ResourcesPrefabManager.Instance.GenerateItem("5300000");
+            //Item Bag = ResourcesPrefabManager.Instance.GenerateItem("5300000");
 
-            if (Bag)
-            {
-                if (!string.IsNullOrEmpty(bagUID))
-                {
-                    EmoMountMod.Log.LogMessage($"Updateing Bag UID to {bagUID}");
-                    Bag.UID = bagUID;
-                }
+            //if (Bag)
+            //{
+            //    if (!string.IsNullOrEmpty(bagUID))
+            //    {
+            //        EmoMountMod.Log.LogMessage($"Updateing Bag UID to {bagUID}");
+            //        Bag.UID = bagUID;
+            //    }
 
-                basicMountController.SetInventory(Bag);
-            }
+            //    basicMountController.SetInventory(Bag);
+            //}
 
 
             MountControllers.Add(_affectedCharacter, basicMountController);
@@ -268,7 +285,7 @@ namespace EmoMount
                 return null;
             }
 
-            BasicMountController basicMountController = CreateMountFromSpecies(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation, mountInstanceData.BagUID);
+            BasicMountController basicMountController = CreateMountFromSpecies(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation);
 
 
             if (basicMountController == null)
@@ -281,6 +298,9 @@ namespace EmoMount
             basicMountController.MountUID = mountInstanceData.MountUID;
             basicMountController.MountFood.CurrentFood = mountInstanceData.CurrentFood;
             basicMountController.MountFood.MaximumFood = mountInstanceData.MaximumFood;
+
+            basicMountController.SetTintColor(mountInstanceData.TintColor);
+            basicMountController.SetEmissionColor(mountInstanceData.EmissionColor);
 
 
             if (SetAsActive)
@@ -303,48 +323,51 @@ namespace EmoMount
             mountInstanceData.MountName = characterMount.MountName;
             mountInstanceData.MountUID = characterMount.MountUID;
             mountInstanceData.MountSpecies = characterMount.SpeciesName;
-            mountInstanceData.BagUID = characterMount.BagContainer.UID;
+            //mountInstanceData.BagUID = characterMount.BagContainer.UID;
             mountInstanceData.CurrentFood = characterMount.MountFood.CurrentFood;
             mountInstanceData.MaximumFood = characterMount.MountFood.MaximumFood;
             mountInstanceData.Position = characterMount.transform.position;
             mountInstanceData.Rotation = characterMount.transform.eulerAngles;
+            mountInstanceData.TintColor = characterMount.CurrentTintColor;
+            mountInstanceData.EmissionColor = characterMount.CurrentEmissionColor;
+
             return mountInstanceData;
         }
-        public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
-        {
-            EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
+        //public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
+        //{
+        //    EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
 
-            Bag itemAsBag = (Bag)basicMountController.BagContainer;
+        //    Bag itemAsBag = (Bag)basicMountController.BagContainer;
         
-            MountInstanceData.ItemSaveData = new List<BasicSaveData>();
-            if (itemAsBag.Container == null)
-            {
-                EmoMountMod.Log.LogMessage($"{basicMountController.MountName} has no bag container.");
-                //no bag
-                return;
-            }
+        //    MountInstanceData.ItemSaveData = new List<BasicSaveData>();
+        //    if (itemAsBag.Container == null)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"{basicMountController.MountName} has no bag container.");
+        //        //no bag
+        //        return;
+        //    }
 
-            MountInstanceData.BagUID = itemAsBag.UID;
+        //    MountInstanceData.BagUID = itemAsBag.UID;
 
-            if (itemAsBag.Container.ItemCount > 0)
-            {
-                foreach (var item in itemAsBag.Container.GetContainedItems())
-                {
-                    EmoMountMod.Log.LogMessage($"Saving {item.UID} {item.Name}");
-                    MountInstanceData.ItemSaveData.Add(new BasicSaveData(item));
-                }
-            }
-        }
-        public void DeSerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
-        {
-            EmoMountMod.Log.LogMessage($"Loading Mount Bag Contents For {MountInstanceData.MountName}");
+        //    if (itemAsBag.Container.ItemCount > 0)
+        //    {
+        //        foreach (var item in itemAsBag.Container.GetContainedItems())
+        //        {
+        //            EmoMountMod.Log.LogMessage($"Saving {item.UID} {item.Name}");
+        //            MountInstanceData.ItemSaveData.Add(new BasicSaveData(item));
+        //        }
+        //    }
+        //}
+        //public void DeSerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
+        //{
+        //    EmoMountMod.Log.LogMessage($"Loading Mount Bag Contents For {MountInstanceData.MountName}");
 
-            if (basicMountController.BagContainer != null)
-            {
-                EmoMountMod.Log.LogMessage($"Loading  {MountInstanceData.ItemSaveData.Count} items");
-                ItemManager.Instance.LoadItems(MountInstanceData.ItemSaveData);
-            }
-        }
+        //    if (basicMountController.BagContainer != null)
+        //    {
+        //        EmoMountMod.Log.LogMessage($"Loading  {MountInstanceData.ItemSaveData.Count} items");
+        //        ItemManager.Instance.LoadItems(MountInstanceData.ItemSaveData);
+        //    }
+        //}
         public bool CharacterHasMount(Character character)
         {
             if (MountControllers.ContainsKey(character))
@@ -398,7 +421,7 @@ namespace EmoMount
             EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");
             basicMountController.DisableNavMeshAgent();
             MountCanvasManager.Instance.UnRegisterMount(basicMountController);
-            basicMountController.DestroyBagContainer();
+            //basicMountController.DestroyBagContainer();
             GameObject.Destroy(basicMountController.gameObject);
             MountControllers.Remove(character);
         }

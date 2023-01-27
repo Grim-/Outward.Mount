@@ -12,6 +12,9 @@ namespace EmoMount
 {
     public class MountSpecies
     {
+        public int WhistleItemID;
+        public int TargetItemID = 4300130;
+
         public string SpeciesName;
         public string SLPackName;
         public string AssetBundleName;
@@ -24,6 +27,15 @@ namespace EmoMount
         public float RotateSpeed = 100f;
 
         public Vector3 CameraOffset;
+
+        public bool GenerateRandomTint = false;
+        public bool GenerateRandomEmission = false;
+
+        [XmlArray("MountColors"), XmlArrayItem(typeof(MountColorChance), ElementName = "ColorChance")]
+        public List<MountColorChance> MountColors { get; set; }
+
+        [XmlArray("MountEmissionColors"), XmlArrayItem(typeof(MountColorChance), ElementName = "EmissionColorChance")]
+        public List<MountColorChance> MountEmissionColors { get; set; }
 
         //Food
         public List<string> FoodTags = new List<string>();
@@ -44,12 +56,19 @@ namespace EmoMount
 
         [XmlArray("MountComponents"), XmlArrayItem(typeof(MountCompProp), ElementName = "MountCompProp")]
         public List<MountCompProp> MountComponents { get; set; }
-        //public List<MountCompProp> MountComponents = new List<MountCompProp>();
 
         public string GetRandomName()
         {
             return Names[UnityEngine.Random.Range(0, Names.Count)];
         }
+    }
+
+    public class MountColorChance
+    {
+        [XmlAttribute("Chance")]
+        public int Chance { get; set; }
+        [XmlAttribute("Color")]
+        public string Color { get; set; }
     }
 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace EmoMount.Custom_SL_Effect
 {
@@ -34,22 +35,34 @@ namespace EmoMount.Custom_SL_Effect
         {
             CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
 
+            if (characterMount != null)
+            {
+                if (characterMount.HasActiveMount && characterMount.ActiveMount.CharacterOwner == _affectedCharacter)
+                {
+                    if (characterMount.ActiveMountDisabled)
+                    {
+                        characterMount.EnableActiveMount();
+                    }
+                    else
+                    {
+                        Vector3 Position = _affectedCharacter.transform.position;
+                        Vector3 Rotation = _affectedCharacter.transform.eulerAngles;
 
-            if (characterMount != null && characterMount.HasActiveMount)
-            {
-                if (characterMount.ActiveMountDisabled)
-                {
-                    characterMount.EnableActiveMount();
-                }
-                else
-                {
-                    characterMount.ActiveMount.Teleport(_affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
-                }
-              
-            }
-            else
-            {
-                EmoMountMod.Log.LogMessage($"Summon Active Mount, no Active Mount found for {_affectedCharacter.Name}.");
+                        characterMount.ActiveMount.Teleport(Position, Rotation, () =>
+                        {
+                            if (EmoMountMod.EnableFastMount.Value)
+                            {
+                                if (characterMount.ActiveMount.CanMount(_affectedCharacter))
+                                {
+                                    characterMount.ActiveMount.MountCharacter(_affectedCharacter);
+                                }
+                            }
+                        });
+
+
+         
+                    }
+                }              
             }
         }
     }

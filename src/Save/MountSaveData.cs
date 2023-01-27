@@ -63,7 +63,7 @@ namespace EmoMount
             {
                 EmoMountMod.Log.LogMessage("Saving Active Mount Data");
                 this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
-                EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
+               // EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
             }
             else
             {
@@ -120,7 +120,7 @@ namespace EmoMount
                 EmoMountMod.Log.LogMessage("Late Loading failed to create a MountController");
                 yield break;
             }
-            EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);
+            //EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);
             yield break;
         }
     }

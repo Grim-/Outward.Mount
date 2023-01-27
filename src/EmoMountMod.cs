@@ -16,7 +16,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-
+using EmoMount.Custom_SL_Effect;
 namespace EmoMount
 {
     [BepInPlugin(GUID, NAME, VERSION)]
@@ -29,7 +29,7 @@ namespace EmoMount
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
         public const string MOUNT_MOVE_TO_KEY = "MountMod_MoveTo_Toggle";
 
-        public static int[] MountWhistleIDs = new int[]
+        public int[] MountWhistleIDs = new int[]
         {
             -26100,
             -26101,
@@ -52,8 +52,11 @@ namespace EmoMount
             -26118
         };
 
+        public static int SummonMountSkillID = -26200;
+        public static int DismissMountSkillID = -26201;
+
         public static float BAG_LOAD_DELAY = 10f;
-        public static float SCENE_LOAD_DELAY = 10f;
+        public static float SCENE_LOAD_DELAY = 2f;
         public static bool Debug = false;
 
         internal static ManualLogSource Log;
@@ -87,6 +90,8 @@ namespace EmoMount
 
         public static ConfigEntry<float> EncumberenceSpeedModifier;
 
+
+        public static ConfigEntry<bool> EnableFastMount;
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
 
@@ -135,12 +140,60 @@ namespace EmoMount
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
 
+            EnableFastMount = Config.Bind<bool>(NAME, "Enable Fast Mount", false, "If enabled the summon mount skill will instantly summon and mount you.");
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
         }
 
         private void InitializeCanvas()
         {
+
+            Dictionary<string, Color> ColorChoices = new Dictionary<string, Color>();
+            ColorChoices.Add("Red", Color.red);
+            ColorChoices.Add("Green", Color.red);
+            ColorChoices.Add("Blue", Color.blue);
+            ColorChoices.Add("Cyan", Color.cyan);
+            ColorChoices.Add("Purple", Color.magenta);
+            ColorChoices.Add("Yellow", Color.yellow);
+            ColorChoices.Add("White", Color.white);
+            ColorChoices.Add("Black", Color.black);
+            ColorChoices.Add("Reset", Color.clear);
+
+
+            int StartingID = 26280;
+
+            foreach (var item in ColorChoices)
+            {
+                SL_Item ColorBerryItem = new SL_Item()
+                {
+                    Target_ItemID = 4100320,
+                    New_ItemID = -StartingID,
+                    Name = $"Color Berry ({item.Key})",
+                    Description = "Use this to change your mounts tint color.",
+                    EffectTransforms = new SL_EffectTransform[]
+                    {
+                        new SL_EffectTransform()
+                        {
+                            TransformName = "Normal",
+                            Effects = new SL_Effect[]
+                            {
+                                new SL_ChangeMountTint()
+                                {
+                                    TintColor = item.Value
+                                }
+                            }
+                        }
+                    }
+
+                };
+
+                ColorBerryItem.ApplyTemplate();
+                StartingID++;
+            }
+
+
+
+
             Log.LogMessage("EmoMountMod Initalizing Canvas..");
             GameObject CanvasPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "MountCanvas");
 
@@ -309,14 +362,14 @@ namespace EmoMount
                 "Can you look after my current mount?",
                 "I want to retrieve a mount.",
                 "Can you teach me some mount skills?",
-                "Give me another multi choice (this option shows up in the morning only)"
+                "Can you recolor my mount?"
             },
             new ConditionTask[]
-            {
+            {                
+                new CharacterHasActiveMountConditionNode(),
+                new CharacterHasNOActiveMountConditionNode(),
                 null,
-                null,
-                null,
-                null
+                new CharacterHasActiveMountConditionNode()
              });
    
             //you must connect the inital statement and inital node
@@ -328,22 +381,20 @@ namespace EmoMount
 
             MultipleChoiceNodeExt secondChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
             {
-                "opt 1",
-                "opt 2",
+                "Red?",
+                "Green?",
+                "Blue?",
+                "Purple?"
             });
 
 
             //Last option of the first multi-choice takes you to the second multi choice
             dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, "Heres watcha do...", secondChoice);
 
-
-
-            //Option 1 will say 'Ending Conversation' then end the dialogue.
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 0, "Ending the conversation", new FinishNode());
-            //Option 2 chains three statements together, then ends the conversation.
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 1, "Going back to start of conversation", null)
-                .ConnectTo(graph, dialogueTreeBuilder.CreateStatementNode("Ok I have a little more to say"))
-                .ConnectTo(graph, dialogueTreeBuilder.CreateStatementNode("PRAISE CTHULHU")).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 0, "Yup", new SetMountColor(Color.red)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 1, "Yup", new SetMountColor(Color.green)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 2, "Yup", new SetMountColor(Color.blue)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 3, "Yup", new SetMountColor(Color.magenta)).ConnectTo(graph, new FinishNode());
 
         }
         private void Old_BuildDialouge(DialogueTree graph, Character character)
@@ -449,7 +500,7 @@ namespace EmoMount
 
         public static int GetRandomWhistleID()
         {
-            return EmoMountMod.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.MountWhistleIDs.Length)];
+            return EmoMountMod.Instance.MountWhistleIDs[UnityEngine.Random.Range(0, EmoMountMod.Instance.MountWhistleIDs.Length)];
         }
     }
 }
