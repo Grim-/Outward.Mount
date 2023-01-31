@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -57,22 +58,23 @@ namespace EmoMount
             foreach (var item in filePaths)
             {
                 string file = item;
-                EmoMountMod.Log.LogMessage($"MountManager MountSpecies Reading {file} data.");
+                //EmoMountMod.Log.LogMessage($"MountManager MountSpecies Reading {file} data.");
                 MountSpecies mountSpecies = DeserializeFromXML<MountSpecies>(file);
 
                 if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
                 {
-                    EmoMountMod.Log.LogMessage($"MountManager Creating Species Definition...");
-                    EmoMountMod.Log.LogMessage($"Species Name : {mountSpecies.SpeciesName}");
-                    EmoMountMod.Log.LogMessage($"TargetItemID : { mountSpecies.TargetItemID}");
-                    EmoMountMod.Log.LogMessage($"New_ItemID : { mountSpecies.WhistleItemID}");
+                    //EmoMountMod.Log.LogMessage($"MountManager Creating Species Definition...");
+                    ///EmoMountMod.Log.LogMessage($"Species Name : {mountSpecies.SpeciesName}");
+                    //EmoMountMod.Log.LogMessage($"TargetItemID : { mountSpecies.TargetItemID}");
+                    //EmoMountMod.Log.LogMessage($"WhistleItemID : { mountSpecies.WhistleItemID}");
 
                     string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
-
+                    //EmoMountMod.Log.LogMessage($"Color Choices : { mountSpecies.MountColors.Count}");
+                    //EmoMountMod.Log.LogMessage($"Emission Color Choices : { mountSpecies.MountEmissionColors.Count}");
 
                     if (mountSpecies.WhistleItemID != -1 || mountSpecies.WhistleItemID != 0)
                     {
-                        EmoMountMod.Log.LogMessage($"MountManager Creating Whistle Item For Species");
+                        //EmoMountMod.Log.LogMessage($"MountManager Creating Whistle Item For Species");
                         SL_Item WhistleItem = new SL_Item()
                         {
                             Target_ItemID = mountSpecies.TargetItemID,
@@ -123,7 +125,6 @@ namespace EmoMount
 
             return null;
         }
-
         public T DeserializeFromXML<T>(string path)
         {
             var assembly = Assembly.Load("EmoMount");
@@ -136,12 +137,10 @@ namespace EmoMount
             reader.Close();
             return deserialized;
         }
-
         private bool HasFolder(string FolderLocation)
         {
             return Directory.Exists(FolderLocation);
         }
-
         #region Controller
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from the XML Definition.

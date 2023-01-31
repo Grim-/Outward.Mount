@@ -40,6 +40,36 @@ namespace EmoMount
     }
 
 
+    //[HarmonyPatch(typeof(DualMeleeWeapon), nameof(DualMeleeWeapon.OnEquip))]
+    //public class DualMeleeWeaponOnEquip
+    //{
+    //    static void PostFix(DualMeleeWeapon __instance, Character _char)
+    //    {
+    //        EmoMountMod.Log.LogMessage("DualMeleeWeaponProcessVisuals Patch");
+
+    //        Transform OurPrefab = __instance.EquippedVisuals.transform.Find("FlamingZweihander(Clone)");
+
+    //        Transform ParentedLeftHandModels = OurPrefab.Find("LeftHandModel");
+
+    //        EmoMountMod.Log.LogMessage("FOUND");
+    //        EmoMountMod.Log.LogMessage(OurPrefab);
+    //        EmoMountMod.Log.LogMessage(ParentedLeftHandModels);
+
+    //        if (ParentedLeftHandModels)
+    //        {
+    //            __instance.m_leftHandModel = ParentedLeftHandModels;
+
+    //            if (__instance.m_leftHandModel)
+    //            {
+    //                __instance.m_visualSplit = true;
+    //                __instance.m_leftHandModel.SetParent(__instance.m_leftHandFollow);
+    //                __instance.m_leftHandModel.localPosition = new Vector3(-0.0076f, 0.00122f, -0.008f);
+    //                __instance.m_leftHandModel.localRotation = Quaternion.Euler(177.41f, 86.934f, 177.792f);
+    //            }
+    //        }
+    //    }
+    //}
+
     [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3) })]
     public class CharacterTeleport
     {

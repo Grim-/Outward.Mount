@@ -57,6 +57,14 @@ namespace EmoMount
         [XmlArray("MountComponents"), XmlArrayItem(typeof(MountCompProp), ElementName = "MountCompProp")]
         public List<MountCompProp> MountComponents { get; set; }
 
+
+
+        public Color GetRandomColor()
+        {
+            return WeightedItem<MountColorChance>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(MountColors));
+        }
+
+
         public string GetRandomName()
         {
             return Names[UnityEngine.Random.Range(0, Names.Count)];

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace EmoMount.Mount_Components
 {
-    public class GlideComp : MountComp
+    public class SprintComp : MountComp
     {
         public float SprintModifier = 2f;
 
@@ -23,19 +18,12 @@ namespace EmoMount.Mount_Components
                 {
                     Controller.MoveSpeedModifier = 1f;
                 }
-
-                if (ControlsInput.DodgeButtonDown(Controller.CharacterOwner.OwnerPlayerSys.PlayerID))
-                {
-                    Controller.transform.position += new UnityEngine.Vector3(0, 2.5f, 0);
-                }
             }
-
-            
         }
     }
 
-    [XmlType("GlideCompProp")]
-    public class GlideCompProp : MountCompProp
+    [XmlType("SprintCompProp")]
+    public class SprintCompProp : MountCompProp
     {
         [XmlElement("SprintModifier")]
         public float SprintModifier;

@@ -1,4 +1,6 @@
 ﻿using SideLoader;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,6 +53,17 @@ namespace EmoMount
             return _affectedCharacter.transform.position + PositionOffset;
         }
 
+        public static void DelayDo(Action OnAfterDelay, float DelayTime)
+        {
+            EmoMountMod.Instance.StartCoroutine(DoAfterDelay(OnAfterDelay, DelayTime));
+        }
+
+        public static IEnumerator DoAfterDelay(Action OnAfterDelay, float DelayTime)
+        {
+            yield return new WaitForSeconds(DelayTime);
+            OnAfterDelay.Invoke();
+            yield break;
+        }
 
         public static List<T> GetTypeFromColliders<T>(Collider[] colliders) where T : Component
         {

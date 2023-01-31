@@ -99,7 +99,7 @@ namespace EmoMount
         public static ConfigEntry<float> WeightLimitOverride;
 
         public static EmoMountMod Instance;
-
+        public static MountQuestManager QuestManager;
 
         public Action<float> OnGameHourPassed;
 
@@ -109,6 +109,7 @@ namespace EmoMount
         {
             Log = this.Logger;
             Instance = this;
+            QuestManager = new MountQuestManager();
             //this cannot be the way lol
             RootFolder = this.Info.Location.Replace("EmoMount.dll", "");
             InitKeybinds();
@@ -147,6 +148,7 @@ namespace EmoMount
 
         private void InitializeCanvas()
         {
+          
 
             Dictionary<string, Color> ColorChoices = new Dictionary<string, Color>();
             ColorChoices.Add("Red", Color.red);

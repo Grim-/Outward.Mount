@@ -17,11 +17,14 @@ namespace EmoMount
         public Type GameModel => typeof(SLEx_SpawnMount);
 
         public string SpeciesName;
-
+        public bool GenerateRandomTint = false;
+        public bool GenerateRandomEmission = false;
         public override void ApplyToComponent<T>(T component)
         {
             SLEx_SpawnMount comp = component as SLEx_SpawnMount;
             comp.SpeciesName = SpeciesName;
+            comp.GenerateRandomTint = GenerateRandomTint;
+            comp.GenerateRandomEmission = GenerateRandomEmission;
         }
 
         public override void SerializeEffect<T>(T effect)
@@ -37,6 +40,9 @@ namespace EmoMount
 
         public string SpeciesName;
 
+        public bool GenerateRandomTint = false;
+        public bool GenerateRandomEmission = false;
+
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
             if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
@@ -47,9 +53,18 @@ namespace EmoMount
                 {
                     BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
 
-                    if (mountSpecies.GenerateRandomTint) basicMountController.SetTintColor(WeightedItem<Color>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(mountSpecies.MountColors)));
-                    if (mountSpecies.GenerateRandomEmission) basicMountController.SetEmissionColor(WeightedItem<Color>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(mountSpecies.MountEmissionColors)));
+                    if (mountSpecies.GenerateRandomTint || GenerateRandomTint)
+                    {
+                        Color ChosenColor = WeightedItem<Color>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(mountSpecies.MountColors));
+                        basicMountController.SetTintColor(ChosenColor);
+                    }
 
+                    if (mountSpecies.GenerateRandomEmission || GenerateRandomEmission)
+                    {
+                        Color ChosenColor = WeightedItem<Color>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(mountSpecies.MountEmissionColors)) * 3f;
+                        basicMountController.SetEmissionColor(ChosenColor);
+                    }
+                
                     basicMountController.SetMountUI(MountCanvasManager.Instance.RegisterMount(basicMountController));
                 }
                 else
