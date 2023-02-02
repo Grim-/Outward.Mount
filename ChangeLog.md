@@ -5,8 +5,7 @@ Mount Mod 1.1.0 Change Log (Aka the changes I remember)
 
 - The acquisition of the base mod mounts stays the same, they are rare random world drops. 
 
-- Newly added mounts from ninedots, can be acquired in various ways, some are bought, some are found and some are hatched from eggs.
-- The basic pearl
+- Newly added mounts from ninedots, can be acquired in various ways some are bought, some are found and some are hatched from eggs.
 
 - Dismount/Revert Form are both now bound to whatever key you use for interacting.
 
@@ -26,11 +25,11 @@ There are also two mount components to force a specific species to spawn in a ce
 Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs I would need! 
 Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and the lead designer Devo was happy to share their work!
 
-This request started with asking for a single Coral Horn prefab and we ended up with 11(!) prefabs from ninedots they went above and beyond I'd just like to acknowledge that.
+This request started with asking for a single Coral Horn prefab and we ended up with 12(!) prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 
-#### Mount Acquisition
-##### Chersonese
+####  Acquisition
+#### Chersonese
 - Pearl Bird 
 Bought from the Stable Master 
 
@@ -38,35 +37,41 @@ Bought from the Stable Master
 drop as eggs from Pearl Birds and Jewel Birds.
 
 - Black Pearl Bird 
-Bought from the Harmattan Stable Master after completing (SomeCierzoImportantQuest)
+Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 
-##### Berg
-- Alpha Coral Horn 
+#### Berg
 - Coral Horn Doe 
+Bought from the Stable Master 
+- Alpha Coral Horn 
+Bought from the Stable Master after completing (SomeBergImportantQuest)
 - Manticore 
+drop as eggs from manticores and royal manticores.
 
-##### Hallowed Marsh
+#### Hallowed Marsh
 - Alpha Tuanosaur 
+Bought from the Stable Master after completing (SomeBergImportantQuest) or rarely as eggs.
 - Tuanosaur 
+Bought from the Stable Master 
 
-##### Harmattan
+#### Harmattan
 - Beast Golem 
-Bought from the Harmattan Stable Master
+Bought from the Stable Master
 - Beast Golem Alternate(Boss model)
-Bought from the Harmattan Stable Master after completing (SomeHarmattanImportantQuest)
+Crafted from 4 'Pristine Beast Golem Parts' recipe learnt from Stable Master.
 
 
-##### Levant
-
-- Obsidian Elemental 
+#### Levant
 - Beetle
+Bought from the Stable Master 
+- Obsidian Elemental 
+Can be summoned into existenance from an Obsidian core(Crafting recipe + 3x Fire Stone), rarely drops from Obsidian elementals.
 - Sand Shark
+Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
-
-
-#### Mount Components
+### Mount Components
  - SprintComp
-  These just adds the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod.
+
+ These just adds the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod.
 
 ```xml
 <MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
@@ -75,6 +80,7 @@ Bought from the Harmattan Stable Master after completing (SomeHarmattanImportant
 ```
 
 - GlideComp
+
 This just adds the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod, it will also lift a little off the ground.
 ```xml
 <MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
@@ -117,7 +123,7 @@ This just adds the ability to sprint to the mounts, the speed bonus can be modif
 
 #### Coloring
 
-- All of the Outward Base Game mount models can now be re-tinted, this does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them more on that later).
+- All of the Outward Base Game mount models can now be re-tinted, this does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them with the components).
 
 - There are 9 different varities of 'color berries' these will be bought from the stable masters in any city for X silver (the berry that resets to default color will be free)
 
@@ -127,8 +133,10 @@ Special thanks to @Schnabeldoktor another fellow modder who graciously did the i
 #### Mount 'Transformations'
 - Added transformation active skills for all nine base game mounts, instead of whistling and having your mount accompany you, you can transform into the form of that mount while out of combat when you revert this form is destroyed, as a downside this means you lose access to the stash from your mount, but you no longer need to worry about feeding your mount.
 
+Another special thanks to @Libre comme l'air of the modding discord for creating the skill icons, and the new Summon Active Mount and Dismiss Mount skill icons.
 
-I have only implemented the XML for these skills for the Outward mount models but you can edit them to use any of the mounts in this modin this mod, this is easily done with SideLoader or simply editing the XML file.
+
+I have only implemented the XML for these skills for the Outward mount models but you can edit them to use any of the mounts in this mod, this is easily done with SideLoader or simply editing the XML file, be sure to specify a New_ItemID in the XML if you do not wish to overwrite a current one. 
 
 #### Quests
 
