@@ -3,10 +3,19 @@ Mount Mod 1.1.0 Change Log (Aka the changes I remember)
 
  ### Mod Information / Mechanics
 
+- The acquisition of the base mod mounts stays the same, they are rare random world drops. 
+
+- Newly added mounts from ninedots, can be acquired in various ways, some are bought, some are found and some are hatched from eggs.
+
 - Dismount/Revert Form are both now bound to whatever key you use for interacting.
 
 - Bag is gone, replaced by letting the player access their stash this is a much more stable method, this has the benefit of allowing you to access the same storage from any mount, there will be a config option to enable/disable access to the player stash.
 
+- Added a small collection of components that you can add to the XML of a specific mount species, the mod itself does not make much use of these, they are provided to enable users to have more control over their mounts apperance and behaviours without having to create a new species from scratch.
+
+ Examples such as the ability to sprint while mounted (SprintComp, GlideComp), or allowing creatures to detect proximity to items and enemies and alert you visually(DetectionComp).
+
+There are also two mount components to force a specific species to spawn in a certain color, one for the default tinting and another for the emission (glowing bits).
 
 
 ### Mounts
@@ -18,6 +27,11 @@ Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and the
 
 This request started with asking for a single Coral Horn prefab and we ended up with 11(!) prefabs from ninedots they went above and beyond I'd just like to acknowledge that.
 
+
+#### Mount Components
+ - SprintComp & GlideComp
+
+
 #### Coloring
 
 - All of the Outward Base Game mount models can now be re-tinted, this does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them more on that later).
@@ -26,11 +40,18 @@ This request started with asking for a single Coral Horn prefab and we ended up 
 
 Special thanks to @Schnabeldoktor another fellow modder who graciously did the icons for these berries, something I am utterly incapable at.
 
+
+#### Mount 'Transformations'
+- Added transformation active skills for all nine base game mounts, instead of whistling and having your mount accompany you, you can transform into the form of that mount while out of combat when you revert this form is destroyed, as a downside this means you lose access to the stash from your mount, but you no longer need to worry about feeding your mount.
+
+
+I have only implemented the XML for these skills for the Outward mount models but you can edit them to use any of the mounts in this modin this mod, this is easily done with SideLoader or simply editing the XML file.
+
 #### Quests
 
-Certain creatures can now drop eggs and infact thats the only way to get certain mounts.
+- Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
+These eggs will give you a quest to wait 12 hours then the egg hatches, you cannot hatch more than one species of egg at a time, this only applies to certain species not all of them. 
 
-These eggs will give you a quest to wait 12 hours then the egg hatches, you cannot hatch more than one species of egg at a time, this only applies to certain species not all of them. (Pearl Bird, Manticore, Tuanosaur)
+*If you have a Pearl Bird Egg quest you won't get another until that one is complete, **if it is a Pearl Bird egg then there is a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)** and some of you might even be ancient enough to get the reference.*
 
-
-If you have a Pearl Bird Egg quest you won't get another until that one is complete, if it is a Pearl Bird egg then there is a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold) and some of you might even be ancient enough to get the reference.
+- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental can all spawn with random colors for their emission (the parts of the model that glow).
