@@ -33,47 +33,47 @@ This request started with asking for a single Coral Horn prefab and we ended up 
   These just add the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod.
 
 ```xml
-		<MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
-				<SprintModifier>2</SprintModifier>
-		</MountCompProp>
+<MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
+<SprintModifier>2</SprintModifier>
+</MountCompProp>
 ```
 
 ```xml
-		<MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
-				<SprintModifier>2</SprintModifier>
-		</MountCompProp>
+<MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
+<SprintModifier>2</SprintModifier>
+</MountCompProp>
 ```
 
 
 - ColorableComp
 
 ```xml
-		<MountCompProp CompName="ColorableComp" xsi:type="ColorableCompProp">
-				<TintColor>#ff00ff</TintColor>
-   	<EmissionColor>#ff00ff</EmissionColor>
-		</MountCompProp>
+<MountCompProp CompName="ColorableComp" xsi:type="ColorableCompProp">
+<TintColor>#ff00ff</TintColor>
+<EmissionColor>#ff00ff</EmissionColor>
+</MountCompProp>
 ```
 
 - DetectionComp
 ```xml
-			<MountCompProp CompName="DetectionComp" xsi:type="DetectionCompProp">
-					<DetectionRadius>50</DetectionRadius>
-					<BaseIntensity>2</BaseIntensity>
-					<MinIntensity>0</MinIntensity>
-					<MaxIntensity>25</MaxIntensity>
-					<DetectionInterval>0.5</DetectionInterval>
-			</MountCompProp>
+<MountCompProp CompName="DetectionComp" xsi:type="DetectionCompProp">
+<DetectionRadius>50</DetectionRadius>
+<BaseIntensity>2</BaseIntensity>
+<MinIntensity>0</MinIntensity>
+<MaxIntensity>25</MaxIntensity>
+<DetectionInterval>0.5</DetectionInterval>
+</MountCompProp>
 ```
 
 
 -EmissionBlendComp
 
 ```xml
-		<MountCompProp CompName="EmissionBlendComp" xsi:type="EmissionBlendCompProp">
-			<StartColor>#ff00ff</StartColor>
-   <EndColor>#ff00ff</EndColor>
-   <BlendTime>10</BlendTime>
-		</MountCompProp>
+<MountCompProp CompName="EmissionBlendComp" xsi:type="EmissionBlendCompProp">
+<StartColor>#ff00ff</StartColor>
+<EndColor>#ff00ff</EndColor>
+<BlendTime>10</BlendTime>
+</MountCompProp>
 ```
 
 
