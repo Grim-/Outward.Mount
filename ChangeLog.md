@@ -1,3 +1,4 @@
+
 Mount Mod 1.1.0 Change Log (Aka the changes I remember)
 
 
@@ -69,9 +70,11 @@ Can be summoned into existenance from an Obsidian core(Crafting recipe + 3x Fire
 Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
 ### Mount Components
- - SprintComp
 
- These just adds the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod.
+> SprintComp
+> 
+>  These just adds the ability to sprint to the mounts, the speed bonus
+> can be modified as are most things in this mod.
 
 ```xml
 <MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
@@ -79,9 +82,12 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 </MountCompProp>
 ```
 
-- GlideComp
+> GlideComp
+> 
+> This just adds the ability to sprint to the mounts, the speed bonus
+> can be modified as are most things in this mod, it will also lift a
+> little off the ground.
 
-This just adds the ability to sprint to the mounts, the speed bonus can be modified as are most things in this mod, it will also lift a little off the ground.
 ```xml
 <MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
 <SprintModifier>2</SprintModifier>
@@ -89,7 +95,10 @@ This just adds the ability to sprint to the mounts, the speed bonus can be modif
 ```
 
 
-- ColorableComp
+> ColorableComp 
+> 
+> Forces a species to spawn in, as a certain color, the
+> color is in hexadecimal format.
 
 ```xml
 <MountCompProp CompName="ColorableComp" xsi:type="ColorableCompProp">
@@ -98,7 +107,15 @@ This just adds the ability to sprint to the mounts, the speed bonus can be modif
 </MountCompProp>
 ```
 
-- DetectionComp
+> DetectionComp 
+> 
+> Enables the mount to periodically detect Items,
+> Gatherables and Enemies around you, this is visually represented by
+> the glowing parts of the mount, yellow is for loot, green for
+> gatherables and red for enemies, the stronger the glow the closer they
+> are, the glow will double in strength if you are facing towards the
+> nearest detected target.
+
 ```xml
 <MountCompProp CompName="DetectionComp" xsi:type="DetectionCompProp">
 <DetectionRadius>50</DetectionRadius>
@@ -110,7 +127,8 @@ This just adds the ability to sprint to the mounts, the speed bonus can be modif
 ```
 
 
--EmissionBlendComp
+> EmissionBlendComp Blends between the two specified colors over the
+> specified time, just to look pretty.
 
 ```xml
 <MountCompProp CompName="EmissionBlendComp" xsi:type="EmissionBlendCompProp">
@@ -125,7 +143,7 @@ This just adds the ability to sprint to the mounts, the speed bonus can be modif
 
 - All of the Outward Base Game mount models can now be re-tinted, this does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them with the components).
 
-- There are 9 different varities of 'color berries' these will be bought from the stable masters in any city for X silver (the berry that resets to default color will be free)
+- There are 9 different varities of **'color berries'** these will be bought from the stable masters in any city for X silver (the berry that resets to default color will be free)
 
 Special thanks to @Schnabeldoktor another fellow modder who graciously did the icons for these berries, something I am utterly incapable at.
 
@@ -140,11 +158,12 @@ I have only implemented the XML for these skills for the Outward mount models bu
 
 #### Quests
 
-- You can build your own beast golem by finding the parts scattered around harmattan.
+- You can build your own beast golem by finding the 'Pristine Beast Golem Part's scattered around harmattan.
 
 - Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
+- 
 These eggs will give you a quest to wait 12 hours then the egg hatches, you cannot hatch more than one species of egg at a time, this only applies to certain species not all of them. 
 
 *If you have a Pearl Bird Egg quest you won't get another until that one is complete, **if it is a Pearl Bird egg then there is a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)** and some of you might even be ancient enough to get the reference.*
 
-- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental can all spawn with random colors for their emission (the parts of the model that glow).
+- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental and Sand Sharks can all spawn with random colors for their emission (the parts of the model that glow).
