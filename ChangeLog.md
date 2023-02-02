@@ -6,11 +6,12 @@ Mount Mod 1.1.0 Change Log (Aka the changes I remember)
 
 - The acquisition of the base mod mounts stays the same, they are rare random world drops. 
 
-- Newly added mounts from ninedots, can be acquired in various ways some are bought, some are found and some are hatched from eggs.
+- Newly added mounts from ninedots, can be acquired in various ways some are bought, some are found and some are hatched from eggs and some are crafted.
 
-- Dismount/Revert Form are both now bound to whatever key you use for interacting.
+- Dismount/Revert Form are both now bound to whatever key you use for interacting by default.
 
-- Bag is gone, replaced by letting the player access their stash this is a much more stable method, this has the benefit of allowing you to access the same storage from any mount, there will be a config option to enable/disable access to the player stash.
+- Bag is gone!
+This has been replaced by letting the player access their stash this is a much more stable method, this has the benefit of allowing you to access the same storage from any mount, there will be a config option to enable/disable access to the player stash.
 
 - Added a small collection of components that you can add to the XML of a specific mount species, the mod itself does not make much use of these, they are provided to enable users to have more control over their mounts apperance and behaviours without having to create a new species from scratch.
 
