@@ -23,55 +23,65 @@ There are also two mount components to force a specific species to spawn in a ce
 
 - Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental, Beetle, Sand Shark from the base game as mounts. 
 
-Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs I would need! 
-Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and the lead designer Devo was happy to share their work!
+**Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs I would need!** 
 
-This request started with asking for a single Coral Horn prefab and we ended up with 12(!) prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
+**Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and their lead designer Devo was happy to share their work!**
+
+This request started with asking for a single Coral Horn prefab and we ended up with **12(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 
 ####  Acquisition
-#### Chersonese
-- Pearl Bird 
-Bought from the Stable Master 
+### Chersonese
 
--Pearl Bird Color variations 
-drop as eggs from Pearl Birds and Jewel Birds.
-
-- Black Pearl Bird 
+> - **Pearl Bird**  
+> Bought from the Stable Master
+> 
+> - **Pearl Bird Color variations**  
+> drop as eggs from Pearl Birds and Jewel Birds.
+> 
+> - **Black Pearl Bird** 
 Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 
-#### Berg
-- Coral Horn Doe 
-Bought from the Stable Master 
-- Alpha Coral Horn 
-Bought from the Stable Master after completing (SomeBergImportantQuest)
-- Manticore 
-drop as eggs from manticores and royal manticores.
-
-#### Hallowed Marsh
-- Alpha Tuanosaur 
-Bought from the Stable Master after completing (SomeBergImportantQuest) or rarely as eggs.
-- Tuanosaur 
-Bought from the Stable Master 
-
-#### Harmattan
-- Beast Golem 
-Bought from the Stable Master
-- Beast Golem Alternate(Boss model)
-Crafted from 4 'Pristine Beast Golem Parts' recipe learnt from Stable Master.
 
 
-#### Levant
-- Beetle
-Bought from the Stable Master 
-- Obsidian Elemental 
-Can be summoned into existenance from an Obsidian core(Crafting recipe + 3x Fire Stone), rarely drops from Obsidian elementals.
-- Sand Shark
-Bought from the Stable Master after completing (SomeLevantImportantQuest)
+
+### Berg
+> - **Coral Horn Doe**  
+> Bought from the Stable Master
+> 
+> - **Alpha Coral Horn**  
+> Bought from the Stable Master after completing (SomeBergImportantQuest)
+> 
+> - **Manticore**  
+> drop as eggs from manticores and royal manticores.
+
+### Hallowed Marsh
+> - **Alpha Tuanosaur**  
+> Bought from the Stable Master after completing (SomeBergImportantQuest) or rarely as eggs.
+> 
+> - **Tuanosaur**  
+> Bought from the Stable Master
+
+### Harmattan
+> - **Beast Golem**  
+> Bought from the Stable Master
+> 
+> - **Beast Golem Alternate(Boss model)**  
+> Crafted from 4 'Pristine Beast Golem Parts' recipe learnt from Stable Master.
+
+### Levant
+> - **Beetle**  
+> Bought from the Stable Master
+> 
+> - **Obsidian Elemental**  
+> Can be summoned into existenance from an Obsidian core(Crafting recipe + 3x Fire Stone), rarely drops from Obsidian elementals.
+> 
+> - **Sand Shark**  
+> Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
 ### Mount Components
 
-> SprintComp
+ SprintComp
 > 
 >  These just adds the ability to sprint to the mounts, the speed bonus
 > can be modified as are most things in this mod.
@@ -82,7 +92,7 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 </MountCompProp>
 ```
 
-> GlideComp
+ GlideComp
 > 
 > This just adds the ability to sprint to the mounts, the speed bonus
 > can be modified as are most things in this mod, it will also lift a
@@ -95,7 +105,7 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 ```
 
 
-> ColorableComp 
+ ColorableComp 
 > 
 > Forces a species to spawn in, as a certain color, the
 > color is in hexadecimal format.
@@ -107,7 +117,7 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 </MountCompProp>
 ```
 
-> DetectionComp 
+ DetectionComp 
 > 
 > Enables the mount to periodically detect Items,
 > Gatherables and Enemies around you, this is visually represented by
@@ -127,7 +137,8 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 ```
 
 
-> EmissionBlendComp Blends between the two specified colors over the
+ EmissionBlendComp 
+ >Blends between the two specified colors over the
 > specified time, just to look pretty.
 
 ```xml
@@ -141,29 +152,44 @@ Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
 #### Coloring
 
-- All of the Outward Base Game mount models can now be re-tinted, this does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them with the components).
+- All of the Outward Base Game mount models can now be re-tinted.
+*This does not look so great on some as others so this is disabled by default (but you can force any color you want on any of them with the components).*
 
 - There are 9 different varities of **'color berries'** these will be bought from the stable masters in any city for X silver (the berry that resets to default color will be free)
 
-Special thanks to @Schnabeldoktor another fellow modder who graciously did the icons for these berries, something I am utterly incapable at.
+**Special thanks to @Schnabeldoktor another fellow modder who graciously did the icons for these berries, something I am utterly incapable at.**
 
 
 #### Mount 'Transformations'
-- Added transformation active skills for all nine base game mounts, instead of whistling and having your mount accompany you, you can transform into the form of that mount while out of combat when you revert this form is destroyed, as a downside this means you lose access to the stash from your mount, but you no longer need to worry about feeding your mount.
 
-Another special thanks to @Libre comme l'air of the modding discord for creating the skill icons, and the new Summon Active Mount and Dismiss Mount skill icons.
+ Added transformation active skills for all nine base game mounts, instead of whistling and having your mount accompany you, you can transform into the form of that mount while out of combat when you revert (using the **interact** key) this form is destroyed.
+ 
+A natural downside to this means you lose access to the stash made available by your mount normally, but you no longer need to worry about feeding your mount, the form still acts like a mounted mount in every other regard.
+
+'mmo' style mounts were requested more than once, this is my compromise.
+
+**Another special thanks to @Libre comme l'air of the modding discord for creating the skill icons, and the new Summon Active Mount and Dismiss Mount skill icons.**
 
 
-I have only implemented the XML for these skills for the Outward mount models but you can edit them to use any of the mounts in this mod, this is easily done with SideLoader or simply editing the XML file, be sure to specify a New_ItemID in the XML if you do not wish to overwrite a current one. 
+I have only implemented the XML for these skills for the Outward mount models.
+But you can edit them to use any of the mounts in this mod, this is easily done with SideLoader or simply editing the XML file, be sure to specify a New_ItemID in the XML if you do not wish to overwrite a current one. 
 
 #### Quests
 
-- You can build your own beast golem by finding the 'Pristine Beast Golem Part's scattered around harmattan.
+##### Build a Beast
+You can build your own beast golem by finding the 'Pristine Beast Golem Part's scattered around harmattan.
 
-- Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
-- 
-These eggs will give you a quest to wait 12 hours then the egg hatches, you cannot hatch more than one species of egg at a time, this only applies to certain species not all of them. 
+##### Final Fantasy Aurai
+Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
 
-*If you have a Pearl Bird Egg quest you won't get another until that one is complete, **if it is a Pearl Bird egg then there is a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)** and some of you might even be ancient enough to get the reference.*
+*If you have a Pearl Bird Egg quest you won't get another until that one is complete.
 
-- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental and Sand Sharks can all spawn with random colors for their emission (the parts of the model that glow).
+ **Pearl Bird eggs have a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)**
+
+These eggs will give you a quest to wait 12 hours then the egg hatches you cannot hatch more than one species of egg at a time.
+
+A small bug present currently is the quest timer for the eggs hatching is reset every time you load a save, I am working on this but it is rather minor.
+
+##### Note :
+
+- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental and Sand Sharks can all spawn with random colors for their emission (the parts of the model that glow) this change be forcibly changed using the ColorableComp!
