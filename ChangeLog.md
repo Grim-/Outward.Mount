@@ -23,7 +23,7 @@ There are also two mount components to force a specific species to spawn in a ce
 - Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental, Beetle from the base game as mounts. 
 
 Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs I would need! 
-Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and the lead designer Devo was happy to share his work!
+Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and the lead designer Devo was happy to share their work!
 
 This request started with asking for a single Coral Horn prefab and we ended up with 11(!) prefabs from ninedots they went above and beyond I'd just like to acknowledge that.
 
