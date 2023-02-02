@@ -78,7 +78,7 @@ namespace EmoMount
 
             MountController.transform.forward = Vector3.RotateTowards(MountController.transform.forward, MountController.transform.forward + MountController.CameraRelativeInputNoY, MountController.RotateSpeed * Time.deltaTime, 6f);
             MountController.Controller.SimpleMove(MountController.CameraRelativeInput.normalized * MountController.ActualMoveSpeed);
-
+           
             UpdateAnimator(MountController);
             UpdateMenuInputs(MountController);
         }
@@ -86,7 +86,11 @@ namespace EmoMount
         public void UpdateAnimator(BasicMountController MountController)
         {
             MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
-            MountController.Animator.SetFloat("Move Z", MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0 ? 1f : 0f, 2f, 0.75f);
+
+
+            float TargetZ = MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0 ? 1f : 0f;
+
+            MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 1.2f);
         }
 
         private void UpdateMenuInputs(BasicMountController MountController)

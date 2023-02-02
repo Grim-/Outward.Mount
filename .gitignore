@@ -348,3 +348,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+XML/SideLoader/AssetBundles/emomountbundle
+XML/SideLoader/AssetBundles/mount_dragonboar
+XML/SideLoader/AssetBundles/mount_golem
+XML/SideLoader/AssetBundles/mount_lizard
+XML/SideLoader/AssetBundles/mount_original
+XML/SideLoader/AssetBundles/mount_raptor
+XML/SideLoader/AssetBundles/mount_wolf

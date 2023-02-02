@@ -59,7 +59,7 @@ namespace EmoMount
 
         private void SaveActiveMount(Character character, CharacterMount characterMount)
         {
-            if (characterMount.HasActiveMount)
+            if (characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
             {
                 EmoMountMod.Log.LogMessage("Saving Active Mount Data");
                 this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);

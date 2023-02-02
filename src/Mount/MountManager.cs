@@ -125,6 +125,18 @@ namespace EmoMount
 
             return null;
         }
+
+        public MountSpecies GetSpeciesDefinitionByItemID(int ItemID)
+        {
+            foreach (var item in SpeciesData)
+            {
+                if (item.Value.WhistleItemID == ItemID)
+                {
+                    return item.Value;
+                }
+            }
+            return null;
+        }
         public T DeserializeFromXML<T>(string path)
         {
             var assembly = Assembly.Load("EmoMount");
@@ -150,7 +162,7 @@ namespace EmoMount
         /// <param name="Position"></param>
         /// <param name="Rotation"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color))
+        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color), Action<BasicMountController> OnMountSpawnComplete = null)
         {
             if (string.IsNullOrEmpty(mountSpecies))
             {
@@ -262,6 +274,7 @@ namespace EmoMount
             MountControllers.Add(_affectedCharacter, basicMountController);
 
             basicMountController.Teleport(Position, Rotation);
+            OnMountSpawnComplete?.Invoke(basicMountController);
             return basicMountController;
 
         }
@@ -419,7 +432,13 @@ namespace EmoMount
         {
             EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");
             basicMountController.DisableNavMeshAgent();
-            MountCanvasManager.Instance.UnRegisterMount(basicMountController);
+
+            if (MountCanvasManager.Instance.MountUIInstances.ContainsKey(basicMountController))
+            {
+                MountCanvasManager.Instance.UnRegisterMount(basicMountController);
+            }
+
+          
             //basicMountController.DestroyBagContainer();
             GameObject.Destroy(basicMountController.gameObject);
             MountControllers.Remove(character);

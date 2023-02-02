@@ -85,7 +85,9 @@ namespace EmoMount
             get; private set;
         }
 
-
+        public Action<Character> OnBeforePlayerMount;
+        public Action<Character> OnPlayerMounted;
+        public Action<Character> OnPlayerUnMounted;
         public SkinnedMeshRenderer SkinnedMeshRenderer => GetComponentInChildren<SkinnedMeshRenderer>();
 
         public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
@@ -93,20 +95,31 @@ namespace EmoMount
 
         #endregion
 
+
+        public Character.SpellCastType SitAnimation = Character.SpellCastType.Sit;
+
+        public Character.SpellCastType MountAnimation = Character.SpellCastType.Sit;
+        public Character.SpellCastType TransformAnimation = Character.SpellCastType.Fast;
+        public Character.SpellCastType DismountAnimation = Character.SpellCastType.IdleAlternate;
+
+
+
         //Mount Movement Settings
         public float MoveSpeed { get; private set; }
         public float ActualMoveSpeed
         {
             get
             {
-                if (!EmoMountMod.EnableWeightLimit.Value)
+                if (EmoMountMod.EnableWeightLimit.Value)
                 {
-                    return MoveSpeed * MoveSpeedModifier;
+                    return WeightAsNormalizedPercent > WeightEncumberenceLimit ? (MoveSpeed * EncumberenceSpeedModifier) * MoveSpeedModifier : MoveSpeed * MoveSpeedModifier;
                 }
-
-                return  WeightAsNormalizedPercent > WeightEncumberenceLimit ? (MoveSpeed * EncumberenceSpeedModifier) * MoveSpeedModifier : MoveSpeed * MoveSpeedModifier;
+                return MoveSpeed * MoveSpeedModifier;
             }
         }
+
+
+        public bool IsTransform = false;
 
         public float MoveSpeedModifier = 1f;
         public float RotateSpeed { get; private set; }
@@ -162,6 +175,8 @@ namespace EmoMount
             NavMesh = gameObject.AddComponent<NavMeshAgent>();
             MountFood = gameObject.AddComponent<MountFood>();
             SetupInteractionComponents();
+
+            gameObject.layer = LayerMask.GetMask("Characters");
 
             //needs to be done this way to avoid the jillion racetime errors
             MountFood.Init();
@@ -480,12 +495,14 @@ namespace EmoMount
         }
         public void MountCharacter(Character _affectedCharacter)
         {
+            OnBeforePlayerMount?.Invoke(_affectedCharacter);
             CurrentlyMountedCharacter = _affectedCharacter;
-
             PrepareCharacter(_affectedCharacter);
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
             MountFSM.PushDynamicState(new BaseMountedState(CurrentlyMountedCharacter));
+
+            OnPlayerMounted?.Invoke(CurrentlyMountedCharacter);
         }
         /// <summary>
         /// Prepares a Character for mounting to the MountGameObject
@@ -498,7 +515,16 @@ namespace EmoMount
             character.CharacterControl.enabled = false;
             //cancel movement in animator
             character.SetAnimMove(0, 0);
-            character.SpellCastAnim(Character.SpellCastType.Sit, Character.SpellCastModifier.Immobilized, 1);
+
+            if (IsTransform)
+            {
+                character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 1);
+            }
+            else
+            {
+                character.SpellCastAnim(MountAnimation, Character.SpellCastModifier.Immobilized, 1);
+            }
+           
             TryToParent(character, gameObject);
             OriginalPlayerCameraOffset = character.CharacterCamera.Offset;
             SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
@@ -514,12 +540,13 @@ namespace EmoMount
 
             _affectedCharacter.transform.parent = null;
             _affectedCharacter.transform.position = transform.position;
-            _affectedCharacter.transform.eulerAngles = Vector3.zero;
+            _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
             _affectedCharacter.SetAnimMove(0, 1);
-            _affectedCharacter.SpellCastAnim(Character.SpellCastType.AxeLeap, Character.SpellCastModifier.Mobile, 1);
+            _affectedCharacter.SpellCastAnim(DismountAnimation, Character.SpellCastModifier.Mobile, 1);
+            SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
+            OnPlayerUnMounted?.Invoke(CurrentlyMountedCharacter);
             CurrentlyMountedCharacter = null;
             MountFSM.PopState();
-            SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
         }
         public void DisplayNotification(string text)
         {
@@ -566,12 +593,17 @@ namespace EmoMount
 
         public void EnableNavMeshAgent()
         {
-            NavMesh.enabled = true;
+            //dont turn the nav mesh on at all if this is a transform, it messes with positions too much when summoning/unsummoning
+            if (!IsTransform)
+            {
+                NavMesh.enabled = true;
+                NavMesh.isStopped = false;
+            }
         }
-
         public void DisableNavMeshAgent()
         {
             NavMesh.enabled = false;
+            NavMesh.isStopped = true;
         }
 
         public void Teleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)

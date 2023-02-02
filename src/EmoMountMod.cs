@@ -213,6 +213,7 @@ namespace EmoMount
 
         }
 
+
         private void InitKeybinds()
         {
             CustomKeybindings.AddAction(MOUNT_FOLLOW_WAIT_TOGGLE, KeybindingsCategory.CustomKeybindings, ControlType.Both);

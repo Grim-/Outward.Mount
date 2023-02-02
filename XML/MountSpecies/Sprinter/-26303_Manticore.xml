@@ -1,0 +1,53 @@
+<MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<WhistleItemID>-26303</WhistleItemID>
+	<TargetItemID>4300130</TargetItemID>
+	<SpeciesName>Manticore</SpeciesName>
+	<SLPackName>mount</SLPackName>
+	<AssetBundleName>mount_original</AssetBundleName>
+	<PrefabName>Mount_Manticore</PrefabName>
+	<GenerateRandomEmission>true</GenerateRandomEmission>
+	<MountEmissionColors>
+		<ColorChance Chance="80" Color="#f54242" />
+		<ColorChance Chance="5" Color="#4ef542" />
+		<ColorChance Chance="5" Color="#c9029e" />
+		<ColorChance Chance="5" Color="#ffffff" />
+		<ColorChance Chance="5" Color="#f08400" />
+	</MountEmissionColors>
+	<Names>
+		<string>Drogon</string>
+		<string>Rhaegal</string>
+		<string>Viserion</string>
+		<string>Balerion</string>
+		<string>Meraxes</string>
+		<string>Vhagar</string>
+		<string>Sheepstealer</string>
+		<string>Stormcloud</string>
+		<string>Dreamfyre</string>
+		<string>Grey Ghost</string>
+	</Names>
+	<CameraOffset>
+		<x>0</x>
+		<y>0</y>
+		<z>-4</z>
+	</CameraOffset>
+	<MoveSpeed>12</MoveSpeed>
+	<RotateSpeed>90</RotateSpeed>
+        <Acceleration>5</Acceleration>
+	<MaximumCarryWeight>120</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
+	<FoodTags>
+		<string>Meat</string>
+	</FoodTags>
+	<FavouriteFoods>
+		<MountFoodData>
+			<ItemID>4000260</ItemID>
+			<FoodValue>5</FoodValue>
+		</MountFoodData>
+	</FavouriteFoods>
+  <HatedFoods>
+  </HatedFoods>
+	<MaximumFood>200</MaximumFood>
+	<FoodTakenPerTick>10</FoodTakenPerTick>
+	<HungerTickTime>200</HungerTickTime>
+</MountSpecies>

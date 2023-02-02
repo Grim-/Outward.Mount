@@ -361,13 +361,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom SL Effect\SL_AddDrop.cs" />
     <Compile Include="Custom SL Effect\SL_ChangeMountEmissionColor.cs" />
     <Compile Include="Custom SL Effect\SL_ChangeMountTint.cs" />
     <Compile Include="Custom SL Effect\SL_DismissActiveMount.cs" />
+    <Compile Include="Custom SL Effect\SL_GrantQuest.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
+    <Compile Include="Custom SL Effect\SL_TransformIntoMount.cs" />
     <Compile Include="DialogueCharacter.cs" />
     <Compile Include="DialogueTreeBuilder.cs" />
-    <Compile Include="GenerateMountFromEgg.cs" />
+    <Compile Include="Interaction Components\ShowStashMountInteraction.cs" />
+    <Compile Include="Quest\GenerateMountFromEgg.cs" />
     <Compile Include="Mount Components\ColorableComp.cs" />
     <Compile Include="Mount Components\GlideComp.cs" />
     <Compile Include="Mount Components\MountComp.cs" />
@@ -375,12 +379,13 @@
     <Compile Include="Mount Components\DetectionComp.cs" />
     <Compile Include="Mount Components\EmissionBlendComp.cs" />
     <Compile Include="Mount Components\SprintComp.cs" />
-    <Compile Include="Mount Properties\MountCompProp.cs" />
-    <Compile Include="MountQuestManager.cs" />
+    <Compile Include="Mount Components\MountCompProp.cs" />
+    <Compile Include="Quest\MountQuestManager.cs" />
     <Compile Include="Node Canvas Nodes\SetMountColor.cs" />
     <Compile Include="Node Canvas Nodes\SetMountEmissionColor.cs" />
-    <Compile Include="QuestGraphBuilder.cs" />
-    <Compile Include="QuestGraphExtensions.cs" />
+    <Compile Include="Quest\QuestGraphBuilder.cs" />
+    <Compile Include="Quest\QuestGraphExtensions.cs" />
+    <Compile Include="Quest\ShowCharacterNotification.cs" />
     <Compile Include="WeightedItem.cs" />
     <Compile Include="XML\MountComponentFactory.cs" />
     <Compile Include="XML\MountFoodData.cs" />
@@ -396,13 +401,13 @@
     <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="UI\MountSelectionElement.cs" />
-    <Compile Include="Unmounted States\BaseUnMountedState.cs" />
+    <Compile Include="Mounted States\BaseUnMountedState.cs" />
     <Compile Include="Mount\BasicMountController.cs" />
     <Compile Include="Mount\CharacterMount.cs" />
     <Compile Include="EmoMountMod.cs" />
     <Compile Include="Mount Components\MountFood.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
-    <Compile Include="Unmounted States\UnMountedState.cs" />
+    <Compile Include="Mounted States\UnMountedState.cs" />
     <Compile Include="Mount\MountManager.cs" />
     <Compile Include="Save\MountSaveData.cs" />
     <Compile Include="UI\MountCanvasManager.cs" />
@@ -420,6 +425,8 @@
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.CodeFixes.dll" />
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Unmounted States\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

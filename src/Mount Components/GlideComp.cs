@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using UnityEngine;
 
 namespace EmoMount.Mount_Components
 {
@@ -17,7 +18,7 @@ namespace EmoMount.Mount_Components
             {
                 if (ControlsInput.Sprint(Controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
-                    Controller.MoveSpeedModifier = SprintModifier;
+                    Controller.MoveSpeedModifier = Mathf.MoveTowards(Controller.MoveSpeedModifier, SprintModifier, 0.5f);
                 }
                 else
                 {

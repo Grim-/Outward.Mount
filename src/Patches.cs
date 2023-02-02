@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SideLoader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,107 @@ namespace EmoMount
             __instance.gameObject.AddComponent<CharacterMount>();
         }
     }
+    //[HarmonyPatch(typeof(Character), nameof(Character.Start))]
+    //public class CharacterStartPatchLichLootPatch
+    //{
+    //    //make sure the method matches the 
+    //    static void Postfix(Character __instance)
+    //    {
+    //        if (__instance.IsAI)
+    //        {
+   
+    //               SL_DropTable dropTable = new SL_DropTable()
+    //            {
+    //                GuaranteedDrops = new List<SL_ItemDrop>()
+    //                {
+    //                     new SL_ItemDrop()
+    //                     {
+    //                          DroppedItemID = 4100320,
+    //                          MinQty = 1,
+    //                          MaxQty = 1
+    //                     }
+    //                },
+    //                UID = "SOMEUID"
+    //            };
+    //            dropTable.ApplyTemplate();
+    //            EmoMountMod.Log.LogMessage($"Adding {dropTable.UID} to {__instance.UID} ({__instance.Name})");
+
+    //            __instance.Inventory.MakeLootable(false, true, true, false);
+
+    //            dropTable.AddAsDropableToGameObject(__instance.Inventory.Pouch.gameObject, false, "OJWOJDWOJWO");
+    //            dropTable.GenerateDrops(__instance.Inventory.Pouch.transform);
+    //        }
+
+    //    }
+    //}
+    //[HarmonyPatch(typeof(Character), nameof(Character.Die))]
+    //public class GoldLich_Die_Patch
+    //{
+    //    //make sure the method matches the one you're trying to patch, with the exception of the first variable being Type __instance
+    //    //so for this Character Type its Character __instance
+    //    static void Prefix(Character __instance, Vector3 _hitVec, bool _loadedDead = false)
+    //    {
+    //        //do something for this specific character UID, it has just died, but ignore this if the character loaded dead (return to a scene where you had previously killed it for example)
+    //        if (__instance.UID == "EwoPQ0iVwkK-XtNuaVPf3g" && !_loadedDead)
+    //        {
+    //            //CharacterManager.Instance.Characters is dictionary<string, Character> (where everything has a key, with a value aka a tuple or a kvp, many names same thing) 
+    //            //we are getting all the values in the case of this dictionary,  the string 'key' is the characters UID and the 'value' is a reference to the Character component for that character
+    //            //we find every character component in that Characters.ValuesArray (we dont care about what the UID key is so this is a property to JUSt return just an array of the characters)
+    //            //where IsLocalPlayer returns true and put that into a new array (ToArray())
+    //            //the none shorthand version is x.IsLocalPlayer == true
+    //            Character[] playerCharacters = CharacterManager.Instance.Characters.ValuesArray.Where(x => x.IsLocalPlayer).ToArray();
+
+    //            //we then loop that array
+
+    //            //foreach character that is a player
+    //            foreach (var player in playerCharacters)
+    //            {
+    //                //just show some notification
+    //                player.CharacterUI.NotificationPanel.ShowNotification("You gained some berries, gg");
+    //                // so we can call the the recieveitemreward which will generate the item from a itemID and put it whatever bag is best
+    //                //the other way of giving items I showed works too but this one seems more straightforward, it does most of what the last one did for you
+    //                player.Inventory.ReceiveItemReward(4100320, 100, false);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //[HarmonyPatch(typeof(Character), nameof(Character.Start))]
+    //public class CharacterAwakePatchLichLootPatch
+    //{
+    //    //make sure the method matches the 
+    //    static void Postfix(Character __instance)
+    //    {
+    //        //do something for this specific character UID, it has just died
+    //        if (__instance.UID == "EwoPQ0iVwkK-XtNuaVPf3g")
+    //        {
+    //            SL_DropTable dropTable = new SL_DropTable()
+    //            {
+    //                GuaranteedDrops = new List<SL_ItemDrop>()
+    //                {
+    //                     new SL_ItemDrop()
+    //                     {
+    //                          DroppedItemID = 4100320,
+    //                          MinQty = 1,
+    //                          MaxQty = 1
+    //                     }
+    //                },
+    //                UID = "SOMEUID"
+    //            };
+    //            dropTable.ApplyTemplate();
+
+    //            LootableOnDeath lootableOnDeath = __instance.GetComponent<LootableOnDeath>();
+    //            lootableOnDeath.enabled = true;
+    //            lootableOnDeath.EnabledPouch = true;
+
+    //            __instance.Inventory.MakeLootable(false, true, true, false);
+
+    //            dropTable.AddAsDropableToGameObject(__instance.Inventory.Pouch.gameObject, false, "OJWOJDWOJWO");
+    //            dropTable.GenerateDrops(__instance.Inventory.Pouch.transform);
+    //        }
+
+    //    }
+    //}
 
     [HarmonyPatch(typeof(EnvironmentConditions), nameof(EnvironmentConditions.OnHour))]
     public class EnvironmentConditionsOnHourPatch
@@ -38,37 +140,6 @@ namespace EmoMount
             }
         }
     }
-
-
-    //[HarmonyPatch(typeof(DualMeleeWeapon), nameof(DualMeleeWeapon.OnEquip))]
-    //public class DualMeleeWeaponOnEquip
-    //{
-    //    static void PostFix(DualMeleeWeapon __instance, Character _char)
-    //    {
-    //        EmoMountMod.Log.LogMessage("DualMeleeWeaponProcessVisuals Patch");
-
-    //        Transform OurPrefab = __instance.EquippedVisuals.transform.Find("FlamingZweihander(Clone)");
-
-    //        Transform ParentedLeftHandModels = OurPrefab.Find("LeftHandModel");
-
-    //        EmoMountMod.Log.LogMessage("FOUND");
-    //        EmoMountMod.Log.LogMessage(OurPrefab);
-    //        EmoMountMod.Log.LogMessage(ParentedLeftHandModels);
-
-    //        if (ParentedLeftHandModels)
-    //        {
-    //            __instance.m_leftHandModel = ParentedLeftHandModels;
-
-    //            if (__instance.m_leftHandModel)
-    //            {
-    //                __instance.m_visualSplit = true;
-    //                __instance.m_leftHandModel.SetParent(__instance.m_leftHandFollow);
-    //                __instance.m_leftHandModel.localPosition = new Vector3(-0.0076f, 0.00122f, -0.008f);
-    //                __instance.m_leftHandModel.localRotation = Quaternion.Euler(177.41f, 86.934f, 177.792f);
-    //            }
-    //        }
-    //    }
-    //}
 
     [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3) })]
     public class CharacterTeleport
@@ -172,21 +243,10 @@ namespace EmoMount
                     __result = $"Feed {characterMount.ActiveMount.MountName}";                 
                 }
 
+                //DONT do the original method 
                 return false;
             }
-            //else if (_actionID == 69696968)
-            //{
-            //    Character owner = __instance.m_characterUI.TargetCharacter;
-            //    CharacterMount characterMount = owner.GetComponent<CharacterMount>();
-
-            //    if (characterMount != null && characterMount.ActiveMount != null && characterMount.ActiveMount.BagContainer != null)
-            //    {
-            //        __result = $"Move To {characterMount.ActiveMount.MountName} Bag";
-            //    }
-
-            //    return false;
-            //}
-
+            //just do the original method
             return true;
         }
 

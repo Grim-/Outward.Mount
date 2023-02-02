@@ -142,5 +142,53 @@ namespace EmoMount
 
             return default(Tag);
         }
+
+
+        public static void SpawnSmokeTransformVFX(GameObject Target, float DelayDestroy = 3f)
+        {
+            GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "TransformVFX_Smoke");
+
+            if (prefab)
+            {
+                GameObject instance = GameObject.Instantiate(prefab, Target.transform);
+                instance.transform.localPosition = Vector3.zero;
+
+                ParticleSystem ps = instance.GetComponent<ParticleSystem>();
+
+                if (ps)
+                {
+                    ParticleSystem.ShapeModule shape = ps.shape;
+                    
+                    SkinnedMeshRenderer[] skinnedMeshRenderers = Target.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+                    foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
+                    {
+
+                        if (skinnedMeshRenderer)
+                        {
+                            shape.skinnedMeshRenderer = skinnedMeshRenderer;
+                        }
+                    }
+
+                  
+                }
+
+
+                GameObject.Destroy(instance, DelayDestroy);
+            }
+
+        }
+
+        public static void SpawnLeafTransformVFX(GameObject Target, float DelayDestroy = 3f)
+        {
+            GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "TransformVFX_Leaf");
+
+            if (prefab)
+            {
+                GameObject instance = GameObject.Instantiate(prefab, Target.transform.position, Quaternion.identity);
+                GameObject.Destroy(instance, DelayDestroy);
+            }
+
+        }
     }
 }

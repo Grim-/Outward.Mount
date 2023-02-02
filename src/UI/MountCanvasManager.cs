@@ -58,7 +58,10 @@ namespace EmoMount
             get; private set;
         }
 
-        private Dictionary<BasicMountController, MountUI> MountUIInstances = new Dictionary<BasicMountController, MountUI>();
+        public Dictionary<BasicMountController, MountUI> MountUIInstances
+        {
+            get; private set;
+        }
         private List<GameObject> StorageContainerInstances = new List<GameObject>();
 
         public void Awake()
@@ -66,7 +69,7 @@ namespace EmoMount
             Instance = this;
             ParentCanvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
-
+            MountUIInstances = new Dictionary<BasicMountController, MountUI>();
 
             UIContainer = transform.Find("UIContainer").GetComponent<RectTransform>();
             UIContainerGroup = UIContainer.GetComponent<CanvasGroup>();
