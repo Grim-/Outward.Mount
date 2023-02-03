@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SL_Item xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Target_ItemID>4300495</Target_ItemID>
-  <New_ItemID>-26202</New_ItemID>
+  <New_ItemID>-26210</New_ItemID>
   <Name>Pearlbird Egg</Name>
   <Description>Use this to hatch yourself a new friend!</Description>
   <LegacyItemID>-1</LegacyItemID>

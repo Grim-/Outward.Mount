@@ -112,7 +112,7 @@ namespace EmoMount
 
             SL.OnPacksLoaded += ()=>
             {
-                CreateColorBerrys();
+                //CreateColorBerrys();
                 CreateMainCanvas();
             };
 

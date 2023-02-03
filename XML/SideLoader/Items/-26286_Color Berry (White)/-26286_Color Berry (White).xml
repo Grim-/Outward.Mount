@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<SL_Item xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Target_ItemID>-26286</Target_ItemID>
+  <New_ItemID>-1</New_ItemID>
+  <Name>Color Berry (White)</Name>
+  <Description>Use this to change your mounts tint color.</Description>
+  <LegacyItemID>-1</LegacyItemID>
+  <IsPickable>true</IsPickable>
+  <IsUsable>true</IsUsable>
+  <QtyRemovedOnUse>1</QtyRemovedOnUse>
+  <GroupItemInDisplay>true</GroupItemInDisplay>
+  <HasPhysicsWhenWorld>false</HasPhysicsWhenWorld>
+  <RepairedInRest>true</RepairedInRest>
+  <BehaviorOnNoDurability>NotSet</BehaviorOnNoDurability>
+  <CastType>Eat</CastType>
+  <CastModifier>Immobilized</CastModifier>
+  <CastLocomotionEnabled>false</CastLocomotionEnabled>
+  <MobileCastMovementMult>-1</MobileCastMovementMult>
+  <CastSheatheRequired>1</CastSheatheRequired>
+  <OverrideSellModifier>-1</OverrideSellModifier>
+  <Tags>
+    <string>Dish</string>
+    <string>Food</string>
+    <string>Consummable</string>
+    <string>Item</string>
+    <string>Vegetable</string>
+    <string>Ingredient Cook</string>
+    <string>Ingredient</string>
+  </Tags>
+  <StatsHolder>
+    <BaseValue>3</BaseValue>
+    <RawWeight>0.1</RawWeight>
+    <MaxDurability>100</MaxDurability>
+  </StatsHolder>
+  <ExtensionsEditBehaviour>NONE</ExtensionsEditBehaviour>
+  <ItemExtensions>
+    <SL_ItemExtension xsi:type="SL_Perishable">
+      <Savable>false</Savable>
+      <BaseDepletionRate>0.52</BaseDepletionRate>
+      <DisableInInventory>false</DisableInInventory>
+      <DontPerishInWorld>false</DontPerishInWorld>
+      <DontPerishSkipTime>false</DontPerishSkipTime>
+      <OverrideUpdateRate>-1</OverrideUpdateRate>
+    </SL_ItemExtension>
+  </ItemExtensions>
+  <EffectBehaviour>Destroy</EffectBehaviour>
+  <EffectTransforms>
+    <SL_EffectTransform>
+      <TransformName>Normal</TransformName>
+      <Position xsi:nil="true" />
+      <Rotation xsi:nil="true" />
+      <Scale xsi:nil="true" />
+      <Effects>
+        <SL_Effect xsi:type="SL_ChangeMountTint">
+          <Delay>0</Delay>
+          <SyncType>OwnerSync</SyncType>
+          <OverrideCategory>None</OverrideCategory>
+          <TintColor>
+            <r>0</r>
+            <g>0</g>
+            <b>0</b>
+            <a>0</a>
+          </TintColor>
+        </SL_Effect>
+      </Effects>
+      <EffectConditions />
+      <ChildEffects />
+    </SL_EffectTransform>
+  </EffectTransforms>
+  <ItemVisuals>
+    <ResourcesPrefabPath>Assets/_Prefabs/_ItemsAssets/4000000_Consumables/4000000_WildFood/4000010_Gaberry_v</ResourcesPrefabPath>
+    <Prefab_SLPack />
+    <Prefab_AssetBundle />
+    <Prefab_Name />
+    <Position>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+    </Position>
+    <Rotation>
+      <x>-0</x>
+      <y>0</y>
+      <z>0</z>
+    </Rotation>
+    <Scale>
+      <x>1</x>
+      <y>1</y>
+      <z>1</z>
+    </Scale>
+    <PositionOffset xsi:nil="true" />
+    <RotationOffset xsi:nil="true" />
+  </ItemVisuals>
+</SL_Item>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<SL_Material xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ShaderName>Nature/SpeedTreeSeasons</ShaderName>
+  <Keywords>
+    <string>EFFECT_BUMP</string>
+    <string>EFFECT_HUE_VARIATION</string>
+    <string>GEOM_TYPE_LEAF</string>
+  </Keywords>
+  <Properties />
+  <TextureConfigs>
+    <TextureConfig>
+      <TextureName>_MainTex</TextureName>
+      <UseMipMap>true</UseMipMap>
+      <MipMapBias>0</MipMapBias>
+    </TextureConfig>
+    <TextureConfig>
+      <TextureName>_BumpMap</TextureName>
+      <UseMipMap>true</UseMipMap>
+      <MipMapBias>0</MipMapBias>
+    </TextureConfig>
+    <TextureConfig>
+      <TextureName>_MainPTex</TextureName>
+      <UseMipMap>true</UseMipMap>
+      <MipMapBias>0</MipMapBias>
+    </TextureConfig>
+  </TextureConfigs>
+</SL_Material>
