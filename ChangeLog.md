@@ -82,6 +82,11 @@ Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 > Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
 ## Mount Components
+These are components I created that you can add to a mount by editing the MountSpecies definition, these are rarely used by the mod itself, some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story and they are most something I provided as a test of data-orientated design and to give users some features requested without making them mandatory for everyone.
+
+ I fully believe you should play *your* game however you feel is most fun.
+I am open to adding more of these at a later date, suggestions welcome.
+
 
  SprintComp
 > 
