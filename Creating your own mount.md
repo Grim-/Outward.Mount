@@ -87,6 +87,7 @@ As you can see, when the move Z value is 0 the mount is idle, otherwise it will 
 
  Now you need to create a prefab from your newly created mount, and add it to an asset bundle [SideLoader Docs](https://sinai-dev.github.io/OSLDocs/#/Basics/SLPacks?id=assetbundles) then you can drop this assetbundle in the Mount Mod/SideLoader/AssetBundles folder for the mod to find.
 
+![image](https://user-images.githubusercontent.com/3288858/216483814-31dac00b-3ed3-4cbe-aacd-64652d85e900.png)
 
 
 ##### Step 4 Creating the MountSpecies defintion file.
