@@ -3,6 +3,8 @@ Example of a EMM Mount Species Definition.
 Below is a template you can use to create your own MountSpecies, you can use the visuals of any of the existing species and change which ever parts you like.
 Remember to update the WhistleItemID to a new ID unless you intend to replace the original species.
 
+These .xml files must be placed in the Mod/MountSpecies folder.
+
 
 ```xml
 <MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
