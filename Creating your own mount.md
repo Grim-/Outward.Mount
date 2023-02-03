@@ -69,5 +69,21 @@ The Movement state itself is actually a Blend tree (you can create these by righ
 As you can see, when the move Z value is 0 the mount is idle, otherwise it will blend from Idle > Walk > Run depending on how quickly your mount model is moving in-game.
 
 
- 
+ Now you need to create a prefab from your newly created mount, and add it to an asset bundle [SideLoader Docs](https://sinai-dev.github.io/OSLDocs/#/Basics/SLPacks?id=assetbundles) then you can drop this assetbundle in the Mount Mod/SideLoader/AssetBundles folder for the mod to find.
 
+
+Then you need to create a mount species definition, which the mod can then find and create a mount and whistle item for it.
+
+Please visit the MountSpecies Example page for an example of this, the most pertinent parts for changing the visual model are 
+
+SLPackName - If you have added your own AssetBundle to the MountMods Mod/SideLoader/AssetBundles folder then this is "mount" otherwise it is whatever you decided when you set up your own mod folder.
+
+AssetBundleName - The name of the AssetBundle you created in Unity(note: this is not the prefab name)
+PrefabName - Whatever you named your prefab before adding it to the bundle, in the case of the Manticore you can see in the screenshots it is named "Mount_Manticore"
+
+```xml
+	<SpeciesName>Manticore</SpeciesName>
+	<SLPackName>mount</SLPackName>
+	<AssetBundleName>mount_original</AssetBundleName>
+	<PrefabName>Mount_Manticore</PrefabName>
+```
