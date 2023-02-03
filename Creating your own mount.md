@@ -18,3 +18,31 @@ Note in the picture below the co-ordinate space is local and not global (red box
 
 ![Mount Points](https://user-images.githubusercontent.com/3288858/216479966-1c793f1b-d6e2-46de-9a67-3cd73137afb1.png)
 
+
+
+Once you have successfully prepared your model, you will need to set up the Animator Controller. 
+
+Due to a lack of consistent animations across the mount models I have kept the animator controller very simple needing only a Idle, Walk and Run animation to function.
+
+The mod BasicMountController class allows you to also optionally use a Happy, Angry, Sad, On hit and Attack animations.
+
+![image](https://user-images.githubusercontent.com/3288858/216480450-80a86f59-031d-4986-83f1-5e2bc6a9655d.png)
+
+
+Now your base Animator controller is created you need to set up some parameters in the Animator window, you can do this by double clicking your newly created Animator Controller (or Override Controller if you know what you're doing).
+
+Then pressing the **"+"** in the left hand pane please be sure the parameters tab is selected and not the layers tab.
+
+The only required parameters are :
+
+- Float - "Move X"
+- Float - "Move Z"
+
+These two values are automatically fed to the animator by the mod allowing the animator to know which animation it should be playing right now.
+
+
+
+
+
+ 
+
