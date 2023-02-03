@@ -26,22 +26,47 @@ Due to a lack of consistent animations across the mount models I have kept the a
 
 The mod BasicMountController class allows you to also optionally use a Happy, Angry, Sad, On hit and Attack animations.
 
-![image](https://user-images.githubusercontent.com/3288858/216480450-80a86f59-031d-4986-83f1-5e2bc6a9655d.png)
+![image](https://user-images.githubusercontent.com/3288858/216481266-d377a753-a19a-4ce8-a4c9-62a462c28f24.png)
 
 
 Now your base Animator controller is created you need to set up some parameters in the Animator window, you can do this by double clicking your newly created Animator Controller (or Override Controller if you know what you're doing).
 
 Then pressing the **"+"** in the left hand pane please be sure the parameters tab is selected and not the layers tab.
 
-The only required parameters are :
+The only required parameter is :
 
-- Float - "Move X"
 - Float - "Move Z"
 
-These two values are automatically fed to the animator by the mod allowing the animator to know which animation it should be playing right now.
+You can optionally also provide trigger parameters named DoMountSpecial, DoMountHitReact, DoMountAttack, DoMountHappy, DoMountAngry and the mod will use these where appropiate.
+
+This "Move Z" values are automatically fed to the animator by the mod allowing the animator to know which animation it should be playing right now.
+
+![image](https://user-images.githubusercontent.com/3288858/216481309-674dd32c-9f7d-425f-b87f-b5f6c3750f5a.png)
+
+
+Once you have these you can set up the animator component as you normally would in any other Unity project, again I don't intend to cover this indepth but I will show and explain how the current mounts are set up.
+
+This is the Animator window for the Manticore
+
+![image](https://user-images.githubusercontent.com/3288858/216481584-76208bc9-519d-4807-a979-da5b5c374f2e.png)
+
+
+As you can see the DoMount animations are simply trigger animations that can be transitioned to from *any* state when the condition DoMountAttack is true, the exit condition simply waits until the animation has finished and exits (notice the exit time is ticked for this)
+
+![image](https://user-images.githubusercontent.com/3288858/216481743-b8d9bbf9-7ec3-4f60-9585-b0ac0ba0f914.png)
+
+![image](https://user-images.githubusercontent.com/3288858/216481801-bb520fec-565e-4707-a763-7385bcab80a9.png)
 
 
 
+
+The Movement state itself is actually a Blend tree (you can create these by right clicking in the graph New > From New Blend Tree) the blend trees use the Z value (forward) to determine which animation should be played.
+
+
+![image](https://user-images.githubusercontent.com/3288858/216481945-5a030a19-065c-4793-8678-45d4f3df7299.png)
+
+
+As you can see, when the move Z value is 0 the mount is idle, otherwise it will blend from Idle > Walk > Run depending on how quickly your mount model is moving in-game.
 
 
  
