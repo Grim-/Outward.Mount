@@ -107,3 +107,8 @@ PrefabName - Whatever you named your prefab before adding it to the bundle, in t
 	<AssetBundleName>mount_original</AssetBundleName>
 	<PrefabName>Mount_Manticore</PrefabName>
 ```
+
+
+
+#### The End
+If you have managed to reach this far, you should be able to now go in-game and spawn the whistle in for your paricular mount species, the item ID for this is whatever you specified as the WhistleItemID in the MountSpeciesDefinition xml file.
