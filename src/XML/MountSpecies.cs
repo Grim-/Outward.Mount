@@ -15,10 +15,12 @@ namespace EmoMount
         public int WhistleItemID;
         public int TargetItemID = 4300130;
 
+
         public string SpeciesName;
         public string SLPackName;
         public string AssetBundleName;
         public string PrefabName;
+
 
         //movement
         public float MoveSpeed = 12f;
@@ -28,6 +30,7 @@ namespace EmoMount
 
         public Vector3 CameraOffset;
 
+        public bool IsWhistleWorldDrop = true;
         public bool GenerateRandomTint = false;
         public bool GenerateRandomEmission = false;
 
@@ -56,8 +59,6 @@ namespace EmoMount
 
         [XmlArray("MountComponents"), XmlArrayItem(typeof(MountCompProp), ElementName = "MountCompProp")]
         public List<MountCompProp> MountComponents { get; set; }
-
-
 
         public Color GetRandomColor()
         {

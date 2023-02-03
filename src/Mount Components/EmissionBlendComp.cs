@@ -47,12 +47,40 @@ namespace EmoMount.Mount_Components
     public class EmissionBlendCompProp : MountCompProp
     {
         [XmlElement("StartColor")]
-        public Color StartColor { get; set; }
+        public Color StartColor;
 
         [XmlElement("EndColor")]
-        public Color EndColor { get; set; }
+        public Color EndColor;
 
         [XmlElement("BlendTime")]
-        public float BlendTime { get; set; }
+        public float BlendTime;
     }
 }
+
+
+//[Serializable]
+//public struct SerializableColor
+//{
+//    public float R;
+//    public float G;
+//    public float B;
+//    public float A;
+
+//    public SerializableColor(float r, float g, float b, float a)
+//    {
+//        R = r;
+//        G = g;
+//        B = b;
+//        A = a;
+//    }
+
+//    public static implicit operator Color(SerializableColor sc)
+//    {
+//        return new Color(sc.R, sc.G, sc.B, sc.A);
+//    }
+
+//    public static implicit operator SerializableColor(Color c)
+//    {
+//        return new SerializableColor(c.r, c.g, c.b, c.a);
+//    }
+//}

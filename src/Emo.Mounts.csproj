@@ -368,9 +368,13 @@
     <Compile Include="Custom SL Effect\SL_GrantQuest.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_TransformIntoMount.cs" />
-    <Compile Include="DialogueCharacter.cs" />
-    <Compile Include="DialogueTreeBuilder.cs" />
+    <Compile Include="NPC\DialogueCharacter.cs" />
+    <Compile Include="NPC\DialogueTreeBuilder.cs" />
     <Compile Include="Interaction Components\ShowStashMountInteraction.cs" />
+    <Compile Include="Mount Components\LightableComp.cs" />
+    <Compile Include="NPC\MountNPCManager.cs" />
+    <Compile Include="Patches\ItemDrop_Patches.cs" />
+    <Compile Include="Patches\UI_Patches.cs" />
     <Compile Include="Quest\GenerateMountFromEgg.cs" />
     <Compile Include="Mount Components\ColorableComp.cs" />
     <Compile Include="Mount Components\GlideComp.cs" />
@@ -399,7 +403,7 @@
     <Compile Include="FSM\BaseState.cs" />
     <Compile Include="XML\MountSpecies.cs" />
     <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
-    <Compile Include="Patches.cs" />
+    <Compile Include="Patches\Patches.cs" />
     <Compile Include="UI\MountSelectionElement.cs" />
     <Compile Include="Mounted States\BaseUnMountedState.cs" />
     <Compile Include="Mount\BasicMountController.cs" />

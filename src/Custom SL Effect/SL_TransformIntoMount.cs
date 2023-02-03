@@ -10,11 +10,13 @@ namespace EmoMount.Custom_SL_Effect
         public Type GameModel => typeof(TransformIntoMount);
 
         public string SpeciesName;
+        public string TransformVFX = "TransformVFX_Smoke";
 
         public override void ApplyToComponent<T>(T component)
         {
             TransformIntoMount comp = component as TransformIntoMount;
             comp.SpeciesName = SpeciesName;
+            comp.TransformVFX = TransformVFX;
         }
 
         public override void SerializeEffect<T>(T effect)
@@ -26,6 +28,7 @@ namespace EmoMount.Custom_SL_Effect
     public class TransformIntoMount : Effect
     {
         public string SpeciesName;
+        public string TransformVFX = "TransformVFX_Smoke";
 
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
@@ -35,12 +38,10 @@ namespace EmoMount.Custom_SL_Effect
 
                 if (mountSpecies != null)
                 {
-
-
                     BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
                     basicMountController.IsTransform = true;
 
-                    OutwardHelpers.SpawnSmokeTransformVFX(basicMountController.gameObject);
+                    OutwardHelpers.SpawnSmokeTransformVFX(basicMountController.gameObject, 3, TransformVFX);
 
                     basicMountController.OnPlayerMounted += (Character Character) =>
                     {
@@ -52,21 +53,11 @@ namespace EmoMount.Custom_SL_Effect
                     {
                         OutwardHelpers.SpawnSmokeTransformVFX(Character.VisualHolderTrans.gameObject);
                         Character.VisualHolderTrans.gameObject.SetActive(true);
-                        //Character.Teleport(basicMountController.transform.position, basicMountController.transform.rotation);
-
                         EmoMountMod.MountManager.DestroyMount(Character, basicMountController);
                     };
 
                     basicMountController.MountCharacter(_affectedCharacter);
                 }
-                else
-                {
-                    EmoMountMod.Log.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
-                }
-            }
-            else
-            {
-                EmoMountMod.Log.LogMessage($"SLEx_SpawnMount {_affectedCharacter.Name} already has an active mount.");
             }
 
         }

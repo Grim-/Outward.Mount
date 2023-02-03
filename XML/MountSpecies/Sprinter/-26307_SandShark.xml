@@ -11,14 +11,14 @@
 	<CameraOffset>
 		<x>0</x>
 		<y>0</y>
-		<z>-4</z>
+		<z>-2</z>
 	</CameraOffset>
-	<MoveSpeed>18</MoveSpeed>
+	<MoveSpeed>12</MoveSpeed>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>4</Acceleration>
-	<MaximumCarryWeight>70</MaximumCarryWeight>
+	<MaximumCarryWeight>150</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
-	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
+	<EncumberenceSpeedModifier>0.2</EncumberenceSpeedModifier>
 	<FoodTags>
 		<string>Meat</string>
 	</FoodTags>
@@ -34,5 +34,8 @@
 	<FoodTakenPerTick>10</FoodTakenPerTick>
 	<HungerTickTime>200</HungerTickTime>
 	<MountComponents>
+		<MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
+				<SprintModifier>2</SprintModifier>
+		</MountCompProp>
 	</MountComponents>
 </MountSpecies>

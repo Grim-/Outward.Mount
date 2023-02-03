@@ -144,9 +144,9 @@ namespace EmoMount
         }
 
 
-        public static void SpawnSmokeTransformVFX(GameObject Target, float DelayDestroy = 3f)
+        public static void SpawnSmokeTransformVFX(GameObject Target, float DelayDestroy = 3f, string VFXName = "TransformVFX_Smoke")
         {
-            GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "TransformVFX_Smoke");
+            GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", VFXName);
 
             if (prefab)
             {
@@ -173,22 +173,21 @@ namespace EmoMount
                   
                 }
 
-
                 GameObject.Destroy(instance, DelayDestroy);
             }
 
         }
 
-        public static void SpawnLeafTransformVFX(GameObject Target, float DelayDestroy = 3f)
+        public static float GetTotalFoodValue(Food foodItem)
         {
-            GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", "TransformVFX_Leaf");
+            float foodValue = 0;
 
-            if (prefab)
+            foreach (var item in foodItem.m_affectFoodEffects)
             {
-                GameObject instance = GameObject.Instantiate(prefab, Target.transform.position, Quaternion.identity);
-                GameObject.Destroy(instance, DelayDestroy);
+                foodValue += item.m_affectQuantity * item.m_totalPotency;
             }
 
+            return foodValue;
         }
     }
 }

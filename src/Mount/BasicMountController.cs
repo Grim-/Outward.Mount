@@ -95,13 +95,11 @@ namespace EmoMount
 
         #endregion
 
-
-        public Character.SpellCastType SitAnimation = Character.SpellCastType.Sit;
-
         public Character.SpellCastType MountAnimation = Character.SpellCastType.Sit;
-        public Character.SpellCastType TransformAnimation = Character.SpellCastType.Fast;
-        public Character.SpellCastType DismountAnimation = Character.SpellCastType.IdleAlternate;
+        public Character.SpellCastType DismountAnimation = Character.SpellCastType.Focus;
 
+        public Character.SpellCastType TransformAnimation = Character.SpellCastType.AxeLeap;
+        public Character.SpellCastType RevertAnimation = Character.SpellCastType.AxeLeap;
 
 
         //Mount Movement Settings
@@ -514,14 +512,14 @@ namespace EmoMount
             character.CharacterController.enabled = false;
             character.CharacterControl.enabled = false;
             //cancel movement in animator
-            character.SetAnimMove(0, 0);
 
             if (IsTransform)
             {
-                character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 1);
+                character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 0);
             }
             else
             {
+                character.SetAnimMove(0, 0);
                 character.SpellCastAnim(MountAnimation, Character.SpellCastModifier.Immobilized, 1);
             }
            
@@ -541,8 +539,18 @@ namespace EmoMount
             _affectedCharacter.transform.parent = null;
             _affectedCharacter.transform.position = transform.position;
             _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
-            _affectedCharacter.SetAnimMove(0, 1);
-            _affectedCharacter.SpellCastAnim(DismountAnimation, Character.SpellCastModifier.Mobile, 1);
+
+
+            if (IsTransform)
+            {
+                _affectedCharacter.SpellCastAnim(RevertAnimation, Character.SpellCastModifier.Mobile, 0);
+            }
+            else
+            {
+                _affectedCharacter.SetAnimMove(0, 1);
+                _affectedCharacter.SpellCastAnim(DismountAnimation, Character.SpellCastModifier.Mobile, 1);
+            }
+         
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
             OnPlayerUnMounted?.Invoke(CurrentlyMountedCharacter);
             CurrentlyMountedCharacter = null;

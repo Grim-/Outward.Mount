@@ -1,10 +1,10 @@
 <MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<WhistleItemID>-26310</WhistleItemID>
 	<TargetItemID>4300130</TargetItemID>
-	<SpeciesName>Taunosaur</SpeciesName>
+	<SpeciesName>Tuanosaur</SpeciesName>
 	<SLPackName>mount</SLPackName>
 	<AssetBundleName>mount_original</AssetBundleName>
-	<PrefabName>Mount_Taunosaur</PrefabName>
+	<PrefabName>Mount_Tuanosaur</PrefabName>
 	<Names>
 		<string>SandShark</string>
 	</Names>

@@ -27,14 +27,25 @@ namespace EmoMount
             get; private set;
         }
 
+
+        public List<int> MountWhistleIDs
+        {
+            get; private set;
+        }
+        public List<int> WorldDropMountWhistleIDs
+        {
+            get; private set;
+        }
+
         private string RootFolder;
         private string SpeciesFolder => RootFolder + "MountSpecies/";
 
         public MountManager(string rootFolder)
         {
             RootFolder = rootFolder;
-            
             EmoMountMod.Log.LogMessage($"Initalising MountManager at : {RootFolder}");
+            MountWhistleIDs = new List<int>();
+            WorldDropMountWhistleIDs = new List<int>();
             MountControllers = new Dictionary<Character, BasicMountController>();
             MountComponentFactory.Initialize();
             LoadAllSpeciesDataFiles();
@@ -58,54 +69,55 @@ namespace EmoMount
             foreach (var item in filePaths)
             {
                 string file = item;
-                //EmoMountMod.Log.LogMessage($"MountManager MountSpecies Reading {file} data.");
                 MountSpecies mountSpecies = DeserializeFromXML<MountSpecies>(file);
 
                 if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
                 {
-                    //EmoMountMod.Log.LogMessage($"MountManager Creating Species Definition...");
-                    ///EmoMountMod.Log.LogMessage($"Species Name : {mountSpecies.SpeciesName}");
-                    //EmoMountMod.Log.LogMessage($"TargetItemID : { mountSpecies.TargetItemID}");
-                    //EmoMountMod.Log.LogMessage($"WhistleItemID : { mountSpecies.WhistleItemID}");
-
-                    string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
-                    //EmoMountMod.Log.LogMessage($"Color Choices : { mountSpecies.MountColors.Count}");
-                    //EmoMountMod.Log.LogMessage($"Emission Color Choices : { mountSpecies.MountEmissionColors.Count}");
-
                     if (mountSpecies.WhistleItemID != -1 || mountSpecies.WhistleItemID != 0)
                     {
-                        //EmoMountMod.Log.LogMessage($"MountManager Creating Whistle Item For Species");
-                        SL_Item WhistleItem = new SL_Item()
-                        {
-                            Target_ItemID = mountSpecies.TargetItemID,
-                            New_ItemID = mountSpecies.WhistleItemID,
-                            Name = $"{NiceName} Whistle",
-                            Description = $"Can be used to call upon a tame {NiceName}.",
-                            EffectTransforms = new SL_EffectTransform[]
-                            {
-                            new SL_EffectTransform()
-                            {
-                                TransformName = "Normal",
-                                Effects = new SL_Effect[]
-                                {
-                                    new SL_SpawnMount()
-                                    {
-                                        SpeciesName = mountSpecies.SpeciesName
-                                    }
-                                }
-                            }
-                            }
-
-                        };
-
-                        WhistleItem.ApplyTemplate();
+                        CreateWhistle(mountSpecies);
                     }
-
-
 
                     SpeciesData.Add(mountSpecies.SpeciesName, mountSpecies);
                 }           
             }
+        }
+
+        private SL_Item CreateWhistle(MountSpecies mountSpecies)
+        {
+            string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
+            SL_Item WhistleItem = new SL_Item()
+            {
+                Target_ItemID = mountSpecies.TargetItemID,
+                New_ItemID = mountSpecies.WhistleItemID,
+                Name = $"{NiceName} Whistle",
+                Description = $"Can be used to call upon a tame {NiceName}.",
+                EffectTransforms = new SL_EffectTransform[]
+                {
+                    new SL_EffectTransform()
+                    {
+                        TransformName = "Normal",
+                        Effects = new SL_Effect[]
+                        {
+                            new SL_SpawnMount()
+                            {
+                                SpeciesName = mountSpecies.SpeciesName
+                            }
+                        }
+                    }
+                }
+            };
+
+            WhistleItem.ApplyTemplate();
+
+            MountWhistleIDs.Add(WhistleItem.New_ItemID);
+
+            if (mountSpecies.IsWhistleWorldDrop)
+            {
+                WorldDropMountWhistleIDs.Add(WhistleItem.New_ItemID);
+            }
+
+            return WhistleItem;
         }
 
         public bool HasSpeciesDefinition(string SpeciesName)
@@ -125,7 +137,6 @@ namespace EmoMount
 
             return null;
         }
-
         public MountSpecies GetSpeciesDefinitionByItemID(int ItemID)
         {
             foreach (var item in SpeciesData)
@@ -278,8 +289,6 @@ namespace EmoMount
             return basicMountController;
 
         }
-
-
 
 
         /// <summary>
@@ -445,5 +454,11 @@ namespace EmoMount
         }
 
         #endregion
+
+
+        public int GetRandomWhistleID()
+        {
+            return WorldDropMountWhistleIDs[UnityEngine.Random.Range(0, WorldDropMountWhistleIDs.Count)];
+        }
     }
 }
