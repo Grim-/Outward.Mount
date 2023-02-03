@@ -1,8 +1,9 @@
 
+
 Mount Mod 1.1.0 Change Log (Aka the changes I remember)
 
 
- ### Mod Information / Mechanics
+ ## Mod Information / Mechanics
 
 - The acquisition of the base mod mounts stays the same, they are rare random world drops. 
 
@@ -20,7 +21,7 @@ This has been replaced by letting the player access their stash this is a much m
 There are also two mount components to force a specific species to spawn in a certain color, one for the default tinting and another for the emission (glowing bits).
 
 
-### Mounts
+## Mounts
 
 Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental, Beetle, Sand Shark from the base game as collectible mounts. 
 
@@ -31,7 +32,7 @@ Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore,
 This request started with asking for a *single* Coral Horn prefab and we ended up with **12(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 
-####  Acquisition
+##  Acquisition
 ### Chersonese
 
 > - **Pearl Bird**  
@@ -80,7 +81,7 @@ Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 > - **Sand Shark**  
 > Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
-### Mount Components
+## Mount Components
 
  SprintComp
 > 
@@ -161,31 +162,47 @@ Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 **Special thanks to @Schnabeldoktor another fellow modder who graciously did the icons for these berries, something I am utterly incapable at.**
 
 
-#### Mount 'Transformations'
+## MountMod 'Transformations'
 
- Added transformation active skills for all nine base game mounts, instead of whistling and having your mount accompany you, you can transform into the form of that mount while out of combat when you revert (using the **interact** key) this form is destroyed.
+>  Added transformation active skills for all nine base game mounts,
+> instead of whistling and having your mount accompany you, you can
+> transform into the form of that mount while out of combat when you
+> revert (using the **interact** key) this form is destroyed.
+
  
 A natural downside to this means you lose access to the stash made available by your mount normally, but you no longer need to worry about feeding your mount, the form still acts like a mounted mount in every other regard.
 
-'mmo' style mounts were requested more than once, this is my compromise.
+*'mmo' style mounts were requested more than once, this is my compromise.*
 
 **Another special thanks to @Libre comme l'air of the modding discord for creating the skill icons, and the new Summon Active Mount and Dismiss Mount skill icons.**
 
-
+##### Mount 'Transformations Skill XML
 I have only implemented the XML for these skills for the Outward mount models.
-But you can edit them to use any of the mounts in this mod, this is easily done with SideLoader or simply editing the XML file, be sure to specify a New_ItemID in the XML if you do not wish to overwrite a current one. 
+But you can edit them to use any of the mounts in this mod, this is easily done with SideLoader or simply editing the XML file and changing the SpeciesName to one of the MountSpecies names.
 
-#### Quests
+        <SL_Effect xsi:type="SL_TransformIntoMount">
+          <Delay>0</Delay>
+          <SyncType>OwnerSync</SyncType>
+          <OverrideCategory>None</OverrideCategory>
+          <SpeciesName>SandShark</SpeciesName>
+        </SL_Effect>
 
-##### Build a Beast
+
+ **Be sure to specify a New_ItemID in the XML if you do not wish to overwrite the whistle item for an existing mount.**
+
+
+
+## Quests
+
+#### Build a Beast
 You can build your own beast golem by finding the 'Pristine Beast Golem Part's scattered around harmattan.
 
 ##### Final Fantasy Aurai
 Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
 
-*If you have a Pearl Bird Egg quest you won't get another until that one is complete.
+*If you have a Pearl Bird Egg quest for example - you won't get another until that one is complete.*
 
- **Pearl Bird eggs have a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)**
+ Pearl Bird eggs have a chance it will spawn with a different color (Yellow, Blue, Red, Green, Black, and Gold)
 
 These eggs will give you a quest to wait 12 hours then the egg hatches you cannot hatch more than one species of egg at a time.
 
