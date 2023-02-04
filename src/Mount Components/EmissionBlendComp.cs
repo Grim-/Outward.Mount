@@ -10,13 +10,16 @@ namespace EmoMount.Mount_Components
 {
     public class EmissionBlendComp : MountComp
     {
-        public Color StartColor;
-        public Color EndColor;
+        public SerializableColor StartColor;
+        public SerializableColor EndColor;
         public float BlendTime = 15f;
+        public bool ReverseOnComplete = true;
 
         private float Timer = 0;
 
         private SkinnedMeshRenderer CachedRenderer;
+
+        private bool ShouldReverse = false;
 
         public override void OnApply(BasicMountController BasicMountController)
         {
@@ -34,9 +37,19 @@ namespace EmoMount.Mount_Components
                 if (Timer >= BlendTime)
                 {
                     Timer = 0;
+
+                    if (ReverseOnComplete) ShouldReverse = !ShouldReverse;                 
                 }
 
-                CachedRenderer.material.SetColor("_EmissionColor", Color.Lerp(StartColor, EndColor, Timer / BlendTime));
+                if (ShouldReverse)
+                {
+                    CachedRenderer.material.SetColor("_EmissionColor", Color.Lerp(EndColor, StartColor, Timer / BlendTime));
+                }
+                else
+                {
+                    CachedRenderer.material.SetColor("_EmissionColor", Color.Lerp(StartColor, EndColor, Timer / BlendTime));
+                }
+
 
                 Timer += Time.deltaTime;
             }     
@@ -47,40 +60,15 @@ namespace EmoMount.Mount_Components
     public class EmissionBlendCompProp : MountCompProp
     {
         [XmlElement("StartColor")]
-        public Color StartColor;
+        public SerializableColor StartColor;
 
         [XmlElement("EndColor")]
-        public Color EndColor;
+        public SerializableColor EndColor;
 
         [XmlElement("BlendTime")]
         public float BlendTime;
+
+        [XmlElement("ReverseOnComplete")]
+        public bool ReverseOnComplete;
     }
 }
-
-
-//[Serializable]
-//public struct SerializableColor
-//{
-//    public float R;
-//    public float G;
-//    public float B;
-//    public float A;
-
-//    public SerializableColor(float r, float g, float b, float a)
-//    {
-//        R = r;
-//        G = g;
-//        B = b;
-//        A = a;
-//    }
-
-//    public static implicit operator Color(SerializableColor sc)
-//    {
-//        return new Color(sc.R, sc.G, sc.B, sc.A);
-//    }
-
-//    public static implicit operator SerializableColor(Color c)
-//    {
-//        return new SerializableColor(c.r, c.g, c.b, c.a);
-//    }
-//}

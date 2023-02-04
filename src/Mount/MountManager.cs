@@ -27,7 +27,6 @@ namespace EmoMount
             get; private set;
         }
 
-
         public List<int> MountWhistleIDs
         {
             get; private set;
@@ -65,24 +64,35 @@ namespace EmoMount
             string[] filePaths = Directory.GetFiles(SpeciesFolder, "*.xml", SearchOption.AllDirectories);
             EmoMountMod.Log.LogMessage($"MountManager MountSpecies [{filePaths.Length}] Definitions found.");
 
-
             foreach (var item in filePaths)
             {
                 string file = item;
-                MountSpecies mountSpecies = DeserializeFromXML<MountSpecies>(file);
-
-                if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
+                MountSpecies mountSpecies = null;
+                try
                 {
-                    if (mountSpecies.WhistleItemID != -1 || mountSpecies.WhistleItemID != 0)
-                    {
-                        CreateWhistle(mountSpecies);
-                    }
+                    mountSpecies = DeserializeFromXML<MountSpecies>(file);
+                }
+                catch (Exception e)
+                {
+                    EmoMountMod.Log.LogMessage($"Failed To deserialize file {file} exception -> \r\n {e.Message} ");
+                }
 
-                    SpeciesData.Add(mountSpecies.SpeciesName, mountSpecies);
-                }           
+                if (mountSpecies != null)
+                {
+                    EmoMountMod.Log.LogMessage($"Created MountSpecies definition : {mountSpecies.SpeciesName}.");
+
+                    if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
+                    {
+                        if (mountSpecies.WhistleItemID != -1 || mountSpecies.WhistleItemID != 0)
+                        {
+                            CreateWhistle(mountSpecies);
+                        }
+
+                        SpeciesData.Add(mountSpecies.SpeciesName, mountSpecies);
+                    }
+                }
             }
         }
-
         private SL_Item CreateWhistle(MountSpecies mountSpecies)
         {
             string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
@@ -119,7 +129,6 @@ namespace EmoMount
 
             return WhistleItem;
         }
-
         public bool HasSpeciesDefinition(string SpeciesName)
         {
             if (SpeciesData.ContainsKey(SpeciesName))
@@ -164,6 +173,7 @@ namespace EmoMount
         {
             return Directory.Exists(FolderLocation);
         }
+
         #region Controller
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from the XML Definition.
@@ -181,7 +191,7 @@ namespace EmoMount
                 return null;
             }
 
-            EmoMountMod.Log.LogMessage($"Creating {mountSpecies} for {_affectedCharacter.Name}");
+            //EmoMountMod.Log.LogMessage($"Creating {mountSpecies} for {_affectedCharacter.Name}");
             MountSpecies MountSpecies =  GetSpeciesDefinitionByName(mountSpecies);
 
             if (MountSpecies == null)
@@ -195,7 +205,7 @@ namespace EmoMount
             GameObject MountInstance = null;
 
 
-            EmoMountMod.Log.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.SpeciesName} has {MountSpecies.MoveSpeed}");
+            //EmoMountMod.Log.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.SpeciesName} has {MountSpecies.MoveSpeed}");
 
             if (Prefab == null)
             {
@@ -243,19 +253,24 @@ namespace EmoMount
                     {
                         continue;
                     }
-               
-                    MountComp comp = MountComponentFactory.CreateComponent(basicMountController, item.CompName);
+                    MountComp comp = null;
 
+                    try
+                    {
+                        comp = MountComponentFactory.CreateComponent(basicMountController, item.CompName);
+                    }
+                    catch (Exception e)
+                    {
+                        EmoMountMod.Log.LogMessage($"Failed to create component {item.CompName}. Exception -> \r\n {e.Message}");
+                        continue;
+                    }
+               
                     if (comp)
                     {
                         EmoMountMod.Log.LogMessage($"Added {item.CompName} to {basicMountController.MountName}.");
                         MountComponentFactory.ApplyMountCompProps(comp, item);
                         comp.OnApply(basicMountController);
                     }       
-                    else
-                    {
-                        //failed to find and add correct component type
-                    }
                 }
             }
 
@@ -289,8 +304,6 @@ namespace EmoMount
             return basicMountController;
 
         }
-
-
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from SaveData. If SetAsActive is true this also calls MountCanvasManager.RegisterMount and sets the mount as the CurrentActiveMount for the Character.
         /// </summary>
@@ -339,7 +352,7 @@ namespace EmoMount
         /// <returns></returns>
         public MountInstanceData CreateInstanceDataFromMount(BasicMountController characterMount)
         {
-            EmoMountMod.Log.LogMessage($"Creating Instance Data For {characterMount.MountName}");
+            //EmoMountMod.Log.LogMessage($"Creating Instance Data For {characterMount.MountName}");
             MountInstanceData mountInstanceData = new MountInstanceData();
             mountInstanceData.MountName = characterMount.MountName;
             mountInstanceData.MountUID = characterMount.MountUID;

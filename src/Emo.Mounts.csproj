@@ -368,6 +368,9 @@
     <Compile Include="Custom SL Effect\SL_GrantQuest.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_TransformIntoMount.cs" />
+    <Compile Include="Mount Components\MountEventComp.cs" />
+    <Compile Include="Mount Components\SerializableColor.cs" />
+    <Compile Include="Mounted States\BaseMountState.cs" />
     <Compile Include="NPC\DialogueCharacter.cs" />
     <Compile Include="NPC\DialogueTreeBuilder.cs" />
     <Compile Include="Interaction Components\ShowStashMountInteraction.cs" />
@@ -383,7 +386,6 @@
     <Compile Include="Mount Components\DetectionComp.cs" />
     <Compile Include="Mount Components\EmissionBlendComp.cs" />
     <Compile Include="Mount Components\SprintComp.cs" />
-    <Compile Include="Mount Components\MountCompProp.cs" />
     <Compile Include="Quest\MountQuestManager.cs" />
     <Compile Include="Node Canvas Nodes\SetMountColor.cs" />
     <Compile Include="Node Canvas Nodes\SetMountEmissionColor.cs" />
@@ -399,7 +401,7 @@
     <Compile Include="Node Canvas Nodes\DisplayMountStorageListNode.cs" />
     <Compile Include="Interaction Components\StoreMountInteraction.cs" />
     <Compile Include="Interaction Components\PetMountInteraction.cs" />
-    <Compile Include="Mounted States\BaseMountedState.cs" />
+    <Compile Include="Mounted States\MountState_Mounted.cs" />
     <Compile Include="FSM\BaseState.cs" />
     <Compile Include="XML\MountSpecies.cs" />
     <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
@@ -411,7 +413,7 @@
     <Compile Include="EmoMountMod.cs" />
     <Compile Include="Mount Components\MountFood.cs" />
     <Compile Include="FSM\StackBasedStateMachine.cs" />
-    <Compile Include="Mounted States\UnMountedState.cs" />
+    <Compile Include="Mounted States\MountState_Unmounted.cs" />
     <Compile Include="Mount\MountManager.cs" />
     <Compile Include="Save\MountSaveData.cs" />
     <Compile Include="UI\MountCanvasManager.cs" />
@@ -429,8 +431,6 @@
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.CodeFixes.dll" />
     <Analyzer Include="packages\BepInEx.Analyzers.1.0.7\analyzers\dotnet\cs\BepInEx.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Unmounted States\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

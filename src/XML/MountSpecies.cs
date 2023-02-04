@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmoMount.Mount_Components;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -64,7 +65,6 @@ namespace EmoMount
         {
             return WeightedItem<MountColorChance>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(MountColors));
         }
-
 
         public string GetRandomName()
         {

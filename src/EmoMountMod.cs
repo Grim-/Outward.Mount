@@ -72,7 +72,7 @@ namespace EmoMount
         public static ConfigEntry<float> EncumberenceSpeedModifier;
 
 
-        public static ConfigEntry<bool> EnableFastMount;
+        public static ConfigEntry<bool> EnableCombatTransforming;
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
 
@@ -112,7 +112,6 @@ namespace EmoMount
 
             SL.OnPacksLoaded += ()=>
             {
-                //CreateColorBerrys();
                 CreateMainCanvas();
             };
 
@@ -145,7 +144,7 @@ namespace EmoMount
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
 
-            EnableFastMount = Config.Bind<bool>(NAME, "Enable Fast Mount", false, "If enabled the summon mount skill will instantly summon and mount you.");
+            EnableCombatTransforming = Config.Bind<bool>(NAME, "Enable Transforming in Combat?", false, "If enabled you will be able to transform into a mount even in combat.");
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
         }
@@ -164,51 +163,6 @@ namespace EmoMount
             else
             {
                 Log.LogMessage("EmoMountMod CanvasPrefab was null");
-            }
-        }
-        private void CreateColorBerrys()
-        {
-            Dictionary<string, Color> ColorChoices = new Dictionary<string, Color>();
-            ColorChoices.Add("Red", Color.red);
-            ColorChoices.Add("Green", Color.red);
-            ColorChoices.Add("Blue", Color.blue);
-            ColorChoices.Add("Cyan", Color.cyan);
-            ColorChoices.Add("Purple", Color.magenta);
-            ColorChoices.Add("Yellow", Color.yellow);
-            ColorChoices.Add("White", Color.white);
-            ColorChoices.Add("Black", Color.black);
-            ColorChoices.Add("Reset", Color.clear);
-
-
-            int StartingID = 26280;
-
-            foreach (var item in ColorChoices)
-            {
-                SL_Item ColorBerryItem = new SL_Item()
-                {
-                    Target_ItemID = 4100320,
-                    New_ItemID = -StartingID,
-                    Name = $"Color Berry ({item.Key})",
-                    Description = "Use this to change your mounts tint color.",
-                    EffectTransforms = new SL_EffectTransform[]
-                    {
-                        new SL_EffectTransform()
-                        {
-                            TransformName = "Normal",
-                            Effects = new SL_Effect[]
-                            {
-                                new SL_ChangeMountTint()
-                                {
-                                    TintColor = item.Value
-                                }
-                            }
-                        }
-                    }
-
-                };
-
-                ColorBerryItem.ApplyTemplate();
-                StartingID++;
             }
         }
     }

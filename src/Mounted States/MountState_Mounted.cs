@@ -1,9 +1,10 @@
-﻿using SideLoader;
+﻿using EmoMount.Mounted_States;
+using SideLoader;
 using UnityEngine;
 
 namespace EmoMount
 {
-    public class BaseMountedState : BaseState<BasicMountController>
+    public class MountState_Mounted : BaseMountState
     {
         private Character MountedCharacter;
 
@@ -13,7 +14,7 @@ namespace EmoMount
         private float Timer = 0;
 
 
-        public BaseMountedState(Character mountedCharacter)
+        public MountState_Mounted(Character mountedCharacter)
         {
             MountedCharacter = mountedCharacter;
         }
@@ -54,18 +55,36 @@ namespace EmoMount
                 return;
             }
 
+            base.OnUpdate(MountController);
+
 
             float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
 
-            if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold && EmoMountMod.EnableFoodNeed.Value)
-            {
-                StartPosition = MountController.transform.position;
-                MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);
+            if (EmoMountMod.EnableFoodNeed.Value)
+            {             
+                if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
+                {
+                    StartPosition = MountController.transform.position;
+                    MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);
+                }
             }
+
+
+            if (ControlsInput.DodgeButtonDown(MountedCharacter.OwnerPlayerSys.PlayerID))
+            {
+                MountController.EventComp.OnDodgeDown?.Invoke(MountedCharacter);
+            }
+
+            if (ControlsInput.Sprint(MountedCharacter.OwnerPlayerSys.PlayerID))
+            {
+                MountController.EventComp.OnSprintHeld?.Invoke(MountedCharacter);
+            }
+
 
 
             if (ControlsInput.Interact(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
+                MountController.EventComp.OnInteract?.Invoke(MountedCharacter);
                 MountController.DismountCharacter(MountedCharacter);
                 Parent.PopState();
             }
@@ -79,20 +98,17 @@ namespace EmoMount
             MountController.transform.forward = Vector3.RotateTowards(MountController.transform.forward, MountController.transform.forward + MountController.CameraRelativeInputNoY, MountController.RotateSpeed * Time.deltaTime, 6f);
             MountController.Controller.SimpleMove(MountController.CameraRelativeInput.normalized * MountController.ActualMoveSpeed);
            
-            UpdateAnimator(MountController);
+           
             UpdateMenuInputs(MountController);
+           
         }
 
-        public void UpdateAnimator(BasicMountController MountController)
+        public override void UpdateAnimator(BasicMountController MountController)
         {
             MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
-
-
             float TargetZ = MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0 ? 1f : 0f;
-
-            MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 1.2f);
+            MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 2f);
         }
-
         private void UpdateMenuInputs(BasicMountController MountController)
         {
             bool flag = false;

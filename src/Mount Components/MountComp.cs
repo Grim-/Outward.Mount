@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace EmoMount.Mount_Components
@@ -47,5 +48,11 @@ namespace EmoMount.Mount_Components
         {
             Controller = null;
         }
+    }
+
+    public class MountCompProp
+    {
+        [XmlAttribute("CompName")]
+        public string CompName { get; set; }
     }
 }

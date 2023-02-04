@@ -30,9 +30,9 @@ namespace EmoMount.Mount_Components
         private float GrowthAsPercent => (float)AgeInHours / (float)MaxGrowthAge;
 
 
-        private float BabyScale = 0.4f;
-        private float JuvenileScale = 0.6f;
-        private float AdultScale = 1f;
+        public float BabyScale = 0.4f;
+        public float JuvenileScale = 0.6f;
+        public float AdultScale = 1f;
 
         private float CurrentTargetScale => Mathf.Lerp(BabyScale, AdultScale, GrowthAsPercent);
 
@@ -75,5 +75,11 @@ namespace EmoMount.Mount_Components
     {
         [XmlElement("AgeModifier")]
         public float AgeModifier;
+        [XmlAttribute("BabyScale")]
+        public float BabyScale = 0.4f;
+        [XmlAttribute("JuvenileScale")]
+        public float JuvenileScale = 0.6f;
+        [XmlAttribute("AdultScale")]
+        public float AdultScale = 1f;
     }
 }

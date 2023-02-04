@@ -26,6 +26,12 @@ namespace EmoMount
         {
             get; private set;
         }
+
+        public MountEventComp EventComp
+        {
+            get; private set;
+        }
+
         public NavMeshAgent NavMesh
         {
             get; private set;
@@ -85,9 +91,6 @@ namespace EmoMount
             get; private set;
         }
 
-        public Action<Character> OnBeforePlayerMount;
-        public Action<Character> OnPlayerMounted;
-        public Action<Character> OnPlayerUnMounted;
         public SkinnedMeshRenderer SkinnedMeshRenderer => GetComponentInChildren<SkinnedMeshRenderer>();
 
         public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
@@ -98,8 +101,8 @@ namespace EmoMount
         public Character.SpellCastType MountAnimation = Character.SpellCastType.Sit;
         public Character.SpellCastType DismountAnimation = Character.SpellCastType.Focus;
 
-        public Character.SpellCastType TransformAnimation = Character.SpellCastType.AxeLeap;
-        public Character.SpellCastType RevertAnimation = Character.SpellCastType.AxeLeap;
+        //public Character.SpellCastType TransformAnimation = Character.SpellCastType.;
+        //public Character.SpellCastType RevertAnimation = Character.SpellCastType.AxeLeap;
 
 
         //Mount Movement Settings
@@ -154,7 +157,7 @@ namespace EmoMount
         public bool IsMoving;
         public float MountTotalWeight => 0;
 
-        //Input - tidy up doesnt need this many calls or new v3s
+
         public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
         public Vector3 CameraRelativeInput => Camera.main.transform.TransformDirection(BaseInput);
         public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
@@ -172,6 +175,7 @@ namespace EmoMount
             Controller = GetComponent<CharacterController>();
             NavMesh = gameObject.AddComponent<NavMeshAgent>();
             MountFood = gameObject.AddComponent<MountFood>();
+            EventComp = gameObject.AddComponent<MountEventComp>();
             SetupInteractionComponents();
 
             gameObject.layer = LayerMask.GetMask("Characters");
@@ -192,7 +196,7 @@ namespace EmoMount
         private void SetupFSM()
         {
             MountFSM = new StackBasedStateMachine<BasicMountController>(this);
-            MountFSM.AddState("Base", new UnMountedState());
+            MountFSM.AddState("Base", new MountState_Unmounted());
             MountFSM.PushState("Base");
         }
 
@@ -458,8 +462,6 @@ namespace EmoMount
             {
                 MountFSM.Update();
             }
-
-            //UpdateBagPosition();
         }
 
 
@@ -467,7 +469,6 @@ namespace EmoMount
         {
             if (MountFSM != null)
             {
-                //never likely to be used but you never know..
                 MountFSM.FixedUpdate();
             }
         }
@@ -493,15 +494,45 @@ namespace EmoMount
         }
         public void MountCharacter(Character _affectedCharacter)
         {
-            OnBeforePlayerMount?.Invoke(_affectedCharacter);
             CurrentlyMountedCharacter = _affectedCharacter;
             PrepareCharacter(_affectedCharacter);
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
-            MountFSM.PushDynamicState(new BaseMountedState(CurrentlyMountedCharacter));
-
-            OnPlayerMounted?.Invoke(CurrentlyMountedCharacter);
+            MountFSM.PushDynamicState(new MountState_Mounted(CurrentlyMountedCharacter));
+            EventComp.OnMounted?.Invoke(CurrentlyMountedCharacter);
         }
+
+        public void DismountCharacter(Character _affectedCharacter)
+        {
+            _affectedCharacter.enabled = true;
+            _affectedCharacter.CharMoveBlockCollider.enabled = true;
+            _affectedCharacter.CharacterController.enabled = true;
+            _affectedCharacter.CharacterControl.enabled = true;
+            _affectedCharacter.Animator.enabled = true;
+            _affectedCharacter.Animator.Update(Time.deltaTime);
+
+            UpdateCurrentWeight(0);
+            _affectedCharacter.transform.parent = null;
+            _affectedCharacter.transform.position = transform.position;
+            _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
+
+
+            if (IsTransform)
+            {
+                _affectedCharacter.SpellCastAnim(Character.SpellCastType.EvasionShoot, Character.SpellCastModifier.Immobilized, 1);
+            }
+            else
+            {
+                _affectedCharacter.SetAnimMove(0, 1);
+                _affectedCharacter.SpellCastAnim(DismountAnimation, Character.SpellCastModifier.Mobile, 1);
+            }
+
+            SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
+            EventComp.OnUnMounted?.Invoke(CurrentlyMountedCharacter);
+            CurrentlyMountedCharacter = null;
+            MountFSM.PopState();
+        }
+
         /// <summary>
         /// Prepares a Character for mounting to the MountGameObject
         /// </summary>
@@ -515,7 +546,7 @@ namespace EmoMount
 
             if (IsTransform)
             {
-                character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 0);
+                //character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 0);
             }
             else
             {
@@ -527,35 +558,7 @@ namespace EmoMount
             OriginalPlayerCameraOffset = character.CharacterCamera.Offset;
             SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
         }
-        public void DismountCharacter(Character _affectedCharacter)
-        {
-            _affectedCharacter.enabled = true;
-            _affectedCharacter.CharMoveBlockCollider.enabled = true;
-            _affectedCharacter.CharacterController.enabled = true;
-            _affectedCharacter.CharacterControl.enabled = true;
-            _affectedCharacter.Animator.enabled = true;
-            _affectedCharacter.Animator.Update(Time.deltaTime);
 
-            _affectedCharacter.transform.parent = null;
-            _affectedCharacter.transform.position = transform.position;
-            _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
-
-
-            if (IsTransform)
-            {
-                _affectedCharacter.SpellCastAnim(RevertAnimation, Character.SpellCastModifier.Mobile, 0);
-            }
-            else
-            {
-                _affectedCharacter.SetAnimMove(0, 1);
-                _affectedCharacter.SpellCastAnim(DismountAnimation, Character.SpellCastModifier.Mobile, 1);
-            }
-         
-            SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
-            OnPlayerUnMounted?.Invoke(CurrentlyMountedCharacter);
-            CurrentlyMountedCharacter = null;
-            MountFSM.PopState();
-        }
         public void DisplayNotification(string text)
         {
             if (CharacterOwner != null)

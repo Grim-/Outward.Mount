@@ -48,19 +48,7 @@ namespace EmoMount.Custom_SL_Effect
                         Vector3 Position = _affectedCharacter.transform.position;
                         Vector3 Rotation = _affectedCharacter.transform.eulerAngles;
 
-                        characterMount.ActiveMount.Teleport(Position, Rotation, () =>
-                        {
-                            if (EmoMountMod.EnableFastMount.Value)
-                            {
-                                if (characterMount.ActiveMount.CanMount(_affectedCharacter))
-                                {
-                                    characterMount.ActiveMount.MountCharacter(_affectedCharacter);
-                                }
-                            }
-                        });
-
-
-         
+                        characterMount.ActiveMount.Teleport(Position, Rotation);
                     }
                 }              
             }

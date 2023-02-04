@@ -144,7 +144,7 @@ namespace EmoMount
         }
 
 
-        public static void SpawnSmokeTransformVFX(GameObject Target, float DelayDestroy = 3f, string VFXName = "TransformVFX_Smoke")
+        public static void SpawnTransformVFX(SkinnedMeshRenderer Target, float DelayDestroy = 3f, string VFXName = "TransformVFX_Smoke", ParticleSystemSimulationSpace ParticleSystemSimulationSpace  = ParticleSystemSimulationSpace.World)
         {
             GameObject prefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", "emomountbundle", VFXName);
 
@@ -154,29 +154,25 @@ namespace EmoMount
                 instance.transform.localPosition = Vector3.zero;
 
                 ParticleSystem ps = instance.GetComponent<ParticleSystem>();
-
+                ParticleSystem.MainModule main = ps.main;
                 if (ps)
                 {
+                    main.simulationSpace = ParticleSystemSimulationSpace;
+
                     ParticleSystem.ShapeModule shape = ps.shape;
-                    
-                    SkinnedMeshRenderer[] skinnedMeshRenderers = Target.GetComponentsInChildren<SkinnedMeshRenderer>();
-
-                    foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
+                   
+                    if (Target)
                     {
-
-                        if (skinnedMeshRenderer)
-                        {
-                            shape.skinnedMeshRenderer = skinnedMeshRenderer;
-                        }
-                    }
-
-                  
+                        shape.skinnedMeshRenderer = Target;
+                    }                           
                 }
 
                 GameObject.Destroy(instance, DelayDestroy);
             }
 
         }
+
+
 
         public static float GetTotalFoodValue(Food foodItem)
         {

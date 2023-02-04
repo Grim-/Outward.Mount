@@ -1,23 +1,17 @@
-﻿using SideLoader;
+﻿using EmoMount.Mounted_States;
+using SideLoader;
 using UnityEngine;
 
 namespace EmoMount
 {
-    //The Base Unmounted state
-    public class UnMountedState : BaseUnMountedState
+    public class MountState_Unmounted : BaseMountState
     {
         private Vector3 MoveToTarget = Vector3.zero;
         private bool StayStill = false;
-        private bool ShowDismissInteraction = false;
 
         public override void OnEnter(BasicMountController MountController)
         {
-            MountController.EnableNavMeshAgent();
-       
-            if (EmoMountMod.Debug)
-            {
-                MountController.DisplayNotification($"{MountController.MountName}, entered Leash State");
-            }
+            MountController.EnableNavMeshAgent();     
             MountController.IsMounted = false;
         }
 
@@ -25,10 +19,6 @@ namespace EmoMount
         {
             MoveToTarget = Vector3.zero;
             StayStill = false;
-            if (EmoMountMod.Debug)
-            {
-                MountController.DisplayNotification($"{MountController.MountName}, left Leash State");
-            }
         }
 
         public override void OnFixedUpdate(BasicMountController MountController)
@@ -92,7 +82,6 @@ namespace EmoMount
                 MoveToTargetPosition(MountController, LeashPosition);
             }
         }
-
         private void MoveToTargetPosition(BasicMountController MountController, Vector3 MoveToTarget)
         {
             if (!MountController.NavMesh.isOnNavMesh)
@@ -134,5 +123,14 @@ namespace EmoMount
             }
         }
 
+        public override void UpdateAnimator(BasicMountController MountController)
+        {
+            float forwardVel = Vector3.Dot(MountController.NavMesh.velocity.normalized, MountController.transform.forward);
+            float sideVel = Vector3.Dot(MountController.NavMesh.velocity.normalized, MountController.transform.right);
+
+            //dont even use X its just there because 
+            MountController.Animator.SetFloat("Move X", sideVel, 5f, 5f);
+            MountController.Animator.SetFloat("Move Z", forwardVel, 5f, 5f);
+        }
     }
 }

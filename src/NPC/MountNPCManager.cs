@@ -154,7 +154,7 @@ namespace EmoMount
                 "Can you look after my current mount?",
                 "I want to retrieve a mount.",
                 "Can you teach me some mount skills?",
-                "Can you recolor my mount?"
+                "I want to buy some color berries"
             },
             new ConditionTask[]
             {
@@ -183,10 +183,10 @@ namespace EmoMount
             //Last option of the first multi-choice takes you to the second multi choice
             dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, "Heres watcha do...", secondChoice);
 
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 0, "Yup", new SetMountColor(Color.red)).ConnectTo(graph, new FinishNode());
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 1, "Yup", new SetMountColor(Color.green)).ConnectTo(graph, new FinishNode());
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 2, "Yup", new SetMountColor(Color.blue)).ConnectTo(graph, new FinishNode());
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 3, "Yup", new SetMountColor(Color.magenta)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 0, "Yup", new GiveItem(-26280)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 1, "Yup", new GiveItem(-26281)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 2, "Yup", new GiveItem(-26282)).ConnectTo(graph, new FinishNode());
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(secondChoice, 3, "Yup", new GiveItem(-26283)).ConnectTo(graph, new FinishNode());
 
         }
         private void Old_BuildDialouge(DialogueTree graph, Character character)

@@ -107,13 +107,13 @@ namespace EmoMount
 
         private void SL_OnGameplayResumedAfterLoading()
         {
-            Character host = CharacterManager.Instance.GetFirstLocalCharacter();
-            //host.CharacterUI.ShowInfoNotification("Quest Added");
+            //Character host = CharacterManager.Instance.GetFirstLocalCharacter();
+            ////host.CharacterUI.ShowInfoNotification("Quest Added");
 
-            if (!CharacterHasQuest(host, -26501))
-            {
-                GenerateQuestItemForCharacter(host, -26501);
-            }
+            //if (!CharacterHasQuest(host, -26501))
+            //{
+            //    GenerateQuestItemForCharacter(host, -26501);
+            //}
 
         }
 
@@ -200,14 +200,8 @@ namespace EmoMount
             StepThree.AddQuestAction(new CompleteQuest()
             {
                 isSuccessful = true,
-            })
-            .AddQuestAction(new ResetQuestEventTimer()
-            {
-                QuestEventRef = new QuestEventReference()
-                {
-                    m_eventUID = EggQuestPart_1Signature.EventUID
-                }
             });
+
             //.AddQuestAction(new RemoveQuest()
             //{
             //    questRef = new BBParameter<QuestReference>()

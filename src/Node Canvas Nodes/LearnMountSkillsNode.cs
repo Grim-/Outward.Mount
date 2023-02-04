@@ -13,14 +13,36 @@ namespace EmoMount
             {
                 Character PlayerTalking = bb.GetVariable<Character>("gInstigator").GetValue();
 
-                if (PlayerTalking.Inventory.SkillKnowledge.GetItemFromItemID(-26200) == null)
+                if (PlayerTalking.Inventory.SkillKnowledge.GetItemFromItemID(-26400) == null)
                 {
-                    PlayerTalking.Inventory.ReceiveSkillReward(-26200);
+                    PlayerTalking.Inventory.ReceiveSkillReward(-26400);
                 }
 
-                if (PlayerTalking.Inventory.SkillKnowledge.GetItemFromItemID(-26201) == null)
+                if (PlayerTalking.Inventory.SkillKnowledge.GetItemFromItemID(-26401) == null)
                 {
-                    PlayerTalking.Inventory.ReceiveSkillReward(-26201);
+                    PlayerTalking.Inventory.ReceiveSkillReward(-26401);
+                }
+
+                return Status.Success;
+            }
+        }
+
+        public class GiveItem : ActionNode
+        {
+            public int ItemID;
+
+            public GiveItem(int itemID)
+            {
+                ItemID = itemID;
+            }
+
+            public override Status OnExecute(Component agent, IBlackboard bb)
+            {
+                Character PlayerTalking = bb.GetVariable<Character>("gInstigator").GetValue();
+
+                if (PlayerTalking)
+                {
+                    PlayerTalking.Inventory.ReceiveItemReward(ItemID, 1, false);
                 }
 
                 return Status.Success;

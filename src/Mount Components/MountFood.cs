@@ -54,7 +54,6 @@ namespace EmoMount
         /// </summary>
         public void Init()
         {
-            //gaberry
             MountController = GetComponent<BasicMountController>();
         }
 
@@ -88,8 +87,6 @@ namespace EmoMount
                 MountController.PlayMountAnimation(MountAnimations.MOUNT_ANGRY);
                 return;
             }
-
-           // MountController.DisplayNotification($"Feeding {item.Name} to  {MountController.MountName} Food Value : {foodAmount}!");
 
             float finalFoodValue = foodAmount;
 

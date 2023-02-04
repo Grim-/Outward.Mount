@@ -10,8 +10,8 @@ namespace EmoMount.Mount_Components
 {
     public class ColorableComp : MountComp
     {
-        public Color TintColor = Color.clear;
-        public Color EmissionColor = Color.clear;
+        public SerializableColor TintColor = Color.clear;
+        public SerializableColor EmissionColor = Color.clear;
 
         public bool RemoveOnChange = true;
 
@@ -38,9 +38,9 @@ namespace EmoMount.Mount_Components
     public class ColorableCompProp : MountCompProp
     {
         [XmlElement("TintColor")]
-        public Color TintColor;
+        public SerializableColor TintColor;
 
         [XmlElement("EmissionTintColor")]
-        public Color EmissionColor;
+        public SerializableColor EmissionColor;
     }
 }

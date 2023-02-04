@@ -6,8 +6,8 @@ namespace EmoMount.Mount_Components
     public class LightableComp : MountComp
     {
 
-        public Vector3 Position = Vector3.zero;
-        public Color Color = Color.white;
+        public Vector3 Position = Vector3.up;
+        public SerializableColor Color;
         public float Intensity = 1;
         public float Range = 4f;
 
@@ -28,7 +28,7 @@ namespace EmoMount.Mount_Components
                 Light.type = LightType.Point;
 
                 Light.intensity = Intensity;
-                Light.color = Color;
+                Light.color = Color != null ? (Color)Color : UnityEngine.Color.white;
                 Light.range = Range;
             }
 
@@ -51,9 +51,9 @@ namespace EmoMount.Mount_Components
     public class LightableCompProp : MountCompProp
     {
         [XmlElement("Position")]
-        public Vector3 Position = Vector3.zero;
+        public Vector3 Position = Vector3.up;
         [XmlElement("Color")]
-        public Color Color = Color.white;
+        public SerializableColor Color;
         [XmlElement("Intensity")]
         public float Intensity = 1;
         [XmlElement("Range")]

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace EmoMount
 {
@@ -52,7 +53,7 @@ namespace EmoMount
                 if (propValue != null)
                 {
                     type.GetField(p.Name)?.SetValue(comp, propValue);
-                }
+                }               
             }
 
             foreach (var p in prop.GetType().GetProperties())
