@@ -17,6 +17,7 @@ namespace EmoMount
     /// </summary>
     public class MountManager
     {
+        #region Properties
         public Dictionary<string, MountSpecies> SpeciesData
         {
             get; private set;
@@ -36,6 +37,8 @@ namespace EmoMount
             get; private set;
         }
 
+        #endregion
+
         private string RootFolder;
         private string SpeciesFolder => RootFolder + "MountSpecies/";
 
@@ -49,6 +52,8 @@ namespace EmoMount
             MountComponentFactory.Initialize();
             LoadAllSpeciesDataFiles();
         }
+
+        #region Species Definition
 
         private void LoadAllSpeciesDataFiles()
         {
@@ -93,42 +98,6 @@ namespace EmoMount
                 }
             }
         }
-        private SL_Item CreateWhistle(MountSpecies mountSpecies)
-        {
-            string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
-            SL_Item WhistleItem = new SL_Item()
-            {
-                Target_ItemID = mountSpecies.TargetItemID,
-                New_ItemID = mountSpecies.WhistleItemID,
-                Name = $"{NiceName} Whistle",
-                Description = $"Can be used to call upon a tame {NiceName}.",
-                EffectTransforms = new SL_EffectTransform[]
-                {
-                    new SL_EffectTransform()
-                    {
-                        TransformName = "Normal",
-                        Effects = new SL_Effect[]
-                        {
-                            new SL_SpawnMount()
-                            {
-                                SpeciesName = mountSpecies.SpeciesName
-                            }
-                        }
-                    }
-                }
-            };
-
-            WhistleItem.ApplyTemplate();
-
-            MountWhistleIDs.Add(WhistleItem.New_ItemID);
-
-            if (mountSpecies.IsWhistleWorldDrop)
-            {
-                WorldDropMountWhistleIDs.Add(WhistleItem.New_ItemID);
-            }
-
-            return WhistleItem;
-        }
         public bool HasSpeciesDefinition(string SpeciesName)
         {
             if (SpeciesData.ContainsKey(SpeciesName))
@@ -157,6 +126,9 @@ namespace EmoMount
             }
             return null;
         }
+        #endregion
+
+        #region File + Xml
         public T DeserializeFromXML<T>(string path)
         {
             var assembly = Assembly.Load("EmoMount");
@@ -173,6 +145,7 @@ namespace EmoMount
         {
             return Directory.Exists(FolderLocation);
         }
+        #endregion
 
         #region Controller
         /// <summary>
@@ -299,11 +272,9 @@ namespace EmoMount
 
             MountControllers.Add(_affectedCharacter, basicMountController);
 
-            basicMountController.Teleport(Position, Rotation);
-            OnMountSpawnComplete?.Invoke(basicMountController);
             return basicMountController;
-
         }
+
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from SaveData. If SetAsActive is true this also calls MountCanvasManager.RegisterMount and sets the mount as the CurrentActiveMount for the Character.
         /// </summary>
@@ -311,7 +282,7 @@ namespace EmoMount
         /// <param name="mountInstanceData"></param>
         /// <param name="SetAsActive"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, bool SetAsActive = true)
+        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, bool SetAsActive = true, Action<BasicMountController> OnMountSpawnComplete = null)
         {
             if (mountInstanceData == null)
             {
@@ -343,29 +314,15 @@ namespace EmoMount
                 character.GetComponent<CharacterMount>().SetActiveMount(basicMountController);
             }
 
-            return basicMountController;
-        }
-        /// <summary>
-        /// Returns the SaveData for the BasicMountController
-        /// </summary>
-        /// <param name="characterMount"></param>
-        /// <returns></returns>
-        public MountInstanceData CreateInstanceDataFromMount(BasicMountController characterMount)
-        {
-            //EmoMountMod.Log.LogMessage($"Creating Instance Data For {characterMount.MountName}");
-            MountInstanceData mountInstanceData = new MountInstanceData();
-            mountInstanceData.MountName = characterMount.MountName;
-            mountInstanceData.MountUID = characterMount.MountUID;
-            mountInstanceData.MountSpecies = characterMount.SpeciesName;
-            //mountInstanceData.BagUID = characterMount.BagContainer.UID;
-            mountInstanceData.CurrentFood = characterMount.MountFood.CurrentFood;
-            mountInstanceData.MaximumFood = characterMount.MountFood.MaximumFood;
-            mountInstanceData.Position = characterMount.transform.position;
-            mountInstanceData.Rotation = characterMount.transform.eulerAngles;
-            mountInstanceData.TintColor = characterMount.CurrentTintColor;
-            mountInstanceData.EmissionColor = characterMount.CurrentEmissionColor;
 
-            return mountInstanceData;
+
+            basicMountController.OnSpawnComplete += () =>
+            {
+                basicMountController.Teleport(character.transform.position, character.transform.eulerAngles);
+                OnMountSpawnComplete?.Invoke(basicMountController);
+            };
+
+            return basicMountController;
         }
         //public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
         //{
@@ -467,8 +424,42 @@ namespace EmoMount
         }
 
         #endregion
+        private SL_Item CreateWhistle(MountSpecies mountSpecies)
+        {
+            string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
+            SL_Item WhistleItem = new SL_Item()
+            {
+                Target_ItemID = mountSpecies.TargetItemID,
+                New_ItemID = mountSpecies.WhistleItemID,
+                Name = $"{NiceName} Whistle",
+                Description = $"Can be used to call upon a tame {NiceName}.",
+                EffectTransforms = new SL_EffectTransform[]
+                {
+                    new SL_EffectTransform()
+                    {
+                        TransformName = "Normal",
+                        Effects = new SL_Effect[]
+                        {
+                            new SL_SpawnMount()
+                            {
+                                SpeciesName = mountSpecies.SpeciesName
+                            }
+                        }
+                    }
+                }
+            };
 
+            WhistleItem.ApplyTemplate();
 
+            MountWhistleIDs.Add(WhistleItem.New_ItemID);
+
+            if (mountSpecies.IsWhistleWorldDrop)
+            {
+                WorldDropMountWhistleIDs.Add(WhistleItem.New_ItemID);
+            }
+
+            return WhistleItem;
+        }
         public int GetRandomWhistleID()
         {
             return WorldDropMountWhistleIDs[UnityEngine.Random.Range(0, WorldDropMountWhistleIDs.Count)];

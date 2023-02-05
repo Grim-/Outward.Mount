@@ -91,6 +91,54 @@ namespace EmoMount
             get; private set;
         }
 
+        public bool Initalized
+        {
+            get; private set;
+        }
+
+        public bool IsSprinting
+        {
+            get; set;
+        }
+        public bool IsMounted 
+        { 
+            get; private set; 
+        }
+        public bool IsMoving 
+        { 
+            get; set; 
+        }
+        public float MountTotalWeight
+        { 
+            get; set; 
+        }
+
+        public MountUpInteraction MountUpInteraction 
+        { 
+            get; private set; 
+        }
+        public ShowStashMountInteraction ShowStashInteraction 
+        { 
+            get; private set; 
+        }
+        public InteractionActivator InteractionActivator 
+        { 
+            get; private set; 
+        }
+        public InteractionTriggerBase InteractionTriggerBase 
+        { 
+            get; private set; 
+        }
+
+        public StackBasedStateMachine<BasicMountController> MountFSM
+        {
+            get; private set;
+        }
+
+
+        public float MoveSpeedModifier => IsSprinting ? SprintModifier : 1f;
+        public float FoodLostPerMountedDistance => EmoMountMod.FoodLostTravelling.Value;
+        public float MountedDistanceFoodThreshold => EmoMountMod.TravelDistanceThreshold.Value;
         public SkinnedMeshRenderer SkinnedMeshRenderer => GetComponentInChildren<SkinnedMeshRenderer>();
 
         public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
@@ -98,15 +146,15 @@ namespace EmoMount
 
         #endregion
 
+        public Action OnSpawnComplete;
+
         public Character.SpellCastType MountAnimation = Character.SpellCastType.Sit;
         public Character.SpellCastType DismountAnimation = Character.SpellCastType.Focus;
 
-        //public Character.SpellCastType TransformAnimation = Character.SpellCastType.;
-        //public Character.SpellCastType RevertAnimation = Character.SpellCastType.AxeLeap;
-
-
-        //Mount Movement Settings
+        #region Speed
         public float MoveSpeed { get; private set; }
+        public float RotateSpeed { get; private set; }
+        public float SprintModifier = 2f;
         public float ActualMoveSpeed
         {
             get
@@ -118,12 +166,12 @@ namespace EmoMount
                 return MoveSpeed * MoveSpeedModifier;
             }
         }
-
+        #endregion
 
         public bool IsTransform = false;
 
-        public float MoveSpeedModifier = 1f;
-        public float RotateSpeed { get; private set; }
+
+
         public float LeashDistance => EmoMountMod.LeashDistance.Value;
         //A Point is randomly chosen in LeashPointRadius around player to leash to.
         public float LeashPointRadius => EmoMountMod.LeashRadius.Value;
@@ -143,19 +191,11 @@ namespace EmoMount
         public Vector3 MountedCameraOffset;
 
 
-        public float FoodLostPerMountedDistance => EmoMountMod.FoodLostTravelling.Value;
-        public float MountedDistanceFoodThreshold => EmoMountMod.TravelDistanceThreshold.Value;
         private Vector3 OriginalPlayerCameraOffset;
+        private bool IsTeleporting = false;
 
 
-        public StackBasedStateMachine<BasicMountController> MountFSM
-        {
-            get; private set;
-        }
 
-        public bool IsMounted;
-        public bool IsMoving;
-        public float MountTotalWeight => 0;
 
 
         public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
@@ -163,14 +203,11 @@ namespace EmoMount
         public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
         public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
 
-        public MountUpInteraction mountInteraction { get; private set; }
-        public ShowStashMountInteraction petMountInteraction { get; private set; }
-        public StoreMountInteraction dismissMountInteraction { get; private set; }
-        public InteractionActivator interactionActivator { get; private set; }
-        public InteractionTriggerBase interactionTriggerBase { get; private set; }
+
 
         public void Awake()
         {
+            Initalized = false;
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
             NavMesh = gameObject.AddComponent<NavMeshAgent>();
@@ -183,37 +220,55 @@ namespace EmoMount
             //needs to be done this way to avoid the jillion racetime errors
             MountFood.Init();
 
+            NavMesh.height = 1f;
             NavMesh.stoppingDistance = 1f;
             NavMesh.enabled = false;
             MountUID = Guid.NewGuid().ToString();
-
+            MountTotalWeight = 0;
             SetupFSM();
+            OnSpawnComplete?.Invoke();
+            Initalized = true;
         }
-
-        /// <summary>
-        /// moved state stuff into a state machine so its cleaner
-        /// </summary>
         private void SetupFSM()
         {
             MountFSM = new StackBasedStateMachine<BasicMountController>(this);
             MountFSM.AddState("Base", new MountState_Unmounted());
             MountFSM.PushState("Base");
         }
-
         private void SetupInteractionComponents()
         {
             EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
-            mountInteraction = gameObject.AddComponent<MountUpInteraction>();
-            petMountInteraction = gameObject.AddComponent<ShowStashMountInteraction>();
+            MountUpInteraction = gameObject.AddComponent<MountUpInteraction>();
+            ShowStashInteraction = gameObject.AddComponent<ShowStashMountInteraction>();
             //dismissMountInteraction = gameObject.AddComponent<StoreMountInteraction>();
-            interactionActivator = gameObject.AddComponent<InteractionActivator>();
-            interactionTriggerBase = gameObject.AddComponent<InteractionTriggerBase>();
+            InteractionActivator = gameObject.AddComponent<InteractionActivator>();
+            InteractionTriggerBase = gameObject.AddComponent<InteractionTriggerBase>();
 
-            interactionActivator.BasicInteraction = mountInteraction;
+            InteractionActivator.BasicInteraction = MountUpInteraction;
             //interactionActivator.AddBasicInteractionOverride(petMountInteraction);
-            interactionActivator.m_defaultHoldInteraction = petMountInteraction;
-            interactionTriggerBase.DetectionColliderRadius = 1f;
+            InteractionActivator.m_defaultHoldInteraction = ShowStashInteraction;
+            InteractionTriggerBase.DetectionColliderRadius = 1f;
         }
+
+        public MountInstanceData MountInstanceData
+        {
+            get
+            {
+                MountInstanceData mountInstanceData = new MountInstanceData();
+                mountInstanceData.MountName = MountName;
+                mountInstanceData.MountUID = MountUID;
+                mountInstanceData.MountSpecies = SpeciesName;
+                mountInstanceData.CurrentFood = MountFood.CurrentFood;
+                mountInstanceData.MaximumFood = MountFood.MaximumFood;
+                mountInstanceData.Position = transform.position;
+                mountInstanceData.Rotation = transform.eulerAngles;
+                mountInstanceData.TintColor = CurrentTintColor;
+                mountInstanceData.EmissionColor = CurrentEmissionColor;
+                return mountInstanceData;
+            }
+        }
+
+
 
         #region Setters
 
@@ -258,11 +313,18 @@ namespace EmoMount
                 SkinnedMeshRenderer.material.SetColor("_TintColor", TintColor);
             }
         }
-        public void SetEmissionColor(Color EmissionColor)
+        public void SetEmissionColor(Color newColor, float intensity = 1f)
         {
-            if (SkinnedMeshRenderer)
+            if (SkinnedMeshRenderer != null)
             {
-                SkinnedMeshRenderer.material.SetColor("_EmissionColor", EmissionColor);
+                SkinnedMeshRenderer.material.SetColor("_EmissionColor", newColor * intensity);
+            }
+        }
+        public void DisableEmission()
+        {
+            if (SkinnedMeshRenderer != null)
+            {
+                SkinnedMeshRenderer.material.SetColor("_EmissionColor", Color.clear);
             }
         }
         #endregion
@@ -500,8 +562,8 @@ namespace EmoMount
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
             MountFSM.PushDynamicState(new MountState_Mounted(CurrentlyMountedCharacter));
             EventComp.OnMounted?.Invoke(CurrentlyMountedCharacter);
+            CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(true);
         }
-
         public void DismountCharacter(Character _affectedCharacter)
         {
             _affectedCharacter.enabled = true;
@@ -519,7 +581,7 @@ namespace EmoMount
 
             if (IsTransform)
             {
-                _affectedCharacter.SpellCastAnim(Character.SpellCastType.EvasionShoot, Character.SpellCastModifier.Immobilized, 1);
+                _affectedCharacter.SpellCastAnim(Character.SpellCastType.Teleport, Character.SpellCastModifier.Immobilized, 1);
             }
             else
             {
@@ -529,14 +591,10 @@ namespace EmoMount
 
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
             EventComp.OnUnMounted?.Invoke(CurrentlyMountedCharacter);
+            CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(false);
             CurrentlyMountedCharacter = null;
             MountFSM.PopState();
         }
-
-        /// <summary>
-        /// Prepares a Character for mounting to the MountGameObject
-        /// </summary>
-        /// <param name="character"></param>
         private void PrepareCharacter(Character character)
         {
             character.CharMoveBlockCollider.enabled = false;
@@ -559,6 +617,12 @@ namespace EmoMount
             SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
         }
 
+        public void SetIsMounted(bool isMounted)
+        {
+            IsMounted = isMounted;
+        }
+
+
         public void DisplayNotification(string text)
         {
             if (CharacterOwner != null)
@@ -566,7 +630,6 @@ namespace EmoMount
                 CharacterOwner.CharacterUI.ShowInfoNotification(text);
             }
         }
-
         public void DisplayImportantNotification(string text)
         {
             if (CharacterOwner != null)
@@ -579,7 +642,6 @@ namespace EmoMount
         {
             Animator.SetTrigger(name);
         }
-
         public void PlayMountAnimation(MountAnimations animation)
         {
             switch (animation)
@@ -616,25 +678,40 @@ namespace EmoMount
             NavMesh.enabled = false;
             NavMesh.isStopped = true;
         }
-
         public void Teleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
-            StartCoroutine(DelayTeleport(Position, Rotation));
+
+            if (!IsTeleporting)
+            {
+                StartCoroutine(DelayTeleport(Position, Rotation, OnTeleported));
+            }
+           
         }
         private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
             EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
-            DisableNavMeshAgent();
-            yield return null;
-            yield return null;
+            IsTeleporting = true;
+            bool wasEnabled = NavMesh.enabled;
+            if (NavMesh.enabled)
+            {
+                DisableNavMeshAgent();
+                yield return new WaitForSeconds(0.5f);
+            }
 
+            
+          
             transform.position = Position;
             transform.rotation = Quaternion.Euler(Rotation);
-            EnableNavMeshAgent();
-            yield return null;
-            yield return null;
-            //UpdateBagPosition();
+
+            yield return new WaitForSeconds(0.5f);
+
+            if (wasEnabled)
+            {
+                EnableNavMeshAgent();
+            }
+              
             OnTeleported?.Invoke();
+            IsTeleporting = false;
             yield break;
         }
 
@@ -661,6 +738,117 @@ namespace EmoMount
         }
 
 
+        public bool DoDetectionType<T>(Collider[] colliders, Func<T, bool> Condition, out T Nearest, Action<T, float> OnDetected = null) where T : Component
+        {
+            if (ColliderHasComponent<T>(colliders))
+            {
+                List<T> foundType = FindComponentsInColliders<T>(colliders, Condition);
+
+                //sort the list by distance
+                foundType.Sort((x, y) => { return (Controller.transform.position - x.transform.position).sqrMagnitude.CompareTo((Controller.transform.position - y.transform.position).sqrMagnitude); });
+
+                if (foundType.Count > 0)
+                {
+                    float distance = Vector3.Distance(Controller.transform.position, foundType[0].transform.position);
+                    OnDetected?.Invoke(foundType[0], distance);
+                    Nearest = foundType[0];
+                    return true;
+                }
+                else
+                {
+                    DisableEmission();
+                    Nearest = null;
+                    return false;
+                }
+            }
+
+            Nearest = null;
+            return false;
+        }
+        public bool DoDetectionType<T>(float DetectionRadius, Func<T, bool> Condition, out T Nearest, Action<T, float> OnDetected = null) where T : Component
+        {        
+            return DoDetectionType<T>(GetCollidersInRadius(DetectionRadius),  Condition, out Nearest, OnDetected);
+        }
+        //Returns true if the angle difference between the two Controllers forward and the targets direction is less than MexAngleDiff
+        public bool IsFacing(Transform targetTransform, float MaxAngleDiff = 10f)
+        {
+            return Vector3.Angle(Controller.transform.forward, targetTransform.position - Controller.transform.position) <= MaxAngleDiff;
+        }
+        public Collider[] GetCollidersInRadius(float DetectionRadius)
+        {
+            return Physics.OverlapSphere(Controller.transform.position, DetectionRadius, LayerMask.GetMask("Characters", "WorldItem"));
+        }
+        public List<T> FindComponentsInColliders<T>(Collider[] colliders, Func<T, bool> Condition = null) where T : Component
+        {
+            List<T> foundList = new List<T>();
+
+            foreach (var col in colliders)
+            {
+
+                if (col.gameObject == Controller.gameObject || col.transform.root.name == Controller.transform.root.name)
+                {
+                    continue;
+                }
+
+                if (col.transform.root.name == CharacterOwner.transform.root.name)
+                {
+                    continue;
+                }
+
+                T foundThing = col.GetComponentInChildren<T>();
+
+                if (foundThing == null)
+                {
+                    foundThing = col.GetComponentInParent<T>();
+                }
+
+                if (foundThing != null)
+                {
+                    if (Condition == null)
+                    {
+                        foundList.Add(foundThing);
+                    }
+                    else
+                    {
+                        if (Condition.Invoke(foundThing))
+                        {
+                            foundList.Add(foundThing);
+                        }
+                    }
+
+                }
+            }
+
+            return foundList;
+        }
+        public bool ColliderHasComponent<T>(Collider[] colliders)
+        {
+            foreach (var col in colliders)
+            {
+                //Skip anything parented
+                if (col.transform.root.name == Controller.transform.root.name)
+                {
+                    continue;
+                }
+
+                //skip the gameObject itself
+                if (col.gameObject == Controller.gameObject)
+                {
+                    continue;
+                }
+
+                if (col.GetComponentInChildren<T>() != null)
+                {
+                    return true;
+                }
+                else if (col.GetComponentInParent<T>() != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
     }
 

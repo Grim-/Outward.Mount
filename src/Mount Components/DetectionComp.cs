@@ -20,6 +20,13 @@ namespace EmoMount.Mount_Components
         public float MinIntensity = 0f;
         public float MaxIntensity = 4f;
         public float DetectionRadius = 5f;
+        public bool ScaleIntensityWithDistance = true;
+
+
+
+        public Action<Item, float> OnItemDetected;
+        public Action<Character, float> OnEnemyDetected;
+        public Action<Gatherable, float> OnGatherableDetected;
 
         public Func<TreasureChest, bool> LootPredicate =>
         (container) =>
@@ -61,170 +68,57 @@ namespace EmoMount.Mount_Components
             }
 
         }
-
-        private bool DoDetectionType<T>(Collider[] colliders, Color DetectionColor, bool ScaleIntensityWithDistance, Func<T, bool> Condition) where T : Component
+        public virtual void DoDetection()
         {
-            if (ColliderHasComponent<T>(colliders))
+            if (Controller.DoDetectionType<Item>(DetectionRadius, ItemPredicate, out Item FoundItem))
             {
-                List<T> foundType = FindComponentsInColliders<T>(colliders, Condition);
-
-                //sort the list by distance
-                foundType.Sort((x, y) => { return (Controller.transform.position - x.transform.position).sqrMagnitude.CompareTo((Controller.transform.position - y.transform.position).sqrMagnitude); });
-
-                if (foundType.Count > 0)
+                float distance = Vector3.Distance(Controller.transform.position, FoundItem.transform.position);
+                float CurrentProximityItensity = (Mathf.Clamp(1.0f - distance / DetectionRadius, MinIntensity, MaxIntensity) * BaseIntensity);
+                if (ScaleIntensityWithDistance)
                 {
-                    float distance = Vector3.Distance(Controller.transform.position, foundType[0].transform.position);
-                    float CurrentProximityItensity = (Mathf.Clamp(1.0f - distance / DetectionRadius, MinIntensity, MaxIntensity) * BaseIntensity);
-                    if (ScaleIntensityWithDistance)
+
+                    if (Controller.IsFacing(FoundItem.transform))
                     {
-
-                        if (IsPlayerFacing(foundType[0].transform))
-                        {
-                            SetEmissionColor(DetectionColor, (CurrentProximityItensity + 1.2f));
-                        }
-                        else
-                        {
-                            SetEmissionColor(DetectionColor, CurrentProximityItensity);
-                        }
-
+                        Controller.SetEmissionColor(LootDetectedColor, (CurrentProximityItensity + 1.2f));
                     }
                     else
                     {
-                        SetEmissionColor(DetectionColor, BaseIntensity);
+                        Controller.SetEmissionColor(LootDetectedColor, CurrentProximityItensity);
                     }
 
-
-                    return true;
                 }
                 else
                 {
-                    DisableEmission();
-                    return false;
+                    Controller.SetEmissionColor(LootDetectedColor, BaseIntensity);
                 }
             }
-
-            return false;
-        }
-
-        public virtual void DoDetection()
-        {
-            Collider[] colliders = Physics.OverlapSphere(Controller.transform.position, DetectionRadius, LayerMask.GetMask("Characters", "WorldItem"));
-
-            if (DoDetectionType<Item>(colliders, LootDetectedColor, true, ItemPredicate))
+            else if (Controller.DoDetectionType<TreasureChest>(DetectionRadius, LootPredicate, out TreasureChest FoundContainer))
             {
-
-            }
-            else if (DoDetectionType<TreasureChest>(colliders, LootDetectedColor, true, LootPredicate))
-            {
-
-            }
-            else
-            {
-                DisableEmission();
-            }
-
-        }
-
-        private List<T> FindComponentsInColliders<T>(Collider[] colliders, Func<T, bool> Condition = null) where T : Component
-        {
-            List<T> foundList = new List<T>();
-
-            foreach (var col in colliders)
-            {
-
-                if (col.gameObject == Controller.gameObject  || col.transform.root.name == Controller.transform.root.name)
+                float distance = Vector3.Distance(Controller.transform.position, FoundItem.transform.position);
+                float CurrentProximityItensity = (Mathf.Clamp(1.0f - distance / DetectionRadius, MinIntensity, MaxIntensity) * BaseIntensity);
+                if (ScaleIntensityWithDistance)
                 {
-                    continue;
-                }
 
-                if (col.transform.root.name == Controller.CharacterOwner.transform.root.name)
-                {
-                    continue;
-                }
-
-                T foundThing = col.GetComponentInChildren<T>();
-
-                if (foundThing == null)
-                {
-                    foundThing = col.GetComponentInParent<T>();
-                }
-
-                if (foundThing != null)
-                {
-                    if (Condition == null)
+                    if (Controller.IsFacing(FoundItem.transform))
                     {
-                        foundList.Add(foundThing);
+                        Controller.SetEmissionColor(LootDetectedColor, (CurrentProximityItensity + 1.2f));
                     }
                     else
                     {
-                        if (Condition.Invoke(foundThing))
-                        {
-                            foundList.Add(foundThing);
-                        }
+                        Controller.SetEmissionColor(LootDetectedColor, CurrentProximityItensity);
                     }
 
                 }
+                else
+                {
+                    Controller.SetEmissionColor(LootDetectedColor, BaseIntensity);
+                }
             }
-
-            return foundList;
-        }
-
-        private bool ColliderHasComponent<T>(Collider[] colliders)
-        {
-            foreach (var col in colliders)
+            else
             {
-                //Skip anything parented
-                if (col.transform.root.name == Controller.transform.root.name)
-                {
-                    continue;
-                }
-
-                //skip the gameObject itself
-                if (col.gameObject == Controller.gameObject)
-                {
-                    continue;
-                }
-
-                if (col.GetComponentInChildren<T>() != null)
-                {
-                    return true;
-                }
-                else if (col.GetComponentInParent<T>() != null)
-                {
-                    return true;
-                }
+                Controller.DisableEmission();
             }
 
-            return false;
-        }
-
-        private bool IsPlayerFacing(Transform targetTransform)
-        {
-            return Vector3.Angle(Controller.transform.forward, targetTransform.position - Controller.transform.position) < 10f;
-        }
-
-        /// <summary>
-        /// Use RGB 0-1 and pass an intensity value to make brigher
-        /// </summary>
-        /// <param name="newColor"></param>
-        /// <param name="intensity"></param>
-        public void SetEmissionColor(Color newColor, float intensity = 1f)
-        {
-            if (SkinnedMesh != null)
-            {
-                SkinnedMesh.material.SetColor("_EmissionColor", newColor * intensity);
-            }
-        }
-
-        /// <summary>
-        /// Sets the Emission color to a clear color effectively disabling it.
-        /// </summary>
-        public void DisableEmission()
-        {
-            if (SkinnedMesh != null)
-            {
-                SkinnedMesh.material.SetColor("_EmissionColor", NothingDetectedColor);
-            }
         }
     }
 

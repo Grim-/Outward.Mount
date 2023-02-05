@@ -1,5 +1,7 @@
 ﻿using EmoMount.Mounted_States;
 using SideLoader;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace EmoMount
@@ -9,10 +11,16 @@ namespace EmoMount
         private Character MountedCharacter;
 
 
+
         private Vector3 StartPosition;
         private Vector3 EndPosition;
         private float Timer = 0;
 
+
+        private bool IsInManualMode = true;
+
+        private Vector3 AutoMoveTarget = Vector3.zero;
+        private int CurrentAreaSwitch = -1;
 
         public MountState_Mounted(Character mountedCharacter)
         {
@@ -27,7 +35,7 @@ namespace EmoMount
             }
 
             MountController.DisableNavMeshAgent();
-            MountController.IsMounted = true;
+            MountController.SetIsMounted(true);
             StartPosition = MountController.transform.position;
         }
 
@@ -69,22 +77,17 @@ namespace EmoMount
                 }
             }
 
-
-            if (ControlsInput.DodgeButtonDown(MountedCharacter.OwnerPlayerSys.PlayerID))
-            {
-                MountController.EventComp.OnDodgeDown?.Invoke(MountedCharacter);
-            }
-
             if (ControlsInput.Sprint(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
-                MountController.EventComp.OnSprintHeld?.Invoke(MountedCharacter);
+                MountController.IsSprinting = true;
             }
-
-
+            else
+            {
+                MountController.IsSprinting = false;
+            }
 
             if (ControlsInput.Interact(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
-                MountController.EventComp.OnInteract?.Invoke(MountedCharacter);
                 MountController.DismountCharacter(MountedCharacter);
                 Parent.PopState();
             }
@@ -94,21 +97,155 @@ namespace EmoMount
                 Parent.PopState();
             }
 
+            if (IsInManualMode)
+            {
+                MountController.transform.forward = Vector3.RotateTowards(MountController.transform.forward, MountController.transform.forward + MountController.CameraRelativeInputNoY, MountController.RotateSpeed * Time.deltaTime, 6f);
+                MountController.Controller.SimpleMove(Physics.gravity + MountController.CameraRelativeInput.normalized * MountController.ActualMoveSpeed);
+            }
+            else
+            {
 
-            MountController.transform.forward = Vector3.RotateTowards(MountController.transform.forward, MountController.transform.forward + MountController.CameraRelativeInputNoY, MountController.RotateSpeed * Time.deltaTime, 6f);
-            MountController.Controller.SimpleMove(MountController.CameraRelativeInput.normalized * MountController.ActualMoveSpeed);
-           
-           
-            UpdateMenuInputs(MountController);
-           
+                if (AutoMoveTarget != Vector3.zero)
+                {
+                    float distance = Vector3.Distance(MountController.transform.position, AutoMoveTarget);
+
+                    if (distance <= 7f)
+                    {
+                        SwitchToManual(MountController);
+                        MountController.DisplayImportantNotification($"Ease up..{MountController.MountName}");
+                    }
+                }
+
+
+                if (MountController.BaseInput != Vector3.zero)
+                {
+                    SwitchToManual(MountController);
+                }
+            }
+
+            UpdateMenuInputs(MountController);       
         }
 
-        public override void UpdateAnimator(BasicMountController MountController)
+        public override void OnAttack1(BasicMountController controller)
         {
-            MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
-            float TargetZ = MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0 ? 1f : 0f;
-            MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 2f);
+            base.OnAttack1(controller);
+
+            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+
+
+            if (CurrentAreaSwitch >= AreaSwitches.Count)
+            {
+                CurrentAreaSwitch = -1;
+            }
+            else
+            {
+                CurrentAreaSwitch++;
+                controller.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
+            }
         }
+
+        public override void OnAttack2(BasicMountController controller)
+        {
+            base.OnAttack2(controller);
+
+
+            //List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+
+            //if (CurrentAreaSwitch < -1)
+            //{
+            //    CurrentAreaSwitch = AreaSwitches.Count;
+            //}
+            //else
+            //{
+            //    CurrentAreaSwitch--;
+            //    controller.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
+            //}
+        }
+
+        public override void OnDodge(BasicMountController controller)
+        {
+            base.OnDodge(controller);
+
+
+            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+
+
+            //if (CurrentAreaSwitch >= AreaSwitches.Count)
+            //{
+            //    SwitchToManual(controller);
+            //    CurrentAreaSwitch = -1;
+            //}
+            //else
+            //{
+            //    CurrentAreaSwitch++;
+            //}
+
+            //just mounted
+            if (CurrentAreaSwitch >= 0)
+            {
+                SwitchAutoMove(controller, AreaSwitches[CurrentAreaSwitch].transform.position, AreaSwitches[CurrentAreaSwitch].m_area);
+            }
+
+
+        }
+
+        private List<InteractionSwitchArea> GetAreaSwitches()
+        {
+            List<InteractionSwitchArea> AreaSwitches = new List<InteractionSwitchArea>();
+
+            foreach (var item in SpawnPointManager.Instance.SpawnPoints)
+            {
+                InteractionSwitchArea interactionSwitchArea = item.GetComponent<InteractionSwitchArea>();
+
+                if (interactionSwitchArea)
+                {
+                    if (item.name.Contains("Cierzo") || item.name.Contains("HallowedMarsh") || item.name.Contains("Levant") || item.name.Contains("Berg")
+                        || item.name.Contains("Abrassar") || item.name.Contains("Monsoon") || item.name.Contains("Harmattan"))
+                    {
+                        AreaSwitches.Add(interactionSwitchArea);
+                    }
+                }
+            }
+
+            return AreaSwitches;
+        }
+
+        private void SwitchAutoMove(BasicMountController controller, Vector3 Target, Area Area)
+        {
+            controller.DisplayImportantNotification($"{controller.MountName}, To {Area.DefaultName}!");
+            controller.Controller.enabled = false;
+            controller.EnableNavMeshAgent();
+            Target.y = controller.transform.position.y;
+
+            controller.NavMesh.SetDestination(Target);
+            AutoMoveTarget = Target;
+            IsInManualMode = false;
+        }
+
+        private void SwitchToManual(BasicMountController controller)
+        {
+            controller.DisplayImportantNotification($"Easy there..");
+            controller.DisableNavMeshAgent();
+            controller.Controller.enabled = true;
+            AutoMoveTarget = Vector3.zero;
+            IsInManualMode = true;
+        }
+
+        //public override void UpdateAnimator(BasicMountController MountController)
+        //{
+        //    MountController.IsMoving = MountController.BaseInput.z != 0;
+
+        //    MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
+
+        //    float TargetZ = 0;
+
+        //    if (MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0)
+        //    {
+        //        TargetZ = MountController.IsSprinting ? 1f : 0.5f;
+        //    }
+      
+        //    MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 2f);
+        //}
         private void UpdateMenuInputs(BasicMountController MountController)
         {
             bool flag = false;

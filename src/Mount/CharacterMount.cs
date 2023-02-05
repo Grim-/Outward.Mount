@@ -15,6 +15,7 @@ namespace EmoMount
     /// </summary>
     public class CharacterMount : MonoBehaviour
     {
+        #region Properties
         public BasicMountController ActiveMount
         {
             get; private set;
@@ -29,15 +30,46 @@ namespace EmoMount
                 return ActiveMount != null;
             }
         }
-
-
+        public bool IsMounted { get; private set; }
         public bool ActiveMountDisabled { get; private set; }
-
         public Character Character => GetComponent<Character>();
+        #endregion
+
+        public Action<Item> OnItemPicked;
+
+        public void Start()
+        {
+            SetIsMounted(false);
+            OnItemPicked += OnItemPickedUp;
+        }
+
+        private void OnItemPickedUp(Item PickedUpItem)
+        {
+            EmoMountMod.Log.LogMessage($"{Character.Name} picked up {PickedUpItem.ItemID}");
+
+            if (EmoMountMod.QuestManager.HasQuestForItemID(PickedUpItem.ItemID))
+            {
+                EggQuestMap eggQuestMap = EmoMountMod.QuestManager.GetEggQuestMappingByEggID(PickedUpItem.ItemID);
+
+                if (!EmoMountMod.QuestManager.CharacterHasQuest(Character, eggQuestMap.QuestID))
+                {
+                    Quest Quest = MountQuestManager.GenerateQuestItemForCharacter(Character, eggQuestMap.QuestID);
+                    OutwardHelpers.DelayDo(() =>
+                    {
+                        MountQuestManager.StartQuestGraphForQuest(Quest);
+                    }, 2f);
+                }
+            }
+        }
 
         public void SetActiveMount(BasicMountController newMount)
         {
             ActiveMount = newMount;
+        }
+
+        public void SetIsMounted(bool isMounted)
+        {
+            IsMounted = isMounted;
         }
 
 
@@ -51,7 +83,7 @@ namespace EmoMount
             EmoMountMod.Log.LogMessage($"Storing Mount {MountToStore.MountName}");
             if (!HasStoredMount(MountToStore.MountUID))
             {
-                MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
+                MountInstanceData mountInstanceData = MountToStore.MountInstanceData;
                 //DropAllStoredItems(MountToStore);
                 StoredMounts.Add(mountInstanceData);
                 //MountToStore.DestroyBagContainer();
@@ -68,7 +100,7 @@ namespace EmoMount
                 if (StoredData != null)
                 {
 
-                    MountInstanceData mountInstanceData = EmoMountMod.MountManager.CreateInstanceDataFromMount(MountToStore);
+                    MountInstanceData mountInstanceData = MountToStore.MountInstanceData;
                     //DropAllStoredItems(MountToStore);
                     StoredData = mountInstanceData;
 
@@ -136,7 +168,6 @@ namespace EmoMount
                 ActiveMountDisabled = false;
             }
         }
-
         public void DisableActiveMount()
         {
             if (HasActiveMount)
@@ -151,7 +182,6 @@ namespace EmoMount
         {
             return StoredMounts.Find(x => x.MountUID == MountUID);
         }
-
         public bool HasStoredMount(string MountUID)
         {
             return StoredMounts.Find(x => x.MountUID == MountUID) != null ? true: false;

@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using EmoMount.Mounted_States;
+using HarmonyLib;
 using SideLoader;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace EmoMount
 {
@@ -34,7 +36,7 @@ namespace EmoMount
         {
             foreach (var item in EmoMountMod.MountManager.MountControllers)
             {
-                EmoMountMod.Log.LogMessage($"Dismount {item.Key} from {item.Value.MountName} before defeat scenario");
+                //EmoMountMod.Log.LogMessage($"Dismount {item.Key} from {item.Value.MountName} before defeat scenario");
                 item.Value.DismountCharacter(item.Value.CharacterOwner);
             }
         }
@@ -49,9 +51,10 @@ namespace EmoMount
 
             if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
             {
-                EmoMountMod.Log.LogMessage($"Warping {characterMount.ActiveMount.MountName} with {characterMount.Character.Name}");
+                //EmoMountMod.Log.LogMessage($"Warping {characterMount.ActiveMount.MountName} with {characterMount.Character.Name}");
                 characterMount.ActiveMount.Teleport(_pos, _rot);
             }
         }
     }
+
 }

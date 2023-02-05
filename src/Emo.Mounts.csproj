@@ -371,13 +371,17 @@
     <Compile Include="Mount Components\MountEventComp.cs" />
     <Compile Include="Mount Components\SerializableColor.cs" />
     <Compile Include="Mounted States\BaseMountState.cs" />
+    <Compile Include="Mounted States\MountState_Caravan.cs" />
+    <Compile Include="Mounted States\SimpleTimer.cs" />
     <Compile Include="NPC\DialogueCharacter.cs" />
     <Compile Include="NPC\DialogueTreeBuilder.cs" />
     <Compile Include="Interaction Components\ShowStashMountInteraction.cs" />
     <Compile Include="Mount Components\LightableComp.cs" />
     <Compile Include="NPC\MountNPCManager.cs" />
+    <Compile Include="Patches\EventPatches.cs" />
     <Compile Include="Patches\ItemDrop_Patches.cs" />
     <Compile Include="Patches\UI_Patches.cs" />
+    <Compile Include="Quest\EggQuestMap.cs" />
     <Compile Include="Quest\GenerateMountFromEgg.cs" />
     <Compile Include="Mount Components\ColorableComp.cs" />
     <Compile Include="Mount Components\GlideComp.cs" />
@@ -385,7 +389,6 @@
     <Compile Include="Mount Components\AgeComp.cs" />
     <Compile Include="Mount Components\DetectionComp.cs" />
     <Compile Include="Mount Components\EmissionBlendComp.cs" />
-    <Compile Include="Mount Components\SprintComp.cs" />
     <Compile Include="Quest\MountQuestManager.cs" />
     <Compile Include="Node Canvas Nodes\SetMountColor.cs" />
     <Compile Include="Node Canvas Nodes\SetMountEmissionColor.cs" />

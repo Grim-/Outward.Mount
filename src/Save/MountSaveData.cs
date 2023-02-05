@@ -62,8 +62,7 @@ namespace EmoMount
             if (characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
             {
                 EmoMountMod.Log.LogMessage("Saving Active Mount Data");
-                this.ActiveMountInstance = EmoMountMod.MountManager.CreateInstanceDataFromMount(characterMount.ActiveMount);
-               // EmoMountMod.MountManager.SerializeMountBagContents(this.ActiveMountInstance, characterMount.ActiveMount);
+                this.ActiveMountInstance = characterMount.ActiveMount.MountInstanceData;
             }
             else
             {
@@ -81,7 +80,7 @@ namespace EmoMount
             foreach (var storedMount in characterMount.StoredMounts)
             {
                 StoredMounts.Add(storedMount);
-                EmoMountMod.Log.LogMessage($"Saving {storedMount.MountName}");
+                //EmoMountMod.Log.LogMessage($"Saving {storedMount.MountName}");
             }
             
         }
@@ -92,7 +91,7 @@ namespace EmoMount
             characterMount.StoredMounts.Clear();
             foreach (var storedMount in StoredMounts)
             {
-                EmoMountMod.Log.LogMessage($"Loading {storedMount.MountName} Mount Data");
+               // EmoMountMod.Log.LogMessage($"Loading {storedMount.MountName} Mount Data");
                 characterMount.StoredMounts.Add(storedMount);
             }
 
@@ -102,7 +101,7 @@ namespace EmoMount
         {
             if (!string.IsNullOrEmpty(this.ActiveMountInstance.MountUID))
             {
-                EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
+                //EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
                 character.StartCoroutine(LateLoading(character, characterMount, this.ActiveMountInstance));
             }
        
@@ -115,9 +114,11 @@ namespace EmoMount
 
             BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, mountInstanceData);
 
+            basicMountController.Teleport(character.transform.position, character.transform.eulerAngles);
+
             if (basicMountController == null)
             {
-                EmoMountMod.Log.LogMessage("Late Loading failed to create a MountController");
+                //EmoMountMod.Log.LogMessage("Late Loading failed to create a MountController");
                 yield break;
             }
             //EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);

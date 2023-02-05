@@ -19,15 +19,6 @@ namespace EmoMount.Mount_Components
         {
             if (Controller.IsMounted)
             {
-                if (ControlsInput.Sprint(Controller.CharacterOwner.OwnerPlayerSys.PlayerID))
-                {
-                    Controller.MoveSpeedModifier = Mathf.MoveTowards(Controller.MoveSpeedModifier, SprintModifier, 0.5f);
-                }
-                else
-                {
-                    Controller.MoveSpeedModifier = 1f;
-                }
-
                 if (ControlsInput.DodgeButtonDown(Controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     if (!IsGlidingUp)
