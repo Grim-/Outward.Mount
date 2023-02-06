@@ -195,16 +195,23 @@ namespace EmoMount
 
             basicMountController.SetOwner(_affectedCharacter);
             basicMountController.SetSpecies(MountSpecies);
+
+
+            basicMountController.MountFood.RequiresFood = MountSpecies.RequiresFood;
+            basicMountController.MountFood.SetMaximumFood(MountSpecies.MaximumFood);
+            basicMountController.MountFood.PassiveFoodLoss = MountSpecies.PassiveFoodLoss;
+            basicMountController.MountFood.PassiveFoodLossTickTime = MountSpecies.PassiveFoodLossTickTime;
+
+            basicMountController.MountFood.FoodLostPerTravelDistance = MountSpecies.FoodLostPerTravelDistance;
+            basicMountController.MountFood.TravelDistanceThreshold = MountSpecies.TravelDistanceThreshold;
+
             basicMountController.SetFoodTags(MountSpecies.FoodTags);
             basicMountController.SetFavouriteFoods(MountSpecies.FavouriteFoods);
             basicMountController.SetHatedFoods(MountSpecies.HatedFoods);
-            basicMountController.MountFood.SetMaximumFood(MountSpecies.MaximumFood);
 
-            basicMountController.MaxCarryWeight = EmoMountMod.WeightLimitOverride.Value > 0 ? EmoMountMod.WeightLimitOverride.Value : MountSpecies.MaximumCarryWeight;
+            basicMountController.MaximumCarryWeight = EmoMountMod.WeightLimitOverride.Value > 0 ? EmoMountMod.WeightLimitOverride.Value : MountSpecies.MaximumCarryWeight;
+            basicMountController.CarryWeightEncumberenceLimit = MountSpecies.CarryWeightEncumberenceLimit;
             basicMountController.EncumberenceSpeedModifier = EmoMountMod.EncumberenceSpeedModifier.Value > 0 ? MountSpecies.EncumberenceSpeedModifier : 0.5f;
-            basicMountController.MountFood.FoodTakenPerTick = MountSpecies.FoodTakenPerTick;
-            basicMountController.MountFood.HungerTickTime = MountSpecies.HungerTickTime;
-
 
             if (TintColor != default(Color))
             {
@@ -247,28 +254,12 @@ namespace EmoMount
                 }
             }
 
-
             CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
 
             if (characterMount)
             {
                 characterMount.SetActiveMount(basicMountController);
             }
-
-
-            //Item Bag = ResourcesPrefabManager.Instance.GenerateItem("5300000");
-
-            //if (Bag)
-            //{
-            //    if (!string.IsNullOrEmpty(bagUID))
-            //    {
-            //        EmoMountMod.Log.LogMessage($"Updateing Bag UID to {bagUID}");
-            //        Bag.UID = bagUID;
-            //    }
-
-            //    basicMountController.SetInventory(Bag);
-            //}
-
 
             MountControllers.Add(_affectedCharacter, basicMountController);
 
@@ -301,6 +292,7 @@ namespace EmoMount
 
             basicMountController.MountName = mountInstanceData.MountName;
             basicMountController.MountUID = mountInstanceData.MountUID;
+
             basicMountController.MountFood.CurrentFood = mountInstanceData.CurrentFood;
             basicMountController.MountFood.MaximumFood = mountInstanceData.MaximumFood;
 

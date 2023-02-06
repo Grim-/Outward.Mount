@@ -1,0 +1,165 @@
+<MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<!-- Item !-->
+	<WhistleItemID>-26300</WhistleItemID>
+	<TargetItemID>4300130</TargetItemID>
+	<IsWhistleWorldDrop>false</IsWhistleWorldDrop>
+	<!-- Species Info !-->
+	<SpeciesName>PearlBird</SpeciesName>
+	<SLPackName>mount</SLPackName>
+	<AssetBundleName>mount_original</AssetBundleName>
+	<PrefabName>Mount_PearlBird</PrefabName>
+	<!-- A list of names picked at random when spawned in for the first time !-->
+	<Names>
+		<string>Choco</string>
+		<string>Peardrop</string>
+		<string>Squawk</string>
+		<string>Fuzz</string>
+		<string>Flapjacks</string>
+		<string>Peckers</string>
+		<string>Wingding</string>
+		<string>Puffball</string>
+		<string>Cluck</string>
+		<string>Fluffernutter</string>
+		<string>Chocobo</string>
+	</Names>
+	<CameraOffset>
+		<x>0</x>
+		<y>0</y>
+		<z>-2</z>
+	</CameraOffset>
+	<!-- Speed !-->
+	<MoveSpeed>5.5</MoveSpeed>
+	<SprintModifier>2</SprintModifier>
+	<RotateSpeed>240</RotateSpeed>
+	<Acceleration>5</Acceleration>
+	<!-- Carry Weight !-->
+	<MaximumCarryWeight>180</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
+	<!-- Food !-->
+	<RequiresFood>true</RequiresFood>
+	<MaximumFood>200</MaximumFood>
+	<!-- The time between food being taken from your mount !-->
+	<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
+	<!-- The amount of food being taken from your mount !-->
+	<PassiveFoodLoss>10</PassiveFoodLoss>
+		<!-- The amount of distance your mount can travel befor needing to use some food !-->
+	<TravelDistanceThreshold>150</TravelDistanceThreshold>
+		<!-- The amount of food being taken from your mount !-->
+	<FoodLostPerTravelDistance>20</FoodLostPerTravelDistance>
+	<FoodTags>
+		<string>Meat</string>
+	</FoodTags>
+	<!-- A List of MountFoodData of mounts favourite foods !-->
+	<FavouriteFoods>
+			<!-- A List item of MountFoodData !-->
+		<MountFoodData>
+			<!-- Game ItemID (Jewel Bird Meat) !-->
+			<ItemID>4000260</ItemID>
+			<!-- A modifier on the food value of the item !-->
+			<FoodValue>2</FoodValue>
+		</MountFoodData>
+	</FavouriteFoods>
+	<HatedFoods>
+	</HatedFoods>
+	<!-- Color !-->
+	<!-- Should this species generate a random Tint color from the MountColors list when spawned? !-->
+	<GenerateRandomTint>false</GenerateRandomTint>
+	<!-- Should this species generate a random Emission color from the MountEmissionColors list when spawned? !-->
+	<GenerateRandomEmission>false</GenerateRandomEmission>
+	<MountColors>
+	 <!-- What chance as a value out of 100 does this color have !-->
+	 <!-- The chioce chance in this list should when summed equal 100 for the random weighting to work correctly. !-->
+		<ColorChance Chance="70">
+			<Color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="8">
+			<Color>
+				<r>0</r>
+				<g>0</g>
+				<b>1</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="5">
+			<Color>
+				<r>0</r>
+				<g>1</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="2">
+			<Color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="2">
+			<Color>
+				<r>1</r>
+				<g>0</g>
+				<b>1</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="2">
+			<Color>
+				<r>0</r>
+				<g>1</g>
+				<b>1</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="2">
+			<Color>
+				<r>1</r>
+				<g>1</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="1">
+			<Color>
+				<r>0.5</r>
+				<g>0</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="1">
+			<Color>
+				<r>0</r>
+				<g>0.5</g>
+				<b>0</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="1">
+			<Color>
+				<r>0</r>
+				<g>0</g>
+				<b>0.5</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+		<ColorChance Chance="1">
+			<Color>
+				<r>0</r>
+				<g>0.5</g>
+				<b>0.5</b>
+				<a>1</a>
+			</Color>
+		</ColorChance>
+	</MountColors>
+	<!-- Components !-->
+	<MountComponents>
+	</MountComponents>
+</MountSpecies>

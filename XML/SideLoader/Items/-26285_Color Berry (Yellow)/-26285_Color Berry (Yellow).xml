@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SL_Item xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Target_ItemID>4100320</Target_ItemID>
-  <New_ItemID>-26286</New_ItemID>
+  <New_ItemID>-26285</New_ItemID>
   <Name>Color Berry (Yellow)</Name>
   <Description>Use this to change your mounts tint color.</Description>
   <LegacyItemID>-1</LegacyItemID>

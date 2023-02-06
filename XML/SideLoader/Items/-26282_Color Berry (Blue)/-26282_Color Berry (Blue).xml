@@ -58,8 +58,8 @@
           <TintColor>
             <r>0</r>
             <g>0</g>
-            <b>0</b>
-            <a>0</a>
+            <b>1</b>
+            <a>1</a>
           </TintColor>
         </SL_Effect>
       </Effects>

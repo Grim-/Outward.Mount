@@ -58,10 +58,10 @@ namespace EmoMount
 			EggQuests.Add(PearlBirdRed);
 			EggQuestMap PearlBirdGreen = new EggQuestMap(-26506, -26206, "PearlBird", "Green Wriggling Egg", Color.green, false);
 			EggQuests.Add(PearlBirdGreen);
-			EggQuestMap PearlBirdBlack = new EggQuestMap(-26507, -26207, "PearlBird", "Black Wriggling Egg", Color.black, false);
-			EggQuests.Add(PearlBirdBlack);
-			EggQuestMap PearlBirdGolden = new EggQuestMap(-26508, -26208, "PearlBird", "Golden Wriggling Egg", Color.yellow, false);
-			EggQuests.Add(PearlBirdGolden);
+			//EggQuestMap PearlBirdBlack = new EggQuestMap(-26507, -26207, "BlackPearlBird", "Black Wriggling Egg", Color.clear, false);
+			//EggQuests.Add(PearlBirdBlack);
+			//EggQuestMap PearlBirdGolden = new EggQuestMap(-26508, -26208, "GoldenPearlBird", "Golden Wriggling Egg", Color.clear, false);
+			//EggQuests.Add(PearlBirdGolden);
 
 
 			EggQuestMap Manticore = new EggQuestMap(-26509, -26209, "Manticore", "Shaking Egg", Color.clear, false);

@@ -56,10 +56,10 @@
           <SyncType>OwnerSync</SyncType>
           <OverrideCategory>None</OverrideCategory>
           <TintColor>
-            <r>0</r>
+            <r>1</r>
             <g>0</g>
             <b>0</b>
-            <a>0</a>
+            <a>1</a>
           </TintColor>
         </SL_Effect>
       </Effects>

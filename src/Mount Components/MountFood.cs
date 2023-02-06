@@ -11,9 +11,13 @@ namespace EmoMount
     {
         public float CurrentFood = 0;
         public float MaximumFood = 100;
-        public float FoodTakenPerTick = 10f;
+        public float PassiveFoodLoss = 10f;
+        public bool RequiresFood = true;
 
-        public float HungerTickTime = 60f;
+        public float TravelDistanceThreshold = 100f;
+        public float FoodLostPerTravelDistance = 15f;
+
+        public float PassiveFoodLossTickTime = 60f;
         public float CurrentHungerTimer = 0;
 
         public float FoodAsNormalizedPercent => CurrentFood / MaximumFood;
@@ -60,13 +64,16 @@ namespace EmoMount
 
         public void Update()
         {
-            CurrentHungerTimer += Time.deltaTime;
-
-            if (CurrentHungerTimer >= HungerTickTime)
+            if (RequiresFood)
             {
-                OnHungerTickHandler();
+                CurrentHungerTimer += Time.deltaTime;
 
-                CurrentHungerTimer = 0;
+                if (CurrentHungerTimer >= PassiveFoodLossTickTime)
+                {
+                    OnHungerTickHandler();
+
+                    CurrentHungerTimer = 0;
+                }
             }
         }
 
@@ -120,11 +127,9 @@ namespace EmoMount
             OnFoodAddedHandler();
             OnChange?.Invoke();
         }
-
-
         public void Remove(float foodAmount)
         {
-            if (!EmoMountMod.EnableFoodNeed.Value)
+            if (!EmoMountMod.EnableFoodNeed.Value || !RequiresFood)
             {
                 return;
             }
@@ -145,19 +150,19 @@ namespace EmoMount
 
         public void OnHungerTickHandler()
         {
-            if (!EmoMountMod.EnableFoodNeed.Value)
+            if (!EmoMountMod.EnableFoodNeed.Value || !RequiresFood)
             {
                 return;
             }
 
             if (MountController.IsMounted)
             {
-                float halfAgain = FoodTakenPerTick * 0.5f;
-                Remove(FoodTakenPerTick + halfAgain);
+                float halfAgain = PassiveFoodLoss * 0.5f;
+                Remove(PassiveFoodLoss + halfAgain);
             }
             else
             {
-                Remove(FoodTakenPerTick);
+                Remove(PassiveFoodLoss);
             }
 
             OnHungerTick?.Invoke();
@@ -178,6 +183,11 @@ namespace EmoMount
 
         public void OnStarvingHandler()
         {
+            if (!RequiresFood)
+            {
+                return;
+            }
+
             OnStarving?.Invoke();
             MountController.DisplayImportantNotification($"{MountController.MountName} is starving!");
         }

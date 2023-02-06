@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<SL_DropTableAddition xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IdentifierName>ManticoreEggAdditions</IdentifierName>
+  <SelectorTargets>
+    <string>DT_Manticore</string>
+  </SelectorTargets>
+  <DropTableUIDsToAdd>
+    <string>ManticoreEggDT</string>
+  </DropTableUIDsToAdd>
+</SL_DropTableAddition>

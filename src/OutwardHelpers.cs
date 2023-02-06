@@ -41,9 +41,7 @@ namespace EmoMount
             List<WeightedItem<Color>> weightedItems = new List<WeightedItem<Color>>();
             foreach (var mountColorChance in mountColorChances)
             {
-                Color newCol;
-                if (ColorUtility.TryParseHtmlString(mountColorChance.Color, out newCol))
-                    weightedItems.Add(new WeightedItem<Color>(mountColorChance.Chance, newCol));        
+               weightedItems.Add(new WeightedItem<Color>(mountColorChance.Chance, mountColorChance.Color));        
             }
             return weightedItems;
         }

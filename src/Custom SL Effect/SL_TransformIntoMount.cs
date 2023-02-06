@@ -51,6 +51,7 @@ namespace EmoMount.Custom_SL_Effect
                     {  
                         BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
                         basicMountController.IsTransform = true;
+                        basicMountController.MountFood.RequiresFood = false;
 
                         OutwardHelpers.SpawnTransformVFX(basicMountController.SkinnedMeshRenderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
 

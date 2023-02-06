@@ -135,12 +135,11 @@ namespace EmoMount
             get; private set;
         }
 
-
-        public float MoveSpeedModifier => IsSprinting ? SprintModifier : 1f;
-        public float FoodLostPerMountedDistance => EmoMountMod.FoodLostTravelling.Value;
-        public float MountedDistanceFoodThreshold => EmoMountMod.TravelDistanceThreshold.Value;
+        public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
+        public Vector3 CameraRelativeInput => Camera.main.transform.TransformDirection(BaseInput);
+        public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
+        public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
         public SkinnedMeshRenderer SkinnedMeshRenderer => GetComponentInChildren<SkinnedMeshRenderer>();
-
         public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
         public Color CurrentEmissionColor => SkinnedMeshRenderer.material.GetColor("_EmissionColor");
 
@@ -153,6 +152,7 @@ namespace EmoMount
 
         #region Speed
         public float MoveSpeed { get; private set; }
+        public float MoveSpeedModifier => IsSprinting ? SprintModifier : 1f;
         public float RotateSpeed { get; private set; }
         public float SprintModifier = 2f;
         public float ActualMoveSpeed
@@ -161,7 +161,7 @@ namespace EmoMount
             {
                 if (EmoMountMod.EnableWeightLimit.Value)
                 {
-                    return WeightAsNormalizedPercent > WeightEncumberenceLimit ? (MoveSpeed * EncumberenceSpeedModifier) * MoveSpeedModifier : MoveSpeed * MoveSpeedModifier;
+                    return WeightAsNormalizedPercent > CarryWeightEncumberenceLimit ? (MoveSpeed * EncumberenceSpeedModifier) * MoveSpeedModifier : MoveSpeed * MoveSpeedModifier;
                 }
                 return MoveSpeed * MoveSpeedModifier;
             }
@@ -182,28 +182,14 @@ namespace EmoMount
         //weight
         public float CurrentCarryWeight = 0;
         //no idea on a reasonable number for any of this
-        public float MaxCarryWeight = 120f;
-        public float WeightEncumberenceLimit = 0.75f;
+        public float MaximumCarryWeight = 120f;
+        public float CarryWeightEncumberenceLimit = 0.75f;
         public float EncumberenceSpeedModifier = 0.5f;
-        public float WeightAsNormalizedPercent => CurrentCarryWeight / MaxCarryWeight;
-
+        public float WeightAsNormalizedPercent => CurrentCarryWeight / MaximumCarryWeight;
 
         public Vector3 MountedCameraOffset;
-
-
         private Vector3 OriginalPlayerCameraOffset;
         private bool IsTeleporting = false;
-
-
-
-
-
-        public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
-        public Vector3 CameraRelativeInput => Camera.main.transform.TransformDirection(BaseInput);
-        public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
-        public float DistanceToOwner => CharacterOwner != null ? Vector3.Distance(transform.position, CharacterOwner.transform.position) : 0f;
-
-
 
         public void Awake()
         {
@@ -416,7 +402,7 @@ namespace EmoMount
         /// <returns></returns>
         public bool CanCarryWeight(float weightToCarry)
         {
-            return EmoMountMod.EnableWeightLimit.Value ? this.MountTotalWeight + weightToCarry < MaxCarryWeight : true;
+            return EmoMountMod.EnableWeightLimit.Value ? this.MountTotalWeight + weightToCarry < MaximumCarryWeight : true;
         }
         //public void DestroyBagContainer()
         //{
@@ -574,6 +560,7 @@ namespace EmoMount
             _affectedCharacter.Animator.Update(Time.deltaTime);
 
             UpdateCurrentWeight(0);
+
             _affectedCharacter.transform.parent = null;
             _affectedCharacter.transform.position = transform.position;
             _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
@@ -581,7 +568,7 @@ namespace EmoMount
 
             if (IsTransform)
             {
-                _affectedCharacter.SpellCastAnim(Character.SpellCastType.Teleport, Character.SpellCastModifier.Immobilized, 1);
+                _affectedCharacter.SpellCastAnim(Character.SpellCastType.EvasionShoot, Character.SpellCastModifier.Immobilized, 1);
             }
             else
             {

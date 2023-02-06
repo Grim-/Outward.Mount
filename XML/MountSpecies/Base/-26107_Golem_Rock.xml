@@ -1,0 +1,68 @@
+<MountSpecies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<!-- Item !-->
+	<Target_ItemID>4300130</Target_ItemID>
+	<WhistleItemID>-26107</WhistleItemID>
+	<IsWhistleWorldDrop>true</IsWhistleWorldDrop>
+	<!-- Species Info !-->
+	<SpeciesName>RockGolem</SpeciesName>
+	<SLPackName>mount</SLPackName>
+	<AssetBundleName>mount_golem</AssetBundleName>
+	<PrefabName>Mount_RockGolem</PrefabName>
+	<!-- A list of names picked at random when spawned in for the first time !-->
+	<Names>
+		<string>Stoneroot</string>
+		<string>Rockfist</string>
+		<string>Galeguard</string>
+		<string>Mountainmender</string>
+		<string>Skystriker</string>
+		<string>Earthshaker</string>
+	</Names>
+	<CameraOffset>
+		<x>0</x>
+		<y>0</y>
+		<z>-2</z>
+	</CameraOffset>
+	<!-- Speed !-->
+	<MoveSpeed>5.5</MoveSpeed>
+	<SprintModifier>2</SprintModifier>
+	<RotateSpeed>240</RotateSpeed>
+	<Acceleration>5</Acceleration>
+	<!-- Carry Weight !-->
+	<MaximumCarryWeight>180</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
+	<!-- Food !-->
+	<RequiresFood>true</RequiresFood>
+	<MaximumFood>200</MaximumFood>
+	<!-- The time between food being taken from your mount !-->
+	<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
+	<!-- The amount of food being taken from your mount !-->
+	<PassiveFoodLoss>10</PassiveFoodLoss>
+	<!-- The amount of distance your mount can travel befor needing to use some food !-->
+	<TravelDistanceThreshold>150</TravelDistanceThreshold>
+	<!-- The amount of food being taken from your mount !-->
+	<FoodLostPerTravelDistance>20</FoodLostPerTravelDistance>
+	<FoodTags>
+		<string>Meat</string>
+	</FoodTags>
+	<!-- A List of MountFoodData of mounts favourite foods !-->
+	<FavouriteFoods>
+		<!-- A List item of MountFoodData !-->
+		<MountFoodData>
+			<!-- Game ItemID (Jewel Bird Meat) !-->
+			<ItemID>4000260</ItemID>
+			<!-- A modifier on the food value of the item !-->
+			<FoodValue>2</FoodValue>
+		</MountFoodData>
+	</FavouriteFoods>
+	<HatedFoods>
+	</HatedFoods>
+	<!-- Color !-->
+	<!-- Should this species generate a random Tint color from the MountColors list when spawned? !-->
+	<GenerateRandomTint>false</GenerateRandomTint>
+	<!-- Should this species generate a random Emission color from the MountEmissionColors list when spawned? !-->
+	<GenerateRandomEmission>false</GenerateRandomEmission>
+	<!-- Components !-->
+	<MountComponents>
+	</MountComponents>
+</MountSpecies>

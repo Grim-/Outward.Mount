@@ -3,6 +3,7 @@ using SideLoader;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace EmoMount
 {
@@ -68,14 +69,41 @@ namespace EmoMount
 
             float DistanceBetweenStartAndEnd = Vector3.Distance(StartPosition, MountController.transform.position);
 
-            if (EmoMountMod.EnableFoodNeed.Value)
-            {             
-                if (DistanceBetweenStartAndEnd > MountController.MountedDistanceFoodThreshold)
+
+            if (MountController.IsTransform)
+            {
+                float CurrentStaminaAsPercent = MountController.CharacterOwner.Stats.CurrentStamina / MountController.CharacterOwner.Stats.MaxStamina;
+
+                float PercentOfMax = MountController.CharacterOwner.Stats.MaxStamina * 0.05f;
+
+                if (CurrentStaminaAsPercent <= 0.1f)
                 {
-                    StartPosition = MountController.transform.position;
-                    MountController.MountFood.Remove(MountController.FoodLostPerMountedDistance);
+                    MountController.DisplayNotification($"You cannot sustain that form with restoring your stamina");
+                    MountController.DismountCharacter(MountedCharacter);
+                    Parent.PopState();
+                }
+                if (EmoMountMod.EnableFoodNeed.Value && MountController.MountFood.RequiresFood)
+                {
+                    if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
+                    {
+                        StartPosition = MountController.transform.position;
+                        MountController.CharacterOwner.Stats.UseStamina(PercentOfMax, 1.1f);
+                    }
                 }
             }
+            else
+            {
+
+                if (EmoMountMod.EnableFoodNeed.Value && MountController.MountFood.RequiresFood)
+                {
+                    if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
+                    {
+                        StartPosition = MountController.transform.position;
+                        MountController.MountFood.Remove(MountController.MountFood.FoodLostPerTravelDistance);
+                    }
+                }
+            }
+
 
             if (ControlsInput.Sprint(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
@@ -125,6 +153,7 @@ namespace EmoMount
 
             UpdateMenuInputs(MountController);       
         }
+
 
         public override void OnAttack1(BasicMountController controller)
         {
@@ -183,11 +212,36 @@ namespace EmoMount
             //just mounted
             if (CurrentAreaSwitch >= 0)
             {
-                SwitchAutoMove(controller, AreaSwitches[CurrentAreaSwitch].transform.position, AreaSwitches[CurrentAreaSwitch].m_area);
+                SwitchAutoMove(controller, TryGetNavMeshPositionOnTerrain(AreaSwitches[CurrentAreaSwitch].transform.position, 30f), AreaSwitches[CurrentAreaSwitch].m_area);
+            }
+        }
+
+
+        private Vector3 TryGetNavMeshPositionOnTerrain(Vector3 OriginTarget, float Distance = 10f)
+        {
+            //Vector3 TestPoint = Vector3.zero;
+
+            if (NavMesh.SamplePosition(OriginTarget, out NavMeshHit hit, Distance, NavMesh.AllAreas))
+            {
+                return hit.position;
             }
 
+            return Vector3.zero;
 
+            //if (Physics.Raycast(OriginTarget, Vector3.down, out RaycastHit HitInfo, Distance, LayerMask.GetMask("LargeTerrainEnvironment")))
+            //{
+            //    TestPoint = HitInfo.point;
+
+            //    if (NavMesh.SamplePosition(TestPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+            //    {
+            //        return hit.position;
+            //    }
+
+            //    return Vector3.zero;
+            //}
+            //return Vector3.zero;
         }
+
 
         private List<InteractionSwitchArea> GetAreaSwitches()
         {
@@ -212,6 +266,11 @@ namespace EmoMount
 
         private void SwitchAutoMove(BasicMountController controller, Vector3 Target, Area Area)
         {
+            if (Target == Vector3.zero)
+            {
+                return;
+            }
+
             controller.DisplayImportantNotification($"{controller.MountName}, To {Area.DefaultName}!");
             controller.Controller.enabled = false;
             controller.EnableNavMeshAgent();

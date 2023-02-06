@@ -410,7 +410,6 @@
     <Compile Include="Node Canvas Nodes\LearnMountSkillsNode.cs" />
     <Compile Include="Patches\Patches.cs" />
     <Compile Include="UI\MountSelectionElement.cs" />
-    <Compile Include="Mounted States\BaseUnMountedState.cs" />
     <Compile Include="Mount\BasicMountController.cs" />
     <Compile Include="Mount\CharacterMount.cs" />
     <Compile Include="EmoMountMod.cs" />

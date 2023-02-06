@@ -1,0 +1,36 @@
+
+Standard Speed
+
+<MoveSpeed>5.5</MoveSpeed>
+<SprintModifier>2</SprintModifier>
+<RotateSpeed>240</RotateSpeed>
+<Acceleration>5</Acceleration>
+<!-- Food !-->
+<RequiresFood>true</RequiresFood>
+<MaximumFood>200</MaximumFood>
+<!-- The time between food being taken from your mount !-->
+<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
+<!-- The amount of food being taken from your mount !-->
+<PassiveFoodLoss>10</PassiveFoodLoss>
+  <!-- The amount of distance your mount can travel before needing to use some food !-->
+<TravelDistanceThreshold>150</TravelDistanceThreshold>
+  <!-- The amount of food being taken from your mount !-->
+<FoodLostPerTravelDistance>10</FoodLostPerTravelDistance>
+
+
+Fast Speed
+<MoveSpeed>8</MoveSpeed>
+<SprintModifier>2</SprintModifier>
+<RotateSpeed>240</RotateSpeed>
+<Acceleration>5</Acceleration>
+<!-- Food !-->
+<RequiresFood>true</RequiresFood>
+<MaximumFood>200</MaximumFood>
+<!-- The time between food being taken from your mount !-->
+<PassiveFoodLossTickTime>185</PassiveFoodLossTickTime>
+<!-- The amount of food being taken from your mount !-->
+<PassiveFoodLoss>10</PassiveFoodLoss>
+  <!-- The amount of distance your mount can travel befor needing to use some food !-->
+<TravelDistanceThreshold>120</TravelDistanceThreshold>
+  <!-- The amount of food being taken from your mount !-->
+<FoodLostPerTravelDistance>10</FoodLostPerTravelDistance>
