@@ -41,13 +41,7 @@
         <SL_ItemDropChance>
           <MinQty>1</MinQty>
           <MaxQty>1</MaxQty>
-          <DroppedItemID>-26207</DroppedItemID>
-          <DiceValue>5</DiceValue>
-        </SL_ItemDropChance>
-        <SL_ItemDropChance>
-          <MinQty>1</MinQty>
-          <MaxQty>1</MaxQty>
-          <DroppedItemID>-26208</DroppedItemID>
+          <DroppedItemID>-26212</DroppedItemID>
           <DiceValue>5</DiceValue>
         </SL_ItemDropChance>
       </Drops>
