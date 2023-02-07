@@ -148,7 +148,7 @@ namespace EmoMount
         public Action OnSpawnComplete;
 
         public Character.SpellCastType MountAnimation = Character.SpellCastType.Sit;
-        public Character.SpellCastType DismountAnimation = Character.SpellCastType.Focus;
+        public Character.SpellCastType DismountAnimation = Character.SpellCastType.ExitBed;
 
         #region Speed
         public float MoveSpeed { get; private set; }
@@ -568,7 +568,16 @@ namespace EmoMount
 
             if (IsTransform)
             {
-                _affectedCharacter.SpellCastAnim(Character.SpellCastType.EvasionShoot, Character.SpellCastModifier.Immobilized, 1);
+                if (BaseInput.z != 0 || BaseInput.x != 0)
+                {
+                    _affectedCharacter.SpellCastAnim(Character.SpellCastType.EvasionShoot, Character.SpellCastModifier.Immobilized, 1);
+                }
+                else
+                {
+                    _affectedCharacter.SpellCastAnim(Character.SpellCastType.IdleAlternate, Character.SpellCastModifier.Immobilized, 1);
+                    // _affectedCharacter.Animator.SetBool("Sneaking", true);
+                }
+                
             }
             else
             {

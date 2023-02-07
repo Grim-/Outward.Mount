@@ -11,8 +11,6 @@ namespace EmoMount
         private Vector3 MoveToTarget = Vector3.zero;
         private bool StayStill = false;
 
-
-
         private SimpleTimer BoredomTimer;
         private SimpleTimer InteractTimer;
 

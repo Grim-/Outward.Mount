@@ -14,8 +14,7 @@ namespace EmoMount
 
 
         private Vector3 StartPosition;
-        private Vector3 EndPosition;
-        private float Timer = 0;
+
 
 
         private bool IsInManualMode = true;
@@ -173,41 +172,13 @@ namespace EmoMount
             }
         }
 
-        public override void OnAttack2(BasicMountController controller)
-        {
-            base.OnAttack2(controller);
 
-
-            //List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
-
-            //if (CurrentAreaSwitch < -1)
-            //{
-            //    CurrentAreaSwitch = AreaSwitches.Count;
-            //}
-            //else
-            //{
-            //    CurrentAreaSwitch--;
-            //    controller.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
-            //}
-        }
 
         public override void OnDodge(BasicMountController controller)
         {
             base.OnDodge(controller);
 
-
             List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
-
-
-            //if (CurrentAreaSwitch >= AreaSwitches.Count)
-            //{
-            //    SwitchToManual(controller);
-            //    CurrentAreaSwitch = -1;
-            //}
-            //else
-            //{
-            //    CurrentAreaSwitch++;
-            //}
 
             //just mounted
             if (CurrentAreaSwitch >= 0)
@@ -219,27 +190,12 @@ namespace EmoMount
 
         private Vector3 TryGetNavMeshPositionOnTerrain(Vector3 OriginTarget, float Distance = 10f)
         {
-            //Vector3 TestPoint = Vector3.zero;
-
             if (NavMesh.SamplePosition(OriginTarget, out NavMeshHit hit, Distance, NavMesh.AllAreas))
             {
                 return hit.position;
             }
 
             return Vector3.zero;
-
-            //if (Physics.Raycast(OriginTarget, Vector3.down, out RaycastHit HitInfo, Distance, LayerMask.GetMask("LargeTerrainEnvironment")))
-            //{
-            //    TestPoint = HitInfo.point;
-
-            //    if (NavMesh.SamplePosition(TestPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
-            //    {
-            //        return hit.position;
-            //    }
-
-            //    return Vector3.zero;
-            //}
-            //return Vector3.zero;
         }
 
 

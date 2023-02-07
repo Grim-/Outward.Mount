@@ -84,8 +84,6 @@ namespace EmoMount.Mounted_States
             }
         }
 
-
-
         public virtual void UpdatePlayerInput(BasicMountController controller)
         {
             if (controller.CharacterOwner)

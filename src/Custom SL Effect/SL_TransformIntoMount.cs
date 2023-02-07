@@ -44,7 +44,12 @@ namespace EmoMount.Custom_SL_Effect
 
                 if (mountSpecies != null)
                 {
-                    _affectedCharacter.DodgeInput();
+                    if (_affectedCharacter.m_moveVec != Vector3.zero)
+                    {
+                        _affectedCharacter.DodgeInput();
+                    }
+
+                    
                     OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsBody.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                     OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                     OutwardHelpers.DelayDo(() =>

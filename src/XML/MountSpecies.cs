@@ -72,7 +72,10 @@ namespace EmoMount
         {
             return WeightedItem<MountColorChance>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(MountColors));
         }
-
+        public Color GetRandomEmissionColor()
+        {
+            return WeightedItem<MountColorChance>.GetWeightedRandomValueFromList(OutwardHelpers.ConvertToWeightedItemList(MountEmissionColors));
+        }
         public string GetRandomName()
         {
             return Names[UnityEngine.Random.Range(0, Names.Count)];

@@ -1,8 +1,10 @@
 ﻿using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
 using SideLoader;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace EmoMount
 {
@@ -15,6 +17,8 @@ namespace EmoMount
         public Vector3 SpawnPosition { get; set; }
         public Vector3 SpawnRotation { get; set; }
         public Character.SpellCastType StartingPose { get; set; }
+
+        delegate void OnCharacterDestroy(string message);
 
         public SL_Character.VisualData CharVisualData { get; set; } = new()
         {
@@ -34,7 +38,7 @@ namespace EmoMount
 
         public event Action<DialogueTree, Character> OnSetupDialogueGraph;
 
-        public SL_Character CreateAndApplyTemplate()
+        public SL_Character CreateAndApplyTemplate(Action<SL_Character, Character, string> OnSpawnDelegate)
         {
             SL_Character template = new()
             {
@@ -56,13 +60,16 @@ namespace EmoMount
             };
 
             template.ApplyTemplate();
-            template.OnSpawn += Template_OnSpawn;
-
+            template.OnSpawn += (Character c, string s)=>
+            {
+                OnSpawnDelegate?.Invoke(template, c, s);
+            };
             return template;
         }
 
-        private void Template_OnSpawn(Character character, string rpcData)
+        private void Template_OnSpawn(Character character, string rpcData, string SpeciesName = "")
         {
+            OnDestroyComp onDestroyComp = character.gameObject.AddComponent<OnDestroyComp>();
             GameObject dialogueTemplate = GameObject.Instantiate(Resources.Load<GameObject>("editor/templates/DialogueTemplate"));
             dialogueTemplate.transform.parent = character.transform;
             dialogueTemplate.transform.position = character.transform.position;
@@ -81,6 +88,24 @@ namespace EmoMount
             actors[0].name = ourActor.name;
 
             OnSetupDialogueGraph?.Invoke(graph as DialogueTree, character);
+
+            if (!string.IsNullOrEmpty(SpeciesName))
+            {
+
+                MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);         
+                if (mountSpecies != null)
+                {
+                    GameObject MountPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", mountSpecies.AssetBundleName, mountSpecies.PrefabName);
+
+                    if (MountPrefab)
+                    {
+                        onDestroyComp.MountVisualInstance = GameObject.Instantiate(MountPrefab, character.transform.position, character.transform.rotation);
+                    }
+
+                }
+
+
+            }
         }
     }
 }

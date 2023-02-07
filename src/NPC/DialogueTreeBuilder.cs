@@ -5,8 +5,8 @@ namespace EmoMount
 {
     public class DialogueTreeBuilder
     {
-        private DialogueTree TargetDialogueTree;
-        private DialogueTree.ActorParameter Actor;
+        public DialogueTree TargetDialogueTree { get; private set; }
+        public DialogueTree.ActorParameter Actor { get; private set; }
 
         public DialogueTreeBuilder(DialogueTree targetDialogueTree, bool ClearGraph = true)
         {
@@ -73,6 +73,11 @@ namespace EmoMount
     {
         public static DTNode ConnectTo(this DTNode sourceNode, DialogueTree DT, DTNode TargetNode)
         {
+            if (!DT.allNodes.Contains(TargetNode))
+            {
+                DT.allNodes.Add(TargetNode);
+            }
+
             DT.ConnectNodes(sourceNode, TargetNode);
             return TargetNode;
         }
