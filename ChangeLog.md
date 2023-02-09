@@ -84,20 +84,8 @@ Bought from the Stable Master after completing (SomeCierzoImportantQuest)
 ## Mount Components
 These are components I created that you can add to a mount by editing the MountSpecies definition, these are rarely used by the mod itself, some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story and they are most something I provided as a test of data-orientated design and to give users some features requested without making them mandatory for everyone.
 
- I fully believe you should play *your* game however you feel is most fun.
 I am open to adding more of these at a later date, suggestions welcome.
 
-
- SprintComp
-> 
->  These just adds the ability to sprint to the mounts, the speed bonus
-> can be modified as are most things in this mod.
-
-```xml
-<MountCompProp CompName="SprintComp" xsi:type="SprintCompProp">
-<SprintModifier>2</SprintModifier>
-</MountCompProp>
-```
 
  GlideComp
 > 
@@ -199,10 +187,7 @@ But you can edit them to use any of the mounts in this mod, this is easily done 
 
 ## Quests
 
-#### Build a Beast
-You can build your own beast golem by finding the 'Pristine Beast Golem Part's scattered around harmattan.
-
-##### Final Fantasy Aurai
+##### Eggs
 Certain creatures (Pearl Bird, Manticore, Tuanosaur) can now drop eggs and infact thats the only way to get certain varities of mounts.
 
 *If you have a Pearl Bird Egg quest for example - you won't get another until that one is complete.*
