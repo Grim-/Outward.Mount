@@ -26,7 +26,7 @@
 | -26119  | Dragon Boar (Cosmic)  | World Drop |
 
 
-### Base Game Whistle Items
+### Ninedots Mount Whistle Items
 | Item ID | Whistle Name | Acquired ? | Notes |
 | --------| -------------| -----------| ------|
 | -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  (Color Variations drop as eggs from PearlBirds or their Nests.) |
