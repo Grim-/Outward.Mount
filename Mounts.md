@@ -35,7 +35,7 @@
 | -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
 | -26304  | AlphaTaunosaur  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
 | -26305  | BeastGolem  | Bought (Harmattan) |
-| -26306  | Beetle  | Bought After Quest (Cierzo)
+| -26306  | Beetle  | Bought After Quest (Levant) | Not Sure What Quest Yet
 | -26307  | SandShark  | Bought (Levant) |
 | -26308  | BeastGolemAlternate  | Crafted | Find all 5 Pristine Beast Golem parts picking up a part grants the recipe |
 | -26309  | CoralHornDoe  | Bought (Berg) |
