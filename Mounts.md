@@ -30,12 +30,21 @@
 | Item ID | Whistle Name |
 | --------| ------------- |
 | -26300  | PearlBird  |
-| -26301  | Alpha Coralhorn  |
-| -26302  | Manticore  |
-| -26303  | Alpha Tuanosaur |
-| -26304  | SandShark |
-| -26305  | Beast Golem |
-| -26306  | Obsidian Elemental |
+| -26301  | BlackPearlBird  |
+| -26302  | AlphaCoralHorn  |
+| -26303  | Manticore  |
+| -26304  | AlphaTaunosaur  |
+| -26305  | BeastGolem  |
+| -26306  | Beetle  |
+| -26307  | SandShark  |
+| -26308  | BeastGolemAlternate  |
+| -26309  | CoralHornDoe  |
+| -26310  | Taunosaur  |
+| -26311  | ObsidianElemental |
+| -26312  | GoldenPearlBird |
+| -26313  | SilverPearlBird |
+| -26314  | JewelBird |
+| -26315  | EliteSandShark |
 
 ### Skills
 | Item ID | Skill Name |
