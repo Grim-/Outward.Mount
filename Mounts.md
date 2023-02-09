@@ -29,20 +29,20 @@
 ### Base Game Whistle Items
 | Item ID | Whistle Name | Acquired ? | Notes |
 | --------| -------------| -----------| ------|
-| -26300  | PearlBird  | Cierzo (Bought) |  (Color Variations drop as eggs from PearlBirds or their Nests.) |
+| -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  (Color Variations drop as eggs from PearlBirds or their Nests.) |
 | -26301  | BlackPearlBird  | Crafted | Rare Alchemy recipe |
-| -26302  | AlphaCoralHorn  |
+| -26302  | AlphaCoralHorn  | Quest |
 | -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
-| -26304  | AlphaTaunosaur  |
-| -26305  | BeastGolem  | Harmattan (Bought) |
+| -26304  | AlphaTaunosaur  | 
+| -26305  | BeastGolem  | Bought (Harmattan) |
 | -26306  | Beetle  |
-| -26307  | SandShark  | Levant (Bought) |
-| -26308  | BeastGolemAlternate  | Quest  | (Find all 5 Pristine Beast Golem parts picking up a part starts the quest |
-| -26309  | CoralHornDoe  | Berg (Bought) |
-| -26310  | Taunosaur  | Monsoon (Bought) |
+| -26307  | SandShark  | Bought (Levant) |
+| -26308  | BeastGolemAlternate  | Quest  | Find all 5 Pristine Beast Golem parts picking up a part starts the quest |
+| -26309  | CoralHornDoe  | Bought (Berg) |
+| -26310  | Taunosaur  | Bought (Monsoon) |
 | -26311  | ObsidianElemental | Crafted | (Recipe gained from defeating X)
 | -26312  | GoldenPearlBird | Crafted  | (Recipe gained from defeating gold lich)
-| -26313  | SilverPearlBird | Pearl Bird Rare color variation | drops from PearlBirds and Nests with the lowest chance of any variation. |
+| -26313  | SilverPearlBird | Egg Drop |  Pearl Bird Rare color variationdrops from PearlBirds and Nests with the lowest chance of any variation. |
 | -26314  | JewelBird |
 | -26315  | EliteSandShark |
 
