@@ -27,22 +27,22 @@
 
 
 ### Base Game Whistle Items
-| Item ID | Whistle Name | Acquired ? |
-| --------| -------------| -----------|
-| -26300  | PearlBird  | Cierzo (Bought) |
-| -26301  | BlackPearlBird  |
+| Item ID | Whistle Name | Acquired ? | Notes |
+| --------| -------------| -----------| ------|
+| -26300  | PearlBird  | Cierzo (Bought) |  (Color Variations drop as eggs from PearlBirds or their Nests.) |
+| -26301  | BlackPearlBird  | Crafted | Rare Alchemy recipe |
 | -26302  | AlphaCoralHorn  |
-| -26303  | Manticore  |
+| -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
 | -26304  | AlphaTaunosaur  |
 | -26305  | BeastGolem  | Harmattan (Bought) |
 | -26306  | Beetle  |
 | -26307  | SandShark  | Levant (Bought) |
-| -26308  | BeastGolemAlternate  |
+| -26308  | BeastGolemAlternate  | Quest (Find all 5 Pristine Beast Golem parts) |
 | -26309  | CoralHornDoe  | Berg (Bought) |
 | -26310  | Taunosaur  | Monsoon (Bought) |
-| -26311  | ObsidianElemental |
-| -26312  | GoldenPearlBird |
-| -26313  | SilverPearlBird |
+| -26311  | ObsidianElemental | Crafted (Recipe gained from defeating X) |
+| -26312  | GoldenPearlBird | Crafted (Recipe gained from defeating gold lich) |
+| -26313  | SilverPearlBird | Pearl Bird Rare color variation | drops from PearlBirds and Nests with the lowest chance of any variation. |
 | -26314  | JewelBird |
 | -26315  | EliteSandShark |
 
