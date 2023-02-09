@@ -2,44 +2,44 @@
 
 
 ### Whistle Items
-| Item ID | Whistle Name |
-| --------| ------------- |
-| -26100  | Wolf (Base)  |
-| -26101  | Wolf (Cosmic)  |
-| -26102  | Wolf (Holy)  |
-| -26103  | Wolf (Sif)  |
-| -26104  | Dragon Boar (Blue)  |
-| -26105  | Dragon Boar (Red)  |
-| -26106  | Dragon Boar (Gold)  |
-| -26107  | Golem (Rock)  |
-| -26108  | Golem (Flora)  |
-| -26109  | Golem (Air)  |
-| -26110  | Golem (Cart)  |
-| -26111  | Raptor (Orange)  |
-| -26112  | Raptor (Green)  |
-| -26113  | Raptor (Cosmic)  |
-| -26114  | Lizard (Frost)  |
-| -26115  | Lizard (Cosmic)  |
-| -26116  | Golem (Cosmic)  |
-| -26117  | DragonBoar (Chameleon)  |
-| -26118  | Raptor (Chameleon)  |
-| -26119  | Dragon Boar (Cosmic)  |
+| Item ID | Whistle Name | Acquired ? |
+| --------| ------------- | ----------|
+| -26100  | Wolf (Base)  | World Drop |
+| -26101  | Wolf (Cosmic)  | World Drop |
+| -26102  | Wolf (Holy)  | World Drop |
+| -26103  | Wolf (Sif)  | World Drop |
+| -26104  | Dragon Boar (Blue)  | World Drop |
+| -26105  | Dragon Boar (Red)  | World Drop |
+| -26106  | Dragon Boar (Gold)  | World Drop |
+| -26107  | Golem (Rock)  | World Drop |
+| -26108  | Golem (Flora)  | World Drop |
+| -26109  | Golem (Air)  | World Drop |
+| -26110  | Golem (Cart)  | World Drop |
+| -26111  | Raptor (Orange)  | World Drop |
+| -26112  | Raptor (Green)  | World Drop |
+| -26113  | Raptor (Cosmic)  | World Drop |
+| -26114  | Lizard (Frost)  | World Drop |
+| -26115  | Lizard (Cosmic)  | World Drop |
+| -26116  | Golem (Cosmic)  | World Drop |
+| -26117  | DragonBoar (Chameleon)  | World Drop |
+| -26118  | Raptor (Chameleon)  | World Drop |
+| -26119  | Dragon Boar (Cosmic)  | World Drop |
 
 
 ### Base Game Whistle Items
-| Item ID | Whistle Name |
-| --------| ------------- |
-| -26300  | PearlBird  |
+| Item ID | Whistle Name | Acquired ? |
+| --------| -------------| -----------|
+| -26300  | PearlBird  | Cierzo (Bought) |
 | -26301  | BlackPearlBird  |
 | -26302  | AlphaCoralHorn  |
 | -26303  | Manticore  |
 | -26304  | AlphaTaunosaur  |
-| -26305  | BeastGolem  |
+| -26305  | BeastGolem  | Harmattan (Bought) |
 | -26306  | Beetle  |
-| -26307  | SandShark  |
+| -26307  | SandShark  | Levant (Bought) |
 | -26308  | BeastGolemAlternate  |
-| -26309  | CoralHornDoe  |
-| -26310  | Taunosaur  |
+| -26309  | CoralHornDoe  | Berg (Bought) |
+| -26310  | Taunosaur  | Monsoon (Bought) |
 | -26311  | ObsidianElemental |
 | -26312  | GoldenPearlBird |
 | -26313  | SilverPearlBird |
