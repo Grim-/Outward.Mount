@@ -198,6 +198,3 @@ These eggs will give you a quest to wait 12 hours then the egg hatches you canno
 
 A small bug present currently is the quest timer for the eggs hatching is reset every time you load a save, I am working on this but it is rather minor.
 
-##### Note :
-
-- Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental and Sand Sharks can all spawn with random colors for their emission (the parts of the model that glow) this change be forcibly changed using the ColorableComp!
