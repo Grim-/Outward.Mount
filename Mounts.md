@@ -37,11 +37,11 @@
 | -26305  | BeastGolem  | Harmattan (Bought) |
 | -26306  | Beetle  |
 | -26307  | SandShark  | Levant (Bought) |
-| -26308  | BeastGolemAlternate  | Quest (Find all 5 Pristine Beast Golem parts) |
+| -26308  | BeastGolemAlternate  | Quest  | (Find all 5 Pristine Beast Golem parts picking up a part starts the quest |
 | -26309  | CoralHornDoe  | Berg (Bought) |
 | -26310  | Taunosaur  | Monsoon (Bought) |
-| -26311  | ObsidianElemental | Crafted (Recipe gained from defeating X) |
-| -26312  | GoldenPearlBird | Crafted (Recipe gained from defeating gold lich) |
+| -26311  | ObsidianElemental | Crafted | (Recipe gained from defeating X)
+| -26312  | GoldenPearlBird | Crafted  | (Recipe gained from defeating gold lich)
 | -26313  | SilverPearlBird | Pearl Bird Rare color variation | drops from PearlBirds and Nests with the lowest chance of any variation. |
 | -26314  | JewelBird |
 | -26315  | EliteSandShark |
