@@ -32,54 +32,10 @@ Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore,
 This request started with asking for a *single* Coral Horn prefab and we ended up with **12(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 
-##  Acquisition
-### Chersonese
-
-> - **Pearl Bird**  
-> Bought from the Stable Master
-> 
-> - **Pearl Bird Color variations**  
-> drop as eggs from Pearl Birds and Jewel Birds.
-> 
-> - **Black Pearl Bird** 
-Bought from the Stable Master after completing (SomeCierzoImportantQuest)
+## Mounts Acquisition
+Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mounts.md) page for more information.
 
 
-
-
-### Berg
-> - **Coral Horn Doe**  
-> Bought from the Stable Master
-> 
-> - **Alpha Coral Horn**  
-> Bought from the Stable Master after completing (SomeBergImportantQuest)
-> 
-> - **Manticore**  
-> drop as eggs from manticores and royal manticores.
-
-### Hallowed Marsh
-> - **Alpha Tuanosaur**  
-> Bought from the Stable Master after completing (SomeBergImportantQuest) or rarely as eggs.
-> 
-> - **Tuanosaur**  
-> Bought from the Stable Master
-
-### Harmattan
-> - **Beast Golem**  
-> Bought from the Stable Master
-> 
-> - **Beast Golem Alternate(Boss model)**  
-> Crafted from 4 'Pristine Beast Golem Parts' recipe learnt from Stable Master.
-
-### Levant
-> - **Beetle**  
-> Bought from the Stable Master
-> 
-> - **Obsidian Elemental**  
-> Can be summoned into existenance from an Obsidian core(Crafting recipe + 3x Fire Stone), rarely drops from Obsidian elementals.
-> 
-> - **Sand Shark**  
-> Bought from the Stable Master after completing (SomeLevantImportantQuest)
 
 ## Mount Components
 These are components I created that you can add to a mount by editing the MountSpecies definition, these are rarely used by the mod itself, some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story and they are most something I provided as a test of data-orientated design and to give users some features requested without making them mandatory for everyone.
