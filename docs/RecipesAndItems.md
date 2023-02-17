@@ -23,9 +23,9 @@
 | Item ID | Item Name     | Acquired |
 | --------| ------------- | -------  |
 | -26600  | Depleted Obsidian Core   | Dropped from Obsidian Elementals
-| 6500010  | Fire Stone x 3             | 
-
-
+| 6500010  | Fire Stone             | 
+| 6500010  | Fire Stone             | 
+| 6500010  | Fire Stone            | 
 
 ### Beast Golem Alternate
 
@@ -49,8 +49,8 @@
 | --------| ------------- | -------  |
 | -26208  | Living Obsidian   | Dropped from Obsidian Elementals
 | -26602  | PearlBird Egg             | 
-| 6600110  | Occult Remains x 2             | 
-
+| 6600110  | Occult Remains             | 
+| 6600110  | Occult Remains             | 
 
 ### Golden PearlBird
 
@@ -59,5 +59,5 @@
 | --------| ------------- | -------  |
 | -26201  | Living Gold   | Dropped from Obsidian Elementals
 | -26602  | PearlBird Egg             | 
-| 6400130  | Mana Stone x 2             | 
-
+| 6400130  | Mana Stone             | 
+| 6400130  | Mana Stone             | 
