@@ -18,6 +18,7 @@ namespace EmoMount
 {
     public class MountQuestManager
 	{
+		#region Egg Quest
 		private const string EggQuestFamily = "MountEggSeries";
 
 		private QuestEventSignature EggQuestPart_1Signature;
@@ -26,13 +27,12 @@ namespace EmoMount
 		private const string EggQuestEventOne = "mount.egg.partone";
 		private const string EggQuestEventTwo = "mount.egg.parttwo";
 
+        #endregion
 
-		public Dictionary<int, int> MountToEggMap { get; private set; }
+        public Dictionary<int, int> MountToEggMap { get; private set; }
 
 
 		public List<EggQuestMap> EggQuests { get; private set; }
-
-
 
 		public MountQuestManager()
 		{
@@ -50,24 +50,36 @@ namespace EmoMount
 
 			EggQuestMap PearlBirdBase = new EggQuestMap(-26502, -26202, "PearlBird", "Wriggling Egg", Color.clear, false);
 			EggQuests.Add(PearlBirdBase);
+
 			EggQuestMap PearlBirdYellow = new EggQuestMap(-26503, -26203, "PearlBird", "Yellow Wriggling Egg", Color.yellow, false);
 			EggQuests.Add(PearlBirdYellow);
+
 			EggQuestMap PearlBirdBlue = new EggQuestMap(-26504, -26204, "PearlBird", "Blue Wriggling Egg", Color.cyan, false);
 			EggQuests.Add(PearlBirdBlue);
+
 			EggQuestMap PearlBirdRed = new EggQuestMap(-26505, -26205, "PearlBird", "Red Wriggling Egg", Color.red, false);
 			EggQuests.Add(PearlBirdRed);
+
 			EggQuestMap PearlBirdGreen = new EggQuestMap(-26506, -26206, "PearlBird", "Green Wriggling Egg", Color.green, false);
 			EggQuests.Add(PearlBirdGreen);
-			//EggQuestMap PearlBirdBlack = new EggQuestMap(-26507, -26207, "BlackPearlBird", "Black Wriggling Egg", Color.clear, false);
-			//EggQuests.Add(PearlBirdBlack);
-			//EggQuestMap PearlBirdGolden = new EggQuestMap(-26508, -26208, "GoldenPearlBird", "Golden Wriggling Egg", Color.clear, false);
-			//EggQuests.Add(PearlBirdGolden);
 
+			EggQuestMap PearlBirdBlack = new EggQuestMap(-26507, -26207, "BlackPearlBird", "Obsidian Wriggling Egg", Color.clear, false);
+			EggQuests.Add(PearlBirdBlack);
+
+			EggQuestMap PearlBirdGold = new EggQuestMap(-26508, -26208, "GoldenPearlBird", "Golden Wriggling Egg", Color.clear, false);
+			EggQuests.Add(PearlBirdGold);
 
 			EggQuestMap Manticore = new EggQuestMap(-26509, -26209, "Manticore", "Shaking Egg", Color.clear, false);
 			EggQuests.Add(Manticore);
+
 			EggQuestMap Tuanosaur = new EggQuestMap(-26510, -26210, "Tuanosaur", "Rattling Egg", Color.clear, false);
 			EggQuests.Add(Tuanosaur);
+
+			EggQuestMap AlphaTuanosaur = new EggQuestMap(-26511, -26211, "AlphaTuanosaur", "Large Rattling", Color.clear, false);
+			EggQuests.Add(AlphaTuanosaur);
+
+			EggQuestMap PearlBirdSilver = new EggQuestMap(-26512, -26212, "SilverPearlBird", "Quick Silver Wriggling Egg", Color.clear, false);
+			EggQuests.Add(PearlBirdSilver);
 		}
 
 		private void CreateQuestEvents()
@@ -118,50 +130,63 @@ namespace EmoMount
 		{
             foreach (var item in EggQuests)
             {
-				SL_Quest PearlBirdEgg = new SL_Quest()
-				{
-					Target_ItemID = 7011617,
-					New_ItemID = item.QuestID,
-					Name = item.QuestName,
-					ExtensionsEditBehaviour = EditBehaviours.Destroy,
-					IsSideQuest = true,
-					ItemExtensions = new SL_ItemExtension[]
-					{
-						new SL_QuestProgress()
-						{
-							Savable = true,
-						}
-					},
-				};
-				PearlBirdEgg.OnQuestLoaded += (Quest quest) =>
-				{
-					EggQuestMap cached = item;
-
-					if (!QuestHasCustomGraph(quest))
-					{
-						GenerateEggHatchingQuestTree(quest, cached);
-					}
-				};
-				PearlBirdEgg.ApplyTemplate();
+				GenerateEggQuest(item);
 			}
+
+
+			//SL_Quest BeastGolemCollection = new SL_Quest()
+			//{
+			//	Target_ItemID = 7011617,
+			//	New_ItemID = BeastGolemQuestID,
+			//	ExtensionsEditBehaviour = EditBehaviours.Destroy,
+			//	IsSideQuest = true,
+			//	ItemExtensions = new SL_ItemExtension[]
+			//	{
+			//		new SL_QuestProgress()
+			//		{
+			//			Savable = true,
+			//		}
+			//	}
+			//};
+
+			//BeastGolemCollection.OnQuestLoaded += (Quest quest) =>
+			//{
+			//	if (!QuestHasCustomGraph(quest))
+			//	{
+			//		GenerateBeastGolemQuestTree(quest);
+			//	}
+			//};
+			//BeastGolemCollection.ApplyTemplate();
 		}
-		public static void StartQuestGraphForQuest(Quest Quest)
-		{
-			QuestTreeOwner QTO = Quest.GetQuestTreeOwner();
-			
-			QuestTree Graph = (QuestTree)QTO.graph;
-			if (Graph != null)
+
+        private void GenerateEggQuest(EggQuestMap EggQuestMap)
+        {
+			SL_Quest PearlBirdEgg = new SL_Quest()
 			{
-				EmoMountMod.Log.LogMessage($"Starting Graph {Graph} Graph Is Currently Running ? : {Graph.isRunning}");
-				if (Graph.primeNode == null)
+				Target_ItemID = 7011617,
+				New_ItemID = EggQuestMap.QuestID,
+				Name = EggQuestMap.QuestName,
+				ExtensionsEditBehaviour = EditBehaviours.Destroy,
+				IsSideQuest = true,
+				ItemExtensions = new SL_ItemExtension[]
 				{
-					Graph.primeNode = Graph.allNodes[0];
+					new SL_QuestProgress()
+					{
+						Savable = true,
+					}
+				},
+			};
+			PearlBirdEgg.OnQuestLoaded += (Quest quest) =>
+			{
+				EggQuestMap cached = EggQuestMap;
+
+				if (!QuestHasCustomGraph(quest))
+				{
+					GenerateEggHatchingQuestTree(quest, cached);
 				}
-
-				QTO.StartBehaviour();
-			}
+			};
+			PearlBirdEgg.ApplyTemplate();
 		}
-
 
 		private Graph GenerateEggHatchingQuestTree(Quest quest, EggQuestMap eggQuestMap, int QuestEventExpiryTime = 12, string QuestTreeName = "CustomGraph")
 		{
@@ -172,17 +197,17 @@ namespace EmoMount
 			QuestGraphBuilder questGraphBuilder = new QuestGraphBuilder(quest);
 			questGraphBuilder.SetGraphName(QuestTreeName);
 
-            #region Step One
+			#region Step One
 
-            QuestStep StepOne = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step One", null, ActionList.ActionsExecutionMode.ActionsRunInSequence);
+			QuestStep StepOne = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step One", null, ActionList.ActionsExecutionMode.ActionsRunInSequence);
 
 			StepOne.AddLogEntryQuestAction("This egg feels warm and ocasionally wobbles.", false)
 			.AddSendQuestEventAction(EggQuestPart_1Signature.EventUID);
 
-            #endregion
+			#endregion
 
-            #region Step Two
-            QuestStep StepTwo = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step Two", null, ActionList.ActionsExecutionMode.ActionsRunInSequence, false, FSMState.TransitionEvaluationMode.CheckAfterStateFinished);
+			#region Step Two
+			QuestStep StepTwo = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step Two", null, ActionList.ActionsExecutionMode.ActionsRunInSequence, false, FSMState.TransitionEvaluationMode.CheckAfterStateFinished);
 
 			StepTwo.AddQuestAction(new QuestAction_WaitGameTime()
 			{
@@ -221,42 +246,43 @@ namespace EmoMount
 			});
 
 
-            #endregion
+			#endregion
 
-            #region Step Three
-            QuestStep StepThree = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step Three", null, ActionList.ActionsExecutionMode.ActionsRunInSequence);
+			#region Step Three
+			QuestStep StepThree = questGraphBuilder.CreateNewQuestStep("Mount Egg Quest Step Three", null, ActionList.ActionsExecutionMode.ActionsRunInSequence);
 
 			StepThree.AddQuestAction(new ShowCharacterNotification()
 			{
 				NotificationText = "The egg hatched!"
-			}).AddQuestAction(new RemoveItem()
-			{
-				Items = new List<BBParameter<ItemReference>>()
+			})
+			.AddQuestAction(new RemoveItem()
+             {
+                 Items = new List<BBParameter<ItemReference>>()
                 {
-					new BBParameter<ItemReference>()
+                    new BBParameter<ItemReference>()
                     {
-						value = new ItemReference()
+                        value = new ItemReference()
                         {
-							ItemID = eggQuestMap.EggItemID,
-							m_itemID = eggQuestMap.EggItemID,
-						}
+                            ItemID = eggQuestMap.EggItemID,
+                            m_itemID = eggQuestMap.EggItemID,
+                        }
                     }
                 },
-				fromCharacter = new BBParameter<Character>()
+                 fromCharacter = new BBParameter<Character>()
+                 {
+                     value = quest.OwnerCharacter
+                 },
+                 Amount = new List<BBParameter<int>>()
                 {
-					value = quest.OwnerCharacter
-                },
-				Amount = new List<BBParameter<int>>()
-                {
-					new BBParameter<int>()
+                    new BBParameter<int>()
                     {
-						value = 1
+                        value = 1
                     }
                 }
-			});
+             });
 
 
-			StepThree.AddQuestAction(new RemoveQuestEvent()
+            StepThree.AddQuestAction(new RemoveQuestEvent()
 			{
 				QuestEventRef = new QuestEventReference()
 				{
@@ -268,41 +294,54 @@ namespace EmoMount
 			{
 				isSuccessful = true,
 			}).AddQuestAction(new RemoveQuest()
-            {
-                questRef = new BBParameter<QuestReference>()
-                {
-                    value = new QuestReference()
-                    {
-                        m_itemID = quest.ItemID,
-                    }
-                }
-            });
-
-            #endregion
-
-            questGraphBuilder.ConnectQuestSteps(StepOne, StepTwo, new Condition_CheckQuestEventExpiry()
 			{
-					QuestEventRef = new QuestEventReference()
+				questRef = new BBParameter<QuestReference>()
+				{
+					value = new QuestReference()
 					{
-						EventUID = EggQuestEventOne
+						m_itemID = quest.ItemID,
 					}
+				}
+			});
+
+			#endregion
+
+			questGraphBuilder.ConnectQuestSteps(StepOne, StepTwo, new Condition_CheckQuestEventExpiry()
+			{
+				QuestEventRef = new QuestEventReference()
+				{
+					EventUID = EggQuestEventOne
+				}
 			});
 
 			questGraphBuilder.ConnectQuestSteps(StepTwo, StepThree, null);
 
 			return questGraphBuilder.Graph;
 		}
+		public static void StartQuestGraphForQuest(Quest Quest)
+		{
+			QuestTreeOwner QTO = Quest.GetQuestTreeOwner();
+			
+			QuestTree Graph = (QuestTree)QTO.graph;
+			if (Graph != null)
+			{
+				EmoMountMod.Log.LogMessage($"Starting Graph {Graph} Graph Is Currently Running ? : {Graph.isRunning}");
+				if (Graph.primeNode == null)
+				{
+					Graph.primeNode = Graph.allNodes[0];
+				}
 
+				QTO.StartBehaviour();
+			}
+		}
 		public bool QuestHasCustomGraph(Quest Quest)
         {
 			return Quest.GetQuestTree().name == "CustomGraph";
 		}
-
 		public bool CharacterHasQuest(Character Character, int QuestID)
 		{
 			return Character.Inventory.QuestKnowledge.IsItemLearned(QuestID);
 		}
-
 		public static Quest GenerateQuestItemForCharacter(Character character, int QuestItemID)
 		{
 			Quest quest = ItemManager.Instance.GenerateItemNetwork(QuestItemID) as Quest;

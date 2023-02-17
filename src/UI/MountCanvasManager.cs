@@ -152,30 +152,28 @@ namespace EmoMount
 
                 foreach (var item in characterMount.StoredMounts)
                 {
-                    EmoMountMod.Log.LogMessage($"Creating Stored Mount UI Selection Instance for {item.MountName}");
+                    //EmoMountMod.Log.LogMessage($"Creating Stored Mount UI Selection Instance for {item.Value.MountName}");
 
                     GameObject mountSelectionInstance = GameObject.Instantiate<GameObject>(StorageUIPrefab);
                     MountSelectionElement mountSelectionElement = mountSelectionInstance.AddComponent<MountSelectionElement>();
 
-
-
                     StringBuilder stringBuilder = new StringBuilder();
 
-                    stringBuilder.Append($"{item.MountName} ({item.MountSpecies})");
-                    if (item.TintColor != Color.clear)
+                    stringBuilder.Append($"{item.Value.MountName} ({item.Value.MountSpecies})");
+                    if (item.Value.TintColor != Color.clear)
                     {
-                        stringBuilder.Append($" [Color {item.TintColor}]");
+                        stringBuilder.Append($" [Color {item.Value.TintColor}]");
                     }
 
                     mountSelectionElement.NameLabel.color = Color.black;
                     mountSelectionElement.FoodLabel.color = Color.black;
 
                     mountSelectionElement.SetNameLabel(stringBuilder.ToString());
-                    mountSelectionElement.SetFoodLabel($"Food : {item.CurrentFood} / {item.MaximumFood}");
+                    mountSelectionElement.SetFoodLabel($"Food : {item.Value.CurrentFood} / {item.Value.MaximumFood}");
                     mountSelectionElement.RetrieveButton.onClick.AddListener(() =>
                     {
                         var cachedItem = item;
-                        BasicMountController basicMountController = characterMount.RetrieveStoredMount(cachedItem.MountUID);
+                        BasicMountController basicMountController = characterMount.RetrieveStoredMount(cachedItem.Value.MountUID);
                         HideStorage();
                         SideLoader.Helpers.ForceUnlockCursor.RemoveUnlockSource();
                     });
@@ -197,19 +195,19 @@ namespace EmoMount
 
         public void ShowStorage()
         {
-            EmoMountMod.Log.LogMessage($"Showing Storage UI");
+            //EmoMountMod.Log.LogMessage($"Showing Storage UI");
             StorageContainerGroup.alpha = 1;
             StorageContainerGroup.interactable = true;
         }
 
         public void HideStorage()
         {
-            EmoMountMod.Log.LogMessage($"Hiding Storage UI");
+           // EmoMountMod.Log.LogMessage($"Hiding Storage UI");
             StorageContainerGroup.alpha = 0;
             StorageContainerGroup.interactable = false;
 
 
-            EmoMountMod.Log.LogMessage($"Destroying Storage Container Instances");
+           // EmoMountMod.Log.LogMessage($"Destroying Storage Container Instances");
             foreach (var item in StorageContainerInstances)
             {
                 Destroy(item);
@@ -255,6 +253,11 @@ namespace EmoMount
                     HideMountHud();
                 }
             }
+        }
+
+        public bool HasRegisteredUI(BasicMountController mountController)
+        {
+            return MountUIInstances.ContainsKey(mountController);
         }
     }
 

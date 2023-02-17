@@ -149,14 +149,14 @@ namespace EmoMount
 
         #region Controller
         /// <summary>
-        /// Creates a new Mount in the scene next to the Owner Player from the XML Definition.
+        /// Create a new Mount GameObject from the provided SpeciesName, add it to the DontDestroyOnLoad scene th
         /// </summary>
         /// <param name="_affectedCharacter"></param>
         /// <param name="MountSpecies"></param>
         /// <param name="Position"></param>
         /// <param name="Rotation"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromSpecies(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color), Action<BasicMountController> OnMountSpawnComplete = null)
+        public BasicMountController CreateMountFromSpecies(string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color),  Action<BasicMountController> OnMountSpawnComplete = null)
         {
             if (string.IsNullOrEmpty(mountSpecies))
             {
@@ -164,7 +164,6 @@ namespace EmoMount
                 return null;
             }
 
-            //EmoMountMod.Log.LogMessage($"Creating {mountSpecies} for {_affectedCharacter.Name}");
             MountSpecies MountSpecies =  GetSpeciesDefinitionByName(mountSpecies);
 
             if (MountSpecies == null)
@@ -173,29 +172,27 @@ namespace EmoMount
                 return null;
             }
 
-
             GameObject Prefab = OutwardHelpers.GetFromAssetBundle<GameObject>(MountSpecies.SLPackName, MountSpecies.AssetBundleName, MountSpecies.PrefabName);
             GameObject MountInstance = null;
 
-
-            //EmoMountMod.Log.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.SpeciesName} has {MountSpecies.MoveSpeed}");
-
             if (Prefab == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountForCharacter PrefabName : {MountSpecies.PrefabName} from AssetBundle was null.");
+                EmoMountMod.Log.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.PrefabName} from AssetBundle was null.");
                 return null;
             }
-
- 
+            EmoMountMod.Log.LogMessage($"MountManager:CreateMountFromSpecies :: Creating Mount Instance from species {mountSpecies} at {Position}");
             MountInstance = GameObject.Instantiate(Prefab, Position, Quaternion.Euler(Rotation));
             GameObject.DontDestroyOnLoad(MountInstance);
+
+
+           
+            MountInstance.transform.position = Position;
+            MountInstance.transform.eulerAngles = Rotation;
 
             BasicMountController basicMountController = MountInstance.AddComponent<BasicMountController>();
             basicMountController.MountName = MountSpecies.GetRandomName();
 
-            basicMountController.SetOwner(_affectedCharacter);
             basicMountController.SetSpecies(MountSpecies);
-
 
             basicMountController.MountFood.RequiresFood = MountSpecies.RequiresFood;
             basicMountController.MountFood.SetMaximumFood(MountSpecies.MaximumFood);
@@ -254,18 +251,33 @@ namespace EmoMount
                 }
             }
 
-            CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
 
-            if (characterMount)
-            {
-                characterMount.SetActiveMount(basicMountController);
-            }
-
-            MountControllers.Add(_affectedCharacter, basicMountController);
-
+            OnMountSpawnComplete?.Invoke(basicMountController);
             return basicMountController;
         }
 
+        public BasicMountController CreateMountForCharacter(Character _affectedCharacter, string mountSpecies, Vector3 Position, Vector3 Rotation, Color TintColor = default(Color), Color EmissionColor = default(Color), bool SetAsCurrentActiveMount = true, Action<BasicMountController> OnMountSpawnComplete = null)
+        {
+            BasicMountController basicMountController = CreateMountFromSpecies(mountSpecies, Position, Rotation, TintColor, EmissionColor, OnMountSpawnComplete);
+            basicMountController.SetOwner(_affectedCharacter);
+
+            CharacterMount characterMount = _affectedCharacter.gameObject.GetComponent<CharacterMount>();
+
+            if (characterMount && SetAsCurrentActiveMount)
+            {
+                characterMount.SetActiveMount(basicMountController);
+                AddMountControllerForCharacter(_affectedCharacter, basicMountController);
+            }
+
+
+            basicMountController.OnSpawnComplete += () =>
+            {
+                basicMountController.TeleportToOwner();
+            };
+           
+
+            return basicMountController;
+        }
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from SaveData. If SetAsActive is true this also calls MountCanvasManager.RegisterMount and sets the mount as the CurrentActiveMount for the Character.
         /// </summary>
@@ -273,7 +285,7 @@ namespace EmoMount
         /// <param name="mountInstanceData"></param>
         /// <param name="SetAsActive"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, bool SetAsActive = true, Action<BasicMountController> OnMountSpawnComplete = null)
+        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, Vector3 Position, Vector3 Rotation, bool SetAsActive = true, Action<BasicMountController> OnMountSpawnComplete = null)
         {
             if (mountInstanceData == null)
             {
@@ -281,12 +293,12 @@ namespace EmoMount
                 return null;
             }
 
-            BasicMountController basicMountController = CreateMountFromSpecies(character, mountInstanceData.MountSpecies, mountInstanceData.Position, mountInstanceData.Rotation);
+            BasicMountController basicMountController = CreateMountForCharacter(character, mountInstanceData.MountSpecies, Position, Rotation, mountInstanceData.TintColor, mountInstanceData.EmissionColor, SetAsActive);
 
 
             if (basicMountController == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Failed to Create Mount, controller is null.");
+                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Failed to create Mount, controller is null.");
                 return null;
             }
 
@@ -306,51 +318,34 @@ namespace EmoMount
                 character.GetComponent<CharacterMount>().SetActiveMount(basicMountController);
             }
 
-
-
             basicMountController.OnSpawnComplete += () =>
             {
-                basicMountController.Teleport(character.transform.position, character.transform.eulerAngles);
                 OnMountSpawnComplete?.Invoke(basicMountController);
             };
 
             return basicMountController;
         }
-        //public void SerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
-        //{
-        //    EmoMountMod.Log.LogMessage($"Saving Mount Bag Contents For {basicMountController.MountName}");
+        public void AddMountControllerForCharacter(Character Character, BasicMountController Mount)
+        {
+            if (MountControllers.ContainsKey(Character))
+            {
 
-        //    Bag itemAsBag = (Bag)basicMountController.BagContainer;
-        
-        //    MountInstanceData.ItemSaveData = new List<BasicSaveData>();
-        //    if (itemAsBag.Container == null)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"{basicMountController.MountName} has no bag container.");
-        //        //no bag
-        //        return;
-        //    }
+                EmoMountMod.Log.LogMessage($"{Character.Name} already has a registered MountController updating.");
 
-        //    MountInstanceData.BagUID = itemAsBag.UID;
-
-        //    if (itemAsBag.Container.ItemCount > 0)
-        //    {
-        //        foreach (var item in itemAsBag.Container.GetContainedItems())
-        //        {
-        //            EmoMountMod.Log.LogMessage($"Saving {item.UID} {item.Name}");
-        //            MountInstanceData.ItemSaveData.Add(new BasicSaveData(item));
-        //        }
-        //    }
-        //}
-        //public void DeSerializeMountBagContents(MountInstanceData MountInstanceData, BasicMountController basicMountController)
-        //{
-        //    EmoMountMod.Log.LogMessage($"Loading Mount Bag Contents For {MountInstanceData.MountName}");
-
-        //    if (basicMountController.BagContainer != null)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Loading  {MountInstanceData.ItemSaveData.Count} items");
-        //        ItemManager.Instance.LoadItems(MountInstanceData.ItemSaveData);
-        //    }
-        //}
+                MountControllers[Character] = Mount;
+            }
+            else
+            {
+                MountControllers.Add(Character, Mount);
+            }
+        }
+        public void RemoveMountControllerForCharacter(Character Character)
+        {
+            if (MountControllers.ContainsKey(Character))
+            {
+                MountControllers.Remove(Character);
+            }
+        }
         public bool CharacterHasMount(Character character)
         {
             if (MountControllers.ContainsKey(character))
@@ -389,30 +384,25 @@ namespace EmoMount
         }
         public void DestroyActiveMount(Character character)
         {
-            EmoMountMod.Log.LogMessage($"Destroying Active Mount instance for {character.Name}");
-
-            if (MountControllers != null)
+            if (EmoMountMod.MountManager.CharacterHasMount(character))
             {
-                if (MountControllers.ContainsKey(character))
-                {
-                    DestroyMount(character, MountControllers[character]);
-                }
+                EmoMountMod.Log.LogMessage($"Destroying Active Mount for {character.Name}");
+                DestroyMount(character, EmoMountMod.MountManager.GetActiveMountForCharacter(character));
+
+                RemoveMountControllerForCharacter(character);
             }
         }
         public void DestroyMount(Character character, BasicMountController basicMountController)
         {
-            EmoMountMod.Log.LogMessage($"Destroying Mount instance for {character.Name}");
+            EmoMountMod.Log.LogMessage($"Destroying Mount for {character.Name}");
             basicMountController.DisableNavMeshAgent();
 
-            if (MountCanvasManager.Instance.MountUIInstances.ContainsKey(basicMountController))
+            if (MountCanvasManager.Instance.HasRegisteredUI(basicMountController))
             {
                 MountCanvasManager.Instance.UnRegisterMount(basicMountController);
             }
 
-          
-            //basicMountController.DestroyBagContainer();
-            GameObject.Destroy(basicMountController.gameObject);
-            MountControllers.Remove(character);
+            GameObject.Destroy(basicMountController.gameObject);       
         }
 
         #endregion

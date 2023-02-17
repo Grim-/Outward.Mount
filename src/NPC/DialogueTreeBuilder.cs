@@ -19,9 +19,21 @@ namespace EmoMount
         public StatementNodeExt SetInitialStatement(string InitialStatement)
         {
             // Add our root statement
-            StatementNodeExt InitialStatementNode = CreateStatementNode(InitialStatement);
+            StatementNodeExt InitialStatementNode = CreateNPCStatement(InitialStatement);
             TargetDialogueTree.primeNode = InitialStatementNode;
             return InitialStatementNode;
+        }
+
+
+        public DTNode AddNode(DTNode NewNode)
+        {
+            if (!TargetDialogueTree.allNodes.Contains(NewNode))
+            {
+                TargetDialogueTree.allNodes.Add(NewNode);
+                return NewNode;
+            }
+
+            return NewNode;
         }
 
         public MultipleChoiceNodeExt AddMultipleChoiceNode(string[] choices, ConditionTask[] Condition = null)
@@ -43,56 +55,100 @@ namespace EmoMount
                 multiChoice.availableChoices.Add(multipleChoice);
             }
 
-            TargetDialogueTree.allNodes.Add(multiChoice);
             return multiChoice;
         }
 
-        public StatementNodeExt CreateStatementNode(string AnswerText)
+        public StatementNodeExt CreateNPCStatement(string AnswerText, bool ContinueOnFinish = true)
         {
             StatementNodeExt AnswerStatement = TargetDialogueTree.AddNode<StatementNodeExt>();
             AnswerStatement.statement = new(AnswerText);
             AnswerStatement.SetActorName(Actor.name);
-            TargetDialogueTree.allNodes.Add(AnswerStatement);
+            AnswerStatement.ContinueOnStatementFinished = ContinueOnFinish;
+
+            AddNode(AnswerStatement);
+
             return AnswerStatement;
         }
-        public DTNode AddAnswerToMultipleChoice(MultipleChoiceNodeExt multiChoice, int answerIndex, string AnswerText, DTNode AnswerNode)
-        {
-            StatementNodeExt AnswerStatement = TargetDialogueTree.AddNode<StatementNodeExt>();
-            AnswerStatement.statement = new(AnswerText);
-            AnswerStatement.SetActorName(Actor.name);
 
-            TargetDialogueTree.allNodes.Add(AnswerStatement);
-            if(AnswerNode != null) TargetDialogueTree.allNodes.Add(AnswerNode);
-            TargetDialogueTree.ConnectNodes(multiChoice, AnswerStatement, answerIndex);
-            if (AnswerNode != null) TargetDialogueTree.ConnectNodes(AnswerStatement, AnswerNode);
+        public StatementNode CreatePlayerStatement(string AnswerText)
+        {
+            StatementNode AnswerStatement = TargetDialogueTree.AddNode<StatementNode>();
+            AnswerStatement.statement = new(AnswerText);
+            AddNode(AnswerStatement);
             return AnswerStatement;
+        }
+
+        public T AddAnswerToMultipleChoice<T>(MultipleChoiceNodeExt multiChoice, int answerIndex, T NewNode) where T : DTNode
+        {
+            TargetDialogueTree.ConnectNodes(multiChoice, NewNode, answerIndex);
+            return NewNode;
+        }
+
+        public ConditionNode AddConditionalAnswerToMultiChoice(MultipleChoiceNodeExt multiChoice, DialogueTree DT, int answerIndex, ConditionTask Condition)
+        {
+            ConditionNode ConditionNode = AddAnswerToMultipleChoice(multiChoice, answerIndex, DT.AddNode<ConditionNode>());
+            ConditionNode.condition = Condition;
+            return ConditionNode;
+        }
+
+
+        public T AddAnswerToMultipleChoice<T>(MultipleChoiceNodeExt multiChoice, int answerIndex, string AnswerText, T AnswerNode = null) where T : DTNode
+        {
+            StatementNodeExt AnswerStatement =  CreateNPCStatement(AnswerText);
+
+            if (AnswerNode != null)
+            {
+                AddNode(AnswerNode);
+                TargetDialogueTree.ConnectNodes(multiChoice, AnswerStatement, answerIndex);
+                TargetDialogueTree.ConnectNodes(AnswerStatement, AnswerNode);
+                return AnswerNode;
+            }
+
+            TargetDialogueTree.ConnectNodes(multiChoice, AnswerStatement, answerIndex);
+            return (T)(AnswerStatement as DTNode);
         }
     }
 
     public static class NodeExtensions
     {
-        public static DTNode ConnectTo(this DTNode sourceNode, DialogueTree DT, DTNode TargetNode)
+        public static DTNode ConnectTo(this DTNode sourceNode, DialogueTree DT, DTNode TargetNode, int sourceIndex = -1, int targetIndex = -1)
         {
             if (!DT.allNodes.Contains(TargetNode))
             {
                 DT.allNodes.Add(TargetNode);
             }
 
-            DT.ConnectNodes(sourceNode, TargetNode);
+            DT.ConnectNodes(sourceNode, TargetNode, sourceIndex, targetIndex);         
             return TargetNode;
         }
 
+        public static ConditionNode SetCondition(this ConditionNode sourceNode, ConditionTask Condition)
+        {
+            if (Condition != null) sourceNode.task = Condition;
+            return sourceNode;
+        }
 
 
-        //public static DTNode ConnectFailureNode(this MultipleChoiceNodeExt sourceNode, DialogueTree DT, DTNode TargetNode)
-        //{
-        //    DT.ConnectNodes(sourceNode, TargetNode, -1, 1);
-        //    if (!DT.allNodes.Contains(TargetNode))
-        //    {
-        //        DT.allNodes.Add(TargetNode);
-        //    }
-        //    sourceNode.availableChoices.
-        //    return TargetNode;
-        //}
+        public static DTNode OnSuccess(this ConditionNode sourceNode, DialogueTree DT, DTNode SuccessfulNode)
+        {
+            if (!DT.allNodes.Contains(SuccessfulNode))
+            {
+                DT.allNodes.Add(SuccessfulNode);
+            }
+
+            DT.ConnectNodes(sourceNode, SuccessfulNode, 0, -1);
+            return SuccessfulNode;
+        }
+
+        public static DTNode OnFailure(this ConditionNode sourceNode, DialogueTree DT, DTNode FailureNode)
+        {
+            if (!DT.allNodes.Contains(FailureNode))
+            {
+                DT.allNodes.Add(FailureNode);
+            }
+
+            DT.ConnectNodes(sourceNode, FailureNode, 1, -1);
+            return FailureNode;
+        }
     }
 }

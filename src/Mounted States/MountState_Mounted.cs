@@ -10,18 +10,11 @@ namespace EmoMount
     public class MountState_Mounted : BaseMountState
     {
         private Character MountedCharacter;
-
-
-
         private Vector3 StartPosition;
-
-
-
-        private bool IsInManualMode = true;
-
         private Vector3 AutoMoveTarget = Vector3.zero;
+        private bool IsInManualMode = true;
         private int CurrentAreaSwitch = -1;
-
+        private float CurrentStaminaAsPercent => MountedCharacter.Stats.CurrentStamina / MountedCharacter.Stats.MaxStamina;
         public MountState_Mounted(Character mountedCharacter)
         {
             MountedCharacter = mountedCharacter;
@@ -46,12 +39,10 @@ namespace EmoMount
                 MountController.DisplayNotification($"{MountController.MountName}, left Mounted State");
             }
         }
-
         public override void OnFixedUpdate(BasicMountController MountController)
         {
 
         }
-
         public override void OnUpdate(BasicMountController MountController)
         {
             if (MountedCharacter == null)
@@ -71,47 +62,30 @@ namespace EmoMount
 
             if (MountController.IsTransform)
             {
-                float CurrentStaminaAsPercent = MountController.CharacterOwner.Stats.CurrentStamina / MountController.CharacterOwner.Stats.MaxStamina;
-
-                float PercentOfMax = MountController.CharacterOwner.Stats.MaxStamina * 0.05f;
-
                 if (CurrentStaminaAsPercent <= 0.1f)
                 {
-                    MountController.DisplayNotification($"You cannot sustain that form with restoring your stamina");
+                    MountController.DisplayNotification($"You cannot sustain that form without restoring your stamina");
                     MountController.DismountCharacter(MountedCharacter);
                     Parent.PopState();
                 }
-                if (EmoMountMod.EnableFoodNeed.Value && MountController.MountFood.RequiresFood)
+  
+                if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
                 {
-                    if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
-                    {
-                        StartPosition = MountController.transform.position;
-                        MountController.CharacterOwner.Stats.UseStamina(PercentOfMax, 1.1f);
-                    }
+                    OnTravelDistanceThreshold(MountController);
                 }
+               
             }
             else
             {
-
-                if (EmoMountMod.EnableFoodNeed.Value && MountController.MountFood.RequiresFood)
+                if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
                 {
-                    if (DistanceBetweenStartAndEnd > MountController.MountFood.TravelDistanceThreshold)
-                    {
-                        StartPosition = MountController.transform.position;
-                        MountController.MountFood.Remove(MountController.MountFood.FoodLostPerTravelDistance);
-                    }
-                }
+                    OnTravelDistanceThreshold(MountController);
+                }               
             }
 
 
-            if (ControlsInput.Sprint(MountedCharacter.OwnerPlayerSys.PlayerID))
-            {
-                MountController.IsSprinting = true;
-            }
-            else
-            {
-                MountController.IsSprinting = false;
-            }
+
+
 
             if (ControlsInput.Interact(MountedCharacter.OwnerPlayerSys.PlayerID))
             {
@@ -126,11 +100,29 @@ namespace EmoMount
 
             if (IsInManualMode)
             {
+                if (ControlsInput.Sprint(MountedCharacter.OwnerPlayerSys.PlayerID))
+                {
+                    MountController.IsSprinting = true;
+                }
+                else
+                {
+                    MountController.IsSprinting = false;
+                }
+
                 MountController.transform.forward = Vector3.RotateTowards(MountController.transform.forward, MountController.transform.forward + MountController.CameraRelativeInputNoY, MountController.RotateSpeed * Time.deltaTime, 6f);
                 MountController.Controller.SimpleMove(Physics.gravity + MountController.CameraRelativeInput.normalized * MountController.ActualMoveSpeed);
             }
             else
             {
+                if (MountController.MountFood.FoodAsNormalizedPercent <= 0.2f && MountController.IsSprinting)
+                {
+                    MountController.IsSprinting = false;
+                    MountController.SetNavMeshMoveSpeed(MountController.ActualMoveSpeed);
+                    MountController.DisplayImportantNotification($"{MountController.MountName} is too tired to sprint!");
+                }
+
+
+
 
                 if (AutoMoveTarget != Vector3.zero)
                 {
@@ -138,6 +130,7 @@ namespace EmoMount
 
                     if (distance <= 7f)
                     {
+                        MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
                         SwitchToManual(MountController);
                         MountController.DisplayImportantNotification($"Ease up..{MountController.MountName}");
                     }
@@ -152,91 +145,104 @@ namespace EmoMount
 
             UpdateMenuInputs(MountController);       
         }
-
-
-        public override void OnAttack1(BasicMountController controller)
+        public override void OnAttack1(BasicMountController MountController)
         {
-            base.OnAttack1(controller);
+            base.OnAttack1(MountController);
+
+
 
             List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
 
-
-            if (CurrentAreaSwitch >= AreaSwitches.Count)
+            if (AreaSwitches != null)
             {
-                CurrentAreaSwitch = -1;
-            }
-            else
-            {
-                CurrentAreaSwitch++;
-                controller.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
-            }
-        }
-
-
-
-        public override void OnDodge(BasicMountController controller)
-        {
-            base.OnDodge(controller);
-
-            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
-
-            //just mounted
-            if (CurrentAreaSwitch >= 0)
-            {
-                SwitchAutoMove(controller, TryGetNavMeshPositionOnTerrain(AreaSwitches[CurrentAreaSwitch].transform.position, 30f), AreaSwitches[CurrentAreaSwitch].m_area);
-            }
-        }
-
-
-        private Vector3 TryGetNavMeshPositionOnTerrain(Vector3 OriginTarget, float Distance = 10f)
-        {
-            if (NavMesh.SamplePosition(OriginTarget, out NavMeshHit hit, Distance, NavMesh.AllAreas))
-            {
-                return hit.position;
-            }
-
-            return Vector3.zero;
-        }
-
-
-        private List<InteractionSwitchArea> GetAreaSwitches()
-        {
-            List<InteractionSwitchArea> AreaSwitches = new List<InteractionSwitchArea>();
-
-            foreach (var item in SpawnPointManager.Instance.SpawnPoints)
-            {
-                InteractionSwitchArea interactionSwitchArea = item.GetComponent<InteractionSwitchArea>();
-
-                if (interactionSwitchArea)
+                if (CurrentAreaSwitch >= AreaSwitches.Count)
                 {
-                    if (item.name.Contains("Cierzo") || item.name.Contains("HallowedMarsh") || item.name.Contains("Levant") || item.name.Contains("Berg")
-                        || item.name.Contains("Abrassar") || item.name.Contains("Monsoon") || item.name.Contains("Harmattan"))
-                    {
-                        AreaSwitches.Add(interactionSwitchArea);
-                    }
+                    CurrentAreaSwitch = -1;
+                }
+                else
+                {
+                    CurrentAreaSwitch++;
+                    MountController.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
                 }
             }
 
-            return AreaSwitches;
+
+        }
+        public override void OnSprint(BasicMountController MountController)
+        {
+            base.OnSprint(MountController);
+
+            if (!IsInManualMode)
+            {
+                MountController.IsSprinting = !MountController.IsSprinting;
+                MountController.SetNavMeshMoveSpeed(MountController.ActualMoveSpeed);
+            }
+
+        }
+        public override void OnDodge(BasicMountController MountController)
+        {
+            base.OnDodge(MountController);
+
+            MountController.PlayMountAnimation(MountAnimations.MOUNT_HAPPY);
+        }
+        public override void OnBlockReleased(BasicMountController MountController)
+        {
+            base.OnBlockReleased(MountController);
+
+            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+
+            if (AreaSwitches != null)
+            {
+                if (CurrentAreaSwitch >= 0)
+                {
+                    if (CurrentAreaSwitch > AreaSwitches.Count)
+                    {
+                        CurrentAreaSwitch = AreaSwitches.Count;
+                    }
+
+                    SwitchAutoMove(MountController, TryGetNavMeshPositionOnTerrain(MountController, GetAreaSwitchPosition(AreaSwitches, CurrentAreaSwitch), 30f), AreaSwitches[CurrentAreaSwitch].m_area);
+                }
+            }
+
         }
 
-        private void SwitchAutoMove(BasicMountController controller, Vector3 Target, Area Area)
+        private Vector3 GetAreaSwitchPosition(List<InteractionSwitchArea> Switches, int CurrentAreaIndex)
+        {
+            return Switches[CurrentAreaIndex].transform.position;
+        }
+
+
+        public virtual void OnTravelDistanceThreshold(BasicMountController MountController)
+        {
+            if (EmoMountMod.EnableFoodNeed.Value && MountController.MountFood.RequiresFood)
+            {
+                MountController.MountFood.Remove(MountController.MountFood.FoodLostPerTravelDistance);
+            }
+            else if(MountController.IsTransform)
+            {
+                float PercentOfMax = MountController.CharacterOwner.Stats.MaxStamina * 0.05f;
+                MountController.CharacterOwner.Stats.UseStamina(PercentOfMax, 1.1f);
+            }
+
+            StartPosition = MountController.transform.position;
+        }
+        private void SwitchAutoMove(BasicMountController MountController, Vector3 Target, Area Area)
         {
             if (Target == Vector3.zero)
             {
                 return;
             }
 
-            controller.DisplayImportantNotification($"{controller.MountName}, To {Area.DefaultName}!");
-            controller.Controller.enabled = false;
-            controller.EnableNavMeshAgent();
-            Target.y = controller.transform.position.y;
+            MountController.DisplayImportantNotification($"{MountController.MountName}, To {Area.DefaultName}!");
+            MountController.Controller.enabled = false;
 
-            controller.NavMesh.SetDestination(Target);
+            MountController.EnableNavMeshAgent();
+            Target.y = MountController.transform.position.y;
+
+            MountController.NavMesh.SetDestination(Target);
             AutoMoveTarget = Target;
             IsInManualMode = false;
         }
-
         private void SwitchToManual(BasicMountController controller)
         {
             controller.DisplayImportantNotification($"Easy there..");
@@ -245,22 +251,6 @@ namespace EmoMount
             AutoMoveTarget = Vector3.zero;
             IsInManualMode = true;
         }
-
-        //public override void UpdateAnimator(BasicMountController MountController)
-        //{
-        //    MountController.IsMoving = MountController.BaseInput.z != 0;
-
-        //    MountController.Animator.SetFloat("Move X", MountController.BaseInput.x, 5f, 5f);
-
-        //    float TargetZ = 0;
-
-        //    if (MountController.BaseInput.z != 0 || MountController.BaseInput.x != 0)
-        //    {
-        //        TargetZ = MountController.IsSprinting ? 1f : 0.5f;
-        //    }
-      
-        //    MountController.Animator.SetFloat("Move Z", TargetZ, 0.5f,  Time.deltaTime * 2f);
-        //}
         private void UpdateMenuInputs(BasicMountController MountController)
         {
             bool flag = false;
@@ -366,5 +356,69 @@ namespace EmoMount
                 MountController.CharacterOwner.DeployInput(-1);
             }
         }
+
+        private Vector3 TryGetNavMeshPositionOnTerrain(BasicMountController MountController, Vector3 OriginTarget, float Distance = 10f)
+        {
+            if (NavMesh.SamplePosition(OriginTarget, out NavMeshHit hit, Distance, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+
+
+            MountController.DisplayImportantNotification("Cannot find a path to Target.");
+            return Vector3.zero;
+        }
+        private List<InteractionSwitchArea> GetAreaSwitches()
+        {
+            List<InteractionSwitchArea> AreaSwitches = new List<InteractionSwitchArea>();
+
+            if (SpawnPointManager.Instance == null)
+            {
+                return null;
+            }
+
+
+            foreach (var item in SpawnPointManager.Instance.SpawnPoints)
+            {
+                InteractionSwitchArea interactionSwitchArea = item.GetComponent<InteractionSwitchArea>();
+
+                if (interactionSwitchArea)
+                {
+                    if (item.name.Contains("Cierzo") || item.name.Contains("HallowedMarsh") || item.name.Contains("Levant") || item.name.Contains("Berg")
+                        || item.name.Contains("Abrassar") || item.name.Contains("Monsoon") || item.name.Contains("Harmattan"))
+                    {
+                        AreaSwitches.Add(interactionSwitchArea);
+                    }
+                }
+            }
+
+            return AreaSwitches;
+        }
+    }
+
+
+    public class MountState_MountedManual : MountState_Mounted
+    {
+        public MountState_MountedManual(Character mountedCharacter) : base(mountedCharacter)
+        {
+
+        }
+
+
+        public override void OnTravelDistanceThreshold(BasicMountController MountController)
+        {
+            base.OnTravelDistanceThreshold(MountController);
+        }
+
+    }
+
+    public class MountState_MountedAuto : MountState_Mounted
+    {
+        public MountState_MountedAuto(Character mountedCharacter) : base(mountedCharacter)
+        {
+
+        }
+
+
     }
 }

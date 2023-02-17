@@ -1,6 +1,7 @@
 ﻿using SideLoader.SaveData;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace EmoMount
@@ -14,8 +15,6 @@ namespace EmoMount
         public List<MountInstanceData> StoredMounts = new List<MountInstanceData>();
 
 
-        // Serialize your class from the character / world here.
-        // The instance members will contain the last loaded save data, if any was found.
         public override void Save(Character character, bool isWorldHost)
         {
             CharacterMount characterMount = character.gameObject.GetComponent<CharacterMount>();
@@ -36,14 +35,10 @@ namespace EmoMount
 
         }
 
-        // Your class is loaded from an XML save, apply it to the character / world.
-        // The instance members contain the last loaded save data.
         public override void ApplyLoadedSave(Character character, bool isWorldHost)
         {
-            //needs redoing
             CharacterMount characterMount = character.gameObject.GetComponent<CharacterMount>();
 
- 
             if (this.ActiveMountInstance != null)
             {
                 LoadActiveMount(character, characterMount);
@@ -62,7 +57,7 @@ namespace EmoMount
             if (characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
             {
                 EmoMountMod.Log.LogMessage("Saving Active Mount Data");
-                this.ActiveMountInstance = characterMount.ActiveMount.MountInstanceData;
+                this.ActiveMountInstance = characterMount.ActiveMount.CreateInstanceData();
             }
             else
             {
@@ -74,25 +69,19 @@ namespace EmoMount
 
         public void SaveStoredMounts(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage("Saving Stored Mount Data");
+            EmoMountMod.Log.LogMessage($"Saving stored mounts [{StoredMounts.Count}]");
             StoredMounts.Clear();
-
-            foreach (var storedMount in characterMount.StoredMounts)
-            {
-                StoredMounts.Add(storedMount);
-                //EmoMountMod.Log.LogMessage($"Saving {storedMount.MountName}");
-            }
-            
+            StoredMounts = characterMount.StoredMounts.Values.ToList();
         }
 
         private void LoadStoredMounts(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage($"LoadingStored Mount Data Stored Mounts{StoredMounts.Count}");
+            EmoMountMod.Log.LogMessage($"Loading stored mounts [{StoredMounts.Count}]");
             characterMount.StoredMounts.Clear();
             foreach (var storedMount in StoredMounts)
             {
                // EmoMountMod.Log.LogMessage($"Loading {storedMount.MountName} Mount Data");
-                characterMount.StoredMounts.Add(storedMount);
+                characterMount.StoredMounts.Add(storedMount.MountUID, storedMount);
             }
 
         }
@@ -101,28 +90,11 @@ namespace EmoMount
         {
             if (!string.IsNullOrEmpty(this.ActiveMountInstance.MountUID))
             {
-                //EmoMountMod.Log.LogMessage("Creating Mount From Save Data");
-                character.StartCoroutine(LateLoading(character, characterMount, this.ActiveMountInstance));
-            }
-       
-        }
-
-
-        private IEnumerator LateLoading(Character character, CharacterMount characterMount, MountInstanceData mountInstanceData)
-        {
-            yield return new WaitForSeconds(EmoMountMod.SCENE_LOAD_DELAY);
-
-            BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, mountInstanceData);
-
-            basicMountController.Teleport(character.transform.position, character.transform.eulerAngles);
-
-            if (basicMountController == null)
-            {
-                //EmoMountMod.Log.LogMessage("Late Loading failed to create a MountController");
-                yield break;
-            }
-            //EmoMountMod.MountManager.DeSerializeMountBagContents(this.ActiveMountInstance, basicMountController);
-            yield break;
+                OutwardHelpers.DelayDo(() =>
+                {
+                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance, OutwardHelpers.GetRandomPositionAroundCharacter(character), characterMount.transform.eulerAngles);
+                }, 10f);
+            }      
         }
     }
 }

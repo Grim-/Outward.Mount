@@ -10,19 +10,29 @@ namespace EmoMount
 {
     public class MountEventComp : MountComp
     {
-        public Action<Character> OnMounted;
-        public Action<Character> OnUnMounted;
+        public Action<BasicMountController, Character> OnMounted;
+        public Action<BasicMountController, Character> OnUnMounted;
 
         public float InRangeDistance = 4f;
+
         public Action<Character> OnOwnerInRange;
         public Action<Character> OnOwnerOutOfRange;
 
         public Action<Character> OnOwnerTakeDamage;
         public Action<Character> OnOwnerSleep;
 
-        public Action<Character> OnInteract;
-        public Action<Character> OnDodgeDown;
-        public Action<Character> OnSprintHeld;
+        public Action<BasicMountController, Character> OnInteract;
+        public Action<BasicMountController, Character> OnDodgeDown;
+        public Action<BasicMountController, Character> OnSprintHeld;
+
+        public Action<BasicMountController, Character> OnLeftClick;
+        public Action<BasicMountController, Character> OnShiftLeftClick;
+        public Action<BasicMountController, Character> OnRightClick;
+        public Action<BasicMountController, Character> OnRightClickHeld;
+
+
+        public Action<BasicMountController, Character> OnCrouch;
+
 
         private float RangeCheckUpdateTime = 5f;
         private float RangeCheckTimer = 0;

@@ -51,7 +51,7 @@ namespace EmoMount
 
                 if (mountSpecies != null)
                 {
-                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
+                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, SpeciesName, OutwardHelpers.GetPositionAroundCharacter(_affectedCharacter), Vector3.zero);
 
                     if (mountSpecies.GenerateRandomTint || GenerateRandomTint)
                     {

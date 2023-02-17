@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace EmoMount.Mount_Components
@@ -13,6 +14,7 @@ namespace EmoMount.Mount_Components
 
 
         private GameObject LightGO = null;
+        private Light Light;
 
         public override void OnApply(BasicMountController BasicMountController)
         {
@@ -24,7 +26,7 @@ namespace EmoMount.Mount_Components
                 LightGO.transform.parent = transform;
                 LightGO.transform.localPosition = Position;
 
-                Light Light = LightGO.AddComponent<Light>();
+                Light = LightGO.AddComponent<Light>();
                 Light.type = LightType.Point;
 
                 Light.intensity = Intensity;
@@ -32,6 +34,16 @@ namespace EmoMount.Mount_Components
                 Light.range = Range;
             }
 
+
+            Controller.EventComp.OnDodgeDown += OnDodgeKey;
+        }
+
+        private void OnDodgeKey(BasicMountController MountController, Character obj)
+        {
+            if (Light)
+            {
+                Light.enabled = !Light.enabled;
+            }
         }
 
         public override void OnRemove(BasicMountController Controller)

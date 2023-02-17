@@ -16,11 +16,16 @@ namespace EmoMount.Patches
             [HarmonyPrefix]
             public static void Prefix(ItemDropper __instance, ItemContainer _container, BasicItemDrop _itemDrop, int _spawnAmount)
             {
-                if (UnityEngine.Random.Range(EmoMountMod.WorldDropChanceMinimum.Value, EmoMountMod.WorldDropChanceMaximum.Value) <= EmoMountMod.WorldDropChanceThreshold.Value)
+                if (EmoMountMod.DisableNonNinedots.Value != true)
                 {
-                    Item item = ItemManager.Instance.GenerateItemNetwork(EmoMountMod.MountManager.GetRandomWhistleID());
-                    item.ChangeParent(_container.transform);
+                    if (UnityEngine.Random.Range(EmoMountMod.WorldDropChanceMinimum.Value, EmoMountMod.WorldDropChanceMaximum.Value) <= EmoMountMod.WorldDropChanceThreshold.Value)
+                    {
+                        Item item = ItemManager.Instance.GenerateItemNetwork(EmoMountMod.MountManager.GetRandomWhistleID());
+                        item.ChangeParent(_container.transform);
+                    }
                 }
+
+
             }
         }
     }

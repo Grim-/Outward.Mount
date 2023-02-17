@@ -25,12 +25,12 @@ namespace EmoMount.Custom_SL_Effect
         }
     }
 
+
+
     public class TransformIntoMount : Effect
     {
         public string SpeciesName;
         public string TransformVFX;
-
-        public int Sheath;
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
             if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
@@ -40,11 +40,14 @@ namespace EmoMount.Custom_SL_Effect
                     return;
                 }
 
+
+
                 MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);
 
                 if (mountSpecies != null)
                 {
-                    if (_affectedCharacter.m_moveVec != Vector3.zero)
+                    //dodge if moving in any way, otherwise mountcontroll will handle animation
+                    if (ControlsInput.MoveHorizontal(_affectedCharacter.OwnerPlayerSys.PlayerID) != 0 || ControlsInput.MoveVertical(_affectedCharacter.OwnerPlayerSys.PlayerID) != 0)
                     {
                         _affectedCharacter.DodgeInput();
                     }
@@ -54,25 +57,15 @@ namespace EmoMount.Custom_SL_Effect
                     OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                     OutwardHelpers.DelayDo(() =>
                     {  
-                        BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromSpecies(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
+                        BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
                         basicMountController.IsTransform = true;
                         basicMountController.MountFood.RequiresFood = false;
 
                         OutwardHelpers.SpawnTransformVFX(basicMountController.SkinnedMeshRenderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
 
-                        basicMountController.EventComp.OnMounted += (Character Character) =>
-                        {
-                            Character.VisualHolderTrans.gameObject.SetActive(false);
-                            Character.CharacterUI.NotificationPanel.ShowNotification("You can revert by pressing the interact key");
-                        };
+                        basicMountController.EventComp.OnMounted += OnMountedHandler;
 
-                        basicMountController.EventComp.OnUnMounted += (Character Character) =>
-                        {
-                            OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsBody.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
-                            OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
-                            Character.VisualHolderTrans.gameObject.SetActive(true);
-                            EmoMountMod.MountManager.DestroyMount(Character, basicMountController);
-                        };
+                        basicMountController.EventComp.OnUnMounted += OnUnMountedHandler;
 
                         basicMountController.MountCharacter(_affectedCharacter);
 
@@ -80,6 +73,21 @@ namespace EmoMount.Custom_SL_Effect
                 }
             }
 
+        }
+
+
+        private void OnMountedHandler(BasicMountController MountController, Character Character)
+        {
+            Character.VisualHolderTrans.gameObject.SetActive(false);
+            Character.CharacterUI.NotificationPanel.ShowNotification("You can revert by pressing the interact key");
+        }
+
+        private void OnUnMountedHandler(BasicMountController MountController, Character Character)
+        {
+            OutwardHelpers.SpawnTransformVFX(Character.Visuals.ActiveVisualsBody.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
+            OutwardHelpers.SpawnTransformVFX(Character.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
+            Character.VisualHolderTrans.gameObject.SetActive(true);
+            EmoMountMod.MountManager.DestroyMount(Character, MountController);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static EmoMount.MountQuestManager;
 
 namespace EmoMount
 {
@@ -21,7 +22,7 @@ namespace EmoMount
             get; private set;
         }
 
-        public List<MountInstanceData> StoredMounts = new List<MountInstanceData>();
+        public Dictionary<string, MountInstanceData> StoredMounts = new Dictionary<string, MountInstanceData>();
 
         public bool HasActiveMount
         {
@@ -40,26 +41,6 @@ namespace EmoMount
         public void Start()
         {
             SetIsMounted(false);
-            OnItemPicked += OnItemPickedUp;
-        }
-
-        private void OnItemPickedUp(Item PickedUpItem)
-        {
-            EmoMountMod.Log.LogMessage($"{Character.Name} picked up {PickedUpItem.ItemID}");
-
-            if (EmoMountMod.QuestManager.HasQuestForItemID(PickedUpItem.ItemID))
-            {
-                EggQuestMap eggQuestMap = EmoMountMod.QuestManager.GetEggQuestMappingByEggID(PickedUpItem.ItemID);
-
-                if (!EmoMountMod.QuestManager.CharacterHasQuest(Character, eggQuestMap.QuestID))
-                {
-                    Quest Quest = MountQuestManager.GenerateQuestItemForCharacter(Character, eggQuestMap.QuestID);
-                    OutwardHelpers.DelayDo(() =>
-                    {
-                        MountQuestManager.StartQuestGraphForQuest(Quest);
-                    }, 2f);
-                }
-            }
         }
 
         public void SetActiveMount(BasicMountController newMount)
@@ -79,66 +60,36 @@ namespace EmoMount
         /// <param name="MountToStore"></param>
         public void StoreMount(BasicMountController MountToStore)
         {
-
             EmoMountMod.Log.LogMessage($"Storing Mount {MountToStore.MountName}");
             if (!HasStoredMount(MountToStore.MountUID))
             {
-                MountInstanceData mountInstanceData = MountToStore.MountInstanceData;
-                //DropAllStoredItems(MountToStore);
-                StoredMounts.Add(mountInstanceData);
-                //MountToStore.DestroyBagContainer();
-                EmoMountMod.MountManager.DestroyActiveMount(Character);
-                SetActiveMount(null);
+                AddMountToStore(MountToStore);
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"A Mount by this name is already stored {MountToStore.MountName}, updating");
+                EmoMountMod.Log.LogMessage($"Updating {MountToStore.MountName} store data");
+                UpdateMountInStore(MountToStore);
+            }
 
-                MountInstanceData StoredData = StoredMounts.Find(x => x.MountUID == MountToStore.MountUID);
 
+            EmoMountMod.MountManager.DestroyMount(Character, MountToStore);
 
-                if (StoredData != null)
-                {
-
-                    MountInstanceData mountInstanceData = MountToStore.MountInstanceData;
-                    //DropAllStoredItems(MountToStore);
-                    StoredData = mountInstanceData;
-
-                    //MountToStore.DestroyBagContainer();
-                    EmoMountMod.MountManager.DestroyActiveMount(Character);
-                    SetActiveMount(null);
-                }
-                else
-                {
-                    EmoMountMod.Log.LogMessage($"Mount Stored Data is null?");
-                }
-
+            if (MountToStore == ActiveMount)
+            {
+                EmoMountMod.Log.LogMessage($"Stored Mount is ActiveMount");
+                SetActiveMount(null);
             }
         }
 
+        private void AddMountToStore(BasicMountController basicMountController)
+        {
+            StoredMounts.Add(basicMountController.MountUID, basicMountController.CreateInstanceData());
+        }
 
-        //private void DropAllStoredItems(BasicMountController MountToStore)
-        //{      
-        //    if (MountToStore.BagContainer != null)
-        //    {
-        //        if (MountToStore.BagContainer is Bag)
-        //        {
-        //            Bag ContainerBag = MountToStore.BagContainer as Bag;
-        //            EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer Contained Item Count {ContainerBag.Container.GetContainedItems().Count}");
-        //            MountToStore.CharacterOwner.Inventory.TakeAllContent(ContainerBag.Container, true);
-        //            MountToStore.DisplayNotification("Mount Inventory contents added to your Inventory.");
-        //        }
-        //        else
-        //        {
-        //            EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer isnt a bag.");
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        EmoMountMod.Log.LogMessage($"DropAllStoredItems BagContainer is null.");
-        //    }
-        //}
+        private void UpdateMountInStore(BasicMountController basicMountController)
+        {
+            StoredMounts[basicMountController.MountUID] = basicMountController.CreateInstanceData();
+        }
 
         /// <summary>
         /// DeSerialize a MountInstanceData and create a BasicMountController from the data.
@@ -150,9 +101,8 @@ namespace EmoMount
             if (StoredMounts != null && HasStoredMount(MountUID))
             {
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
-                BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData);
-                basicMountController.Teleport(Character.transform.position, mountInstanceData.Rotation);
-                StoredMounts.Remove(mountInstanceData);
+                BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData, Character.transform.position, Character.transform.eulerAngles);
+                StoredMounts.Remove(MountUID);
                 return basicMountController;
             }
 
@@ -163,8 +113,13 @@ namespace EmoMount
         {
             if (HasActiveMount)
             {
-                this.ActiveMount.gameObject.SetActive(true);
+                if (!this.ActiveMount.isActiveAndEnabled)
+                {
+                    this.ActiveMount.gameObject.SetActive(true);
+                }
+
                 this.ActiveMount.Teleport(Character.transform.position, Character.transform.eulerAngles);
+
                 ActiveMountDisabled = false;
             }
         }
@@ -180,11 +135,17 @@ namespace EmoMount
 
         public MountInstanceData GetStoredMountData(string MountUID)
         {
-            return StoredMounts.Find(x => x.MountUID == MountUID);
+            if (HasStoredMount(MountUID))
+            {
+                return StoredMounts[MountUID];
+            }
+
+            return null;
         }
+
         public bool HasStoredMount(string MountUID)
         {
-            return StoredMounts.Find(x => x.MountUID == MountUID) != null ? true: false;
+            return StoredMounts.ContainsKey(MountUID);
         }
     }
 }

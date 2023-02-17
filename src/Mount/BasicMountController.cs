@@ -55,6 +55,7 @@ namespace EmoMount
             get; private set;
         }
 
+
         public string MountName
         {
             get; set;
@@ -96,10 +97,7 @@ namespace EmoMount
             get; private set;
         }
 
-        public bool IsSprinting
-        {
-            get; set;
-        }
+
         public bool IsMounted 
         { 
             get; private set; 
@@ -135,6 +133,7 @@ namespace EmoMount
             get; private set;
         }
 
+
         public Vector3 BaseInput => new Vector3(ControlsInput.MoveHorizontal(CharacterOwner.OwnerPlayerSys.PlayerID), 0, ControlsInput.MoveVertical(CharacterOwner.OwnerPlayerSys.PlayerID));
         public Vector3 CameraRelativeInput => Camera.main.transform.TransformDirection(BaseInput);
         public Vector3 CameraRelativeInputNoY => new Vector3(CameraRelativeInput.x, 0, CameraRelativeInput.z);
@@ -151,6 +150,10 @@ namespace EmoMount
         public Character.SpellCastType DismountAnimation = Character.SpellCastType.ExitBed;
 
         #region Speed
+        public bool IsSprinting
+        {
+            get; set;
+        }
         public float MoveSpeed { get; private set; }
         public float MoveSpeedModifier => IsSprinting ? SprintModifier : 1f;
         public float RotateSpeed { get; private set; }
@@ -211,6 +214,7 @@ namespace EmoMount
             NavMesh.enabled = false;
             MountUID = Guid.NewGuid().ToString();
             MountTotalWeight = 0;
+            IsSprinting = true;
             SetupFSM();
             OnSpawnComplete?.Invoke();
             Initalized = true;
@@ -236,25 +240,6 @@ namespace EmoMount
             InteractionTriggerBase.DetectionColliderRadius = 1f;
         }
 
-        public MountInstanceData MountInstanceData
-        {
-            get
-            {
-                MountInstanceData mountInstanceData = new MountInstanceData();
-                mountInstanceData.MountName = MountName;
-                mountInstanceData.MountUID = MountUID;
-                mountInstanceData.MountSpecies = SpeciesName;
-                mountInstanceData.CurrentFood = MountFood.CurrentFood;
-                mountInstanceData.MaximumFood = MountFood.MaximumFood;
-                mountInstanceData.Position = transform.position;
-                mountInstanceData.Rotation = transform.eulerAngles;
-                mountInstanceData.TintColor = CurrentTintColor;
-                mountInstanceData.EmissionColor = CurrentEmissionColor;
-                return mountInstanceData;
-            }
-        }
-
-
 
         #region Setters
 
@@ -263,28 +248,22 @@ namespace EmoMount
             CharacterOwner = mountTarget;
         }
 
-        //public void SetInventory(Item BagItem)
-        //{
-        //    BagContainer = BagItem;
-
-        //    if (BagItem != null && BagItem is Bag)
-        //    {
-        //        StartCoroutine(SetUpBag(BagItem));
-        //    }
-        //}
-
         public void SetMountUI(MountUI mountUI)
         {
             MountUI = mountUI;
         }
 
+
+        /// <summary>
+        /// Sets Movespeed, RotationSpeed, NavMeshMoveSpeed, NavMeshAcceleration and Camera Offset from the provided species definition.
+        /// </summary>
+        /// <param name="mountSpecies"></param>
         public void SetSpecies(MountSpecies mountSpecies)
         {
             SpeciesName = mountSpecies.SpeciesName;
             PrefabName = mountSpecies.PrefabName;
             SLPackName = mountSpecies.SLPackName;
             AssetBundleName = mountSpecies.AssetBundleName;
-
             SetMoveSpeed(mountSpecies.MoveSpeed);
             SetRotationSpeed(mountSpecies.RotateSpeed);
             SetNavMeshMoveSpeed(mountSpecies.MoveSpeed);
@@ -292,27 +271,6 @@ namespace EmoMount
             SetCameraOffset(mountSpecies.CameraOffset);
         }
 
-        public void SetTintColor(Color TintColor)
-        {
-            if (SkinnedMeshRenderer)
-            {
-                SkinnedMeshRenderer.material.SetColor("_TintColor", TintColor);
-            }
-        }
-        public void SetEmissionColor(Color newColor, float intensity = 1f)
-        {
-            if (SkinnedMeshRenderer != null)
-            {
-                SkinnedMeshRenderer.material.SetColor("_EmissionColor", newColor * intensity);
-            }
-        }
-        public void DisableEmission()
-        {
-            if (SkinnedMeshRenderer != null)
-            {
-                SkinnedMeshRenderer.material.SetColor("_EmissionColor", Color.clear);
-            }
-        }
         #endregion
 
         #region Food
@@ -358,7 +316,7 @@ namespace EmoMount
             if (NavMesh != null)
             {
                 NavMesh.speed = newSpeed;
-                EmoMountMod.Log.LogMessage($"{MountName} setting MoveSpeed to {newSpeed}");
+                //EmoMountMod.Log.LogMessage($"{MountName} setting MoveSpeed to {newSpeed}");
             }
         }
         public void SetNavMeshAcceleration(float acceleration)
@@ -404,102 +362,30 @@ namespace EmoMount
         {
             return EmoMountMod.EnableWeightLimit.Value ? this.MountTotalWeight + weightToCarry < MaximumCarryWeight : true;
         }
-        //public void DestroyBagContainer()
-        //{
-        //    if (BagContainer != null)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Destroying Mount Bag");
+        #endregion
 
-        //        ItemManager.Instance.DestroyItem(BagContainer.UID);
-        //        SetInventory(null);
-        //    }
-        //}
-        //public void AddItemToBag(Item item)
-        //{
-        //    if (BagContainer != null && BagContainer is Bag)
-        //    {
-        //        (BagContainer as Bag).Container.AddItem(item);
-        //        //GameObject.Destroy(item.gameObject);
-        //    }
-        //    else
-        //    {
-        //        //has no bag
-        //    }
-        //}
-        //public void UpdateBagPosition()
-        //{
-        //    ///Bag takes way too long to instantiate and set up (multiple frames) resulting in IsKinematic being disabled by the RigidbodySuspender, so for now, force the settings.
-        //    if (BagContainer)
-        //    {
-        //        ////Its really difficult to make the bag stay in place after a reload, so this is to try force that.
-
-        //        BagContainer.transform.localPosition = Vector3.zero;
-        //        //BagContainer.transform.localPosition = new Vector3(-0.0291f, 0.11f, -0.13f);
-        //        //BagContainer.transform.localEulerAngles = new Vector3(2.3891f, 358.9489f, 285.6735f);
-
-        //        if (BagContainer.m_rigidBody)
-        //        {
-        //            BagContainer.m_rigidBody.isKinematic = true;
-        //            BagContainer.m_rigidBody.useGravity = false;
-        //            BagContainer.m_rigidBody.freezeRotation = true;
-        //        }
-        //    }
-        //}
-        //private IEnumerator SetUpBag(Item BagItem)
-        //{
-        //    if (EmoMountMod.Debug)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Setting up Bag For {MountName} uid: {MountUID}");
-        //    }
-
-        //    yield return new WaitForSeconds(EmoMountMod.BAG_LOAD_DELAY);
-
-        //    BagItem.SaveType = Item.SaveTypes.NonSavable;
-
-        //    Transform mountPointTransform = transform.FindInAllChildren("SL_BAGPOINT");
-        //    Transform ItemHighlight = BagItem.gameObject.transform.FindInAllChildren("ItemHighlight");
-
-        //    if (ItemHighlight)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Item Highlight found, disabling");
-        //        ItemHighlight.gameObject.SetActive(false);
-        //    }
-
-        //    if (mountPointTransform != null)
-        //    {
-        //        BagContainer.transform.parent = mountPointTransform;
-        //    }
-        //    else
-        //    {
-        //        BagContainer.transform.parent = transform;
-        //    }
-
-        //    RigidbodySuspender rigidbodySuspender = BagItem.gameObject.GetComponentInChildren<RigidbodySuspender>();
-        //    if (rigidbodySuspender)
-        //    {
-        //        rigidbodySuspender.enabled = false;
-        //    }
-
-
-        //    SafeFalling safeFalling = BagItem.gameObject.GetComponentInChildren<SafeFalling>();
-        //    if (safeFalling)
-        //    {
-        //        safeFalling.enabled = false;
-        //    }
-
-
-        //    MultipleUsage multipleUsage = BagItem.gameObject.GetComponentInChildren<MultipleUsage>();
-        //    if (multipleUsage)
-        //    {
-        //        EmoMountMod.Log.LogMessage($"Disabling Auto Save");
-        //        multipleUsage.Savable = false;
-        //    }
-
-        //    EmoMountMod.Log.LogMessage($"Updating Bag Position");
-        //    UpdateBagPosition();
-        //    BagContainer = BagItem;
-        //    yield break;
-        //}
+        #region Render
+        public void SetTintColor(Color TintColor)
+        {
+            if (SkinnedMeshRenderer)
+            {
+                SkinnedMeshRenderer.material.SetColor("_TintColor", TintColor);
+            }
+        }
+        public void SetEmissionColor(Color newColor, float intensity = 1f)
+        {
+            if (SkinnedMeshRenderer != null)
+            {
+                SkinnedMeshRenderer.material.SetColor("_EmissionColor", newColor * intensity);
+            }
+        }
+        public void DisableEmission()
+        {
+            if (SkinnedMeshRenderer != null)
+            {
+                SkinnedMeshRenderer.material.SetColor("_EmissionColor", Color.clear);
+            }
+        }
         #endregion
 
         #region Unity
@@ -547,16 +433,13 @@ namespace EmoMount
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
             MountFSM.PushDynamicState(new MountState_Mounted(CurrentlyMountedCharacter));
-            EventComp.OnMounted?.Invoke(CurrentlyMountedCharacter);
+            EventComp.OnMounted?.Invoke(this, CurrentlyMountedCharacter);
             CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(true);
         }
         public void DismountCharacter(Character _affectedCharacter)
         {
-            _affectedCharacter.enabled = true;
-            _affectedCharacter.CharMoveBlockCollider.enabled = true;
             _affectedCharacter.CharacterController.enabled = true;
             _affectedCharacter.CharacterControl.enabled = true;
-            _affectedCharacter.Animator.enabled = true;
             _affectedCharacter.Animator.Update(Time.deltaTime);
 
             UpdateCurrentWeight(0);
@@ -575,7 +458,6 @@ namespace EmoMount
                 else
                 {
                     _affectedCharacter.SpellCastAnim(Character.SpellCastType.IdleAlternate, Character.SpellCastModifier.Immobilized, 1);
-                    // _affectedCharacter.Animator.SetBool("Sneaking", true);
                 }
                 
             }
@@ -586,14 +468,13 @@ namespace EmoMount
             }
 
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
-            EventComp.OnUnMounted?.Invoke(CurrentlyMountedCharacter);
+            EventComp.OnUnMounted?.Invoke(this, CurrentlyMountedCharacter);
             CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(false);
             CurrentlyMountedCharacter = null;
             MountFSM.PopState();
         }
         private void PrepareCharacter(Character character)
         {
-            character.CharMoveBlockCollider.enabled = false;
             character.CharacterController.enabled = false;
             character.CharacterControl.enabled = false;
             //cancel movement in animator
@@ -676,42 +557,65 @@ namespace EmoMount
         }
         public void Teleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
-
             if (!IsTeleporting)
             {
                 StartCoroutine(DelayTeleport(Position, Rotation, OnTeleported));
             }
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(DelayTeleport(Position, Rotation, OnTeleported));
+            }
            
         }
-        private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
+
+        public void TeleportToOwner()
         {
-            EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
+            if (CharacterOwner != null)
+            {
+                EmoMountMod.Log.LogMessage($"Teleporting {MountName} to Owner");
+                Teleport(CharacterOwner.transform.position, CharacterOwner.transform.eulerAngles);
+            }
+        }
+
+        private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
+        {     
             IsTeleporting = true;
-            bool wasEnabled = NavMesh.enabled;
+            EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
+
             if (NavMesh.enabled)
             {
-                DisableNavMeshAgent();
-                yield return new WaitForSeconds(0.5f);
+                NavMesh.Warp(Position);
             }
-
-            
-          
-            transform.position = Position;
-            transform.rotation = Quaternion.Euler(Rotation);
-
-            yield return new WaitForSeconds(0.5f);
-
-            if (wasEnabled)
+            else
             {
-                EnableNavMeshAgent();
+                transform.position = Position;
+                transform.rotation = Quaternion.Euler(Rotation);
             }
-              
+                    
             OnTeleported?.Invoke();
             IsTeleporting = false;
             yield break;
         }
 
         #endregion
+
+
+        public MountInstanceData CreateInstanceData()
+        {
+            MountInstanceData mountInstanceData = new MountInstanceData();
+            mountInstanceData.MountName = MountName;
+            mountInstanceData.MountUID = MountUID;
+            mountInstanceData.MountSpecies = SpeciesName;
+            mountInstanceData.CurrentFood = MountFood.CurrentFood;
+            mountInstanceData.MaximumFood = MountFood.MaximumFood;
+            mountInstanceData.Position = transform.position;
+            mountInstanceData.Rotation = transform.eulerAngles;
+            mountInstanceData.TintColor = CurrentTintColor;
+            mountInstanceData.EmissionColor = CurrentEmissionColor;
+            return mountInstanceData;
+        }
+
 
         private void TryToParent(Character _affectedCharacter, GameObject MountInstance)
         {
@@ -730,6 +634,7 @@ namespace EmoMount
                 _affectedCharacter.transform.localPosition = Vector3.zero;
                 _affectedCharacter.transform.localEulerAngles = Vector3.zero;
 
+                EmoMountMod.Log.LogMessage("Could not find SL_MOUNTPOINT Transform");
             }
         }
 
@@ -845,7 +750,6 @@ namespace EmoMount
 
             return false;
         }
-
     }
 
     public enum MountAnimations

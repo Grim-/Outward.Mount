@@ -46,6 +46,7 @@ public class QuestGraphBuilder
         QuestTreeOwner = QuestProgress.m_questSequence;
         Graph = (QuestTree)QuestTreeOwner.graph;
         Graph.ClearGraph();
+        QuestProgress.m_progressState = QuestProgress.ProgressState.InProgress;
     }
 
 

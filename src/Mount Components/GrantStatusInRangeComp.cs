@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace EmoMount.Mount_Components
@@ -12,12 +13,19 @@ namespace EmoMount.Mount_Components
         private float Timer = 0;
 
         private string GrantedStatusUID = string.Empty;
+        private bool ISActive = true;
 
 
         public override void OnApply(BasicMountController BasicMountController)
         {
             base.OnApply(BasicMountController);
 
+            BasicMountController.EventComp.OnDodgeDown += OnDodge;
+        }
+
+        private void OnDodge(BasicMountController _arg1, Character _arg2)
+        {
+            ISActive = !ISActive;
         }
 
         public override void Update()
@@ -29,10 +37,8 @@ namespace EmoMount.Mount_Components
                 return;
             }
 
-            //Timer += Time.deltaTime;
-
-            //if (Timer >= RefreshTime)
-            //{
+            if (ISActive)
+            {
                 if (Controller.DistanceToOwner <= Radius)
                 {
                     GrantCharacterStatus(Controller.CharacterOwner);
@@ -41,11 +47,8 @@ namespace EmoMount.Mount_Components
                 {
                     RemoveStatusFromCharacter(Controller.CharacterOwner);
                 }
-
-               // Timer = 0;
-            //}
+            }
         }
-
 
         public void GrantCharacterStatus(Character Character)
         {

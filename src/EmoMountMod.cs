@@ -17,6 +17,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using EmoMount.Custom_SL_Effect;
+using EmoMount.Patches;
+
 namespace EmoMount
 {
     [BepInPlugin(GUID, NAME, VERSION)]
@@ -29,13 +31,8 @@ namespace EmoMount
         public const string MOUNT_FOLLOW_WAIT_TOGGLE = "MountMod_FollowWait_Toggle";
         public const string MOUNT_MOVE_TO_KEY = "MountMod_MoveTo_Toggle";
 
-
-
-        public static int SummonMountSkillID = -26200;
-        public static int DismissMountSkillID = -26201;
-
         public static float BAG_LOAD_DELAY = 10f;
-        public static float SCENE_LOAD_DELAY = 2f;
+        public static float SCENE_LOAD_DELAY = 5f;
         public static bool Debug = false;
 
         internal static ManualLogSource Log;
@@ -59,6 +56,7 @@ namespace EmoMount
             get; private set;
         }
 
+
         public static ConfigEntry<float> WorldDropChanceThreshold;
         public static ConfigEntry<float> WorldDropChanceMinimum;
         public static ConfigEntry<float> WorldDropChanceMaximum;
@@ -66,12 +64,15 @@ namespace EmoMount
         public static ConfigEntry<float> LeashDistance;
         public static ConfigEntry<float> LeashRadius;
 
+
+        public static ConfigEntry<int> ColorBerryCost;
+
         public static ConfigEntry<float> FoodLostTravelling;
         public static ConfigEntry<float> TravelDistanceThreshold;
 
         public static ConfigEntry<float> EncumberenceSpeedModifier;
 
-
+        public static ConfigEntry<bool> DisableNonNinedots;
         public static ConfigEntry<bool> EnableCombatTransforming;
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
@@ -91,6 +92,12 @@ namespace EmoMount
         {
             get; private set;
         }
+
+        public static List<DropOnCharacterDeath> OnDeathDrops = new List<DropOnCharacterDeath>()
+        {
+            new DropOnCharacterDeath("EwoPQ0iVwkK-XtNuaVPf3g", -26610, 1)
+
+        };
 
         public Action<float> OnGameHourPassed;
 
@@ -143,7 +150,9 @@ namespace EmoMount
             WorldDropChanceThreshold = Config.Bind<float>(NAME, "Drop Threshold", 1, "You need to roll this number or less in order for a whistle to drop.");
             WorldDropChanceMinimum = Config.Bind<float>(NAME, "Drop Chance Range Minimum", 0, "Minimum number to roll between");
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
+            ColorBerryCost = Config.Bind<int>(NAME, "Color Berry Cost", 10, "How much does a colorberry cost?");
 
+            DisableNonNinedots = Config.Bind<bool>(NAME, "Disable non-ninedots mounts", false, "If set to true disables entirely dropping of the original mounts as world drops, leaving only the mount models provided by ninedots.");
             EnableCombatTransforming = Config.Bind<bool>(NAME, "Enable Transforming in Combat?", false, "If enabled you will be able to transform into a mount even in combat.");
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
@@ -158,7 +167,7 @@ namespace EmoMount
                 MainCanvas = GameObject.Instantiate(CanvasPrefab).GetComponent<Canvas>();
                 MainCanvasManager = MainCanvas.gameObject.AddComponent<MountCanvasManager>();
                 DontDestroyOnLoad(MainCanvas);
-                Log.LogMessage("EmoMountMod Canvas Initialized..");
+                //Log.LogMessage("EmoMountMod Canvas Initialized..");
             }
             else
             {

@@ -1,8 +1,18 @@
-﻿using NodeCanvas.Framework;
+﻿using NodeCanvas.DialogueTrees;
+using NodeCanvas.Framework;
 
 public class HasCurrency : ConditionTask
 {
     public int AmountRequired;
+
+    public HasCurrency()
+    {
+    }
+
+    public HasCurrency(int amountRequired)
+    {
+        AmountRequired = amountRequired;
+    }
 
     public override bool OnCheck()
     {

@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace EmoMount
 {
@@ -44,6 +46,14 @@ namespace EmoMount
                weightedItems.Add(new WeightedItem<Color>(mountColorChance.Chance, mountColorChance.Color));        
             }
             return weightedItems;
+        }
+
+        public static Vector3 GetRandomPositionAroundCharacter(Character _affectedCharacter, float Radius = 5f)
+        {
+            Vector3 Position = _affectedCharacter.transform.position + Random.onUnitSphere * Radius;
+
+            Position.y = _affectedCharacter.transform.position.y;
+            return Position;
         }
 
         public static Vector3 GetPositionAroundCharacter(Character _affectedCharacter, Vector3 PositionOffset = default(Vector3))
@@ -141,6 +151,16 @@ namespace EmoMount
             return default(Tag);
         }
 
+
+        public static void GrantItemRewardToAllPlayers(int ItemID, int Quantity)
+        {
+            Character[] playerCharacters = CharacterManager.Instance.Characters.ValuesArray.Where(x => x.IsLocalPlayer || !x.IsAI).ToArray();
+
+            foreach (var player in playerCharacters)
+            {
+                player.Inventory.ReceiveItemReward(ItemID, Quantity, false);
+            }
+        }
 
         public static void SpawnTransformVFX(SkinnedMeshRenderer Target, float DelayDestroy = 3f, string VFXName = "TransformVFX_Smoke", ParticleSystemSimulationSpace ParticleSystemSimulationSpace  = ParticleSystemSimulationSpace.World)
         {

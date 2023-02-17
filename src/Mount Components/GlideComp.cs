@@ -33,9 +33,20 @@ namespace EmoMount.Mount_Components
         private IEnumerator GentlePushUp(Transform Transform, float GlideUpTime = 0.2f)
         {
             IsGlidingUp = true;
-
             float Timer = 0;
-            Vector3 TargetPos = Transform.position + new Vector3(0, 2f, 0.1f);
+
+            float HeightLimit = 1.1f;
+
+            if (Physics.Raycast(transform.position,  Vector3.down, out RaycastHit hit, 100f, Controller.MoveToLayerMask))
+            {
+                Vector3 TerrainHitPoint = hit.point;
+                float DistanceFromGround = Vector3.Distance(transform.position, TerrainHitPoint);
+
+                HeightLimit = Mathf.InverseLerp(0, HeightLimit, DistanceFromGround / HeightLimit);
+            }
+
+           
+            Vector3 TargetPos = Transform.position + new Vector3(0, HeightLimit, 0.1f) + -Physics.gravity;
 
 
             while (Timer < GlideUpTime)

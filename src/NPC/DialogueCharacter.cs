@@ -36,9 +36,7 @@ namespace EmoMount
         public int OffhandID = -1;
         public int BackpackID = -1;
 
-        public event Action<DialogueTree, Character> OnSetupDialogueGraph;
-
-        public SL_Character CreateAndApplyTemplate(Action<SL_Character, Character, string> OnSpawnDelegate)
+        public virtual SL_Character CreateAndApplyTemplate(Action<SL_Character, Character, string> OnSpawnDelegate)
         {
             SL_Character template = new()
             {
@@ -60,52 +58,36 @@ namespace EmoMount
             };
 
             template.ApplyTemplate();
-            template.OnSpawn += (Character c, string s)=>
+
+
+            template.OnSpawn += (Character c, string s) =>
             {
                 OnSpawnDelegate?.Invoke(template, c, s);
             };
+            
             return template;
         }
+    }
 
-        private void Template_OnSpawn(Character character, string rpcData, string SpeciesName = "")
+    public class StableMaster : DialogueCharacter
+    {
+        public List<string> BuddySpecies = new List<string>
         {
-            OnDestroyComp onDestroyComp = character.gameObject.AddComponent<OnDestroyComp>();
-            GameObject dialogueTemplate = GameObject.Instantiate(Resources.Load<GameObject>("editor/templates/DialogueTemplate"));
-            dialogueTemplate.transform.parent = character.transform;
-            dialogueTemplate.transform.position = character.transform.position;
+            "PearlBird"
+        };
 
-            // set Dialogue Actor name
-            DialogueActor ourActor = character.GetComponentInChildren<DialogueActor>();
-            ourActor.SetName(Name);
+        public string SellText = "I can sell you a PearlBird Egg for 300 silver, keep it on you for 12 hours and it will hatch.";
+        public int EggItemID = -26202;
+        public int SellPrice = 300;
 
-            // setup dialogue tree
-            DialogueTreeController graphController = character.GetComponentInChildren<DialogueTreeController>();
-            Graph graph = graphController.graph;
+        public bool SellsWhistle = false;
+        public int SellableID = -26202;
 
-            // the template comes with an empty ActorParameter, we can use that for our NPC actor.
-            List<DialogueTree.ActorParameter> actors = (graph as DialogueTree)._actorParameters;
-            actors[0].actor = ourActor;
-            actors[0].name = ourActor.name;
-
-            OnSetupDialogueGraph?.Invoke(graph as DialogueTree, character);
-
-            if (!string.IsNullOrEmpty(SpeciesName))
-            {
-
-                MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);         
-                if (mountSpecies != null)
-                {
-                    GameObject MountPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", mountSpecies.AssetBundleName, mountSpecies.PrefabName);
-
-                    if (MountPrefab)
-                    {
-                        onDestroyComp.MountVisualInstance = GameObject.Instantiate(MountPrefab, character.transform.position, character.transform.rotation);
-                    }
-
-                }
+        public bool HasUniqueSellable = false;
+        public int UniqueSellableID = -26203;
+        public string UniqueSellableQuestEventID = string.Empty;
 
 
-            }
-        }
+        public bool SpawnMountsInLineUp = false;
     }
 }

@@ -50,6 +50,21 @@ namespace EmoMount.Mounted_States
 
         }
 
+        public virtual void OnBlockHeld(BasicMountController controller)
+        {
+
+        }
+
+        public virtual void OnBlockReleased(BasicMountController controller)
+        {
+
+        }
+
+        public virtual void OnCrouch(BasicMountController controller)
+        {
+
+        }
+
         public virtual void OnAttack2(BasicMountController controller)
         {
 
@@ -91,29 +106,48 @@ namespace EmoMount.Mounted_States
                 if (ControlsInput.DodgeButtonDown(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     OnDodge(controller);
-                    controller.EventComp.OnDodgeDown?.Invoke(controller.CharacterOwner);
+                    controller.EventComp.OnDodgeDown?.Invoke(controller, controller.CharacterOwner);
                 }
 
                 if (ControlsInput.Sprint(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     OnSprint(controller);
-                    controller.EventComp.OnSprintHeld?.Invoke(controller.CharacterOwner);
+                    controller.EventComp.OnSprintHeld?.Invoke(controller, controller.CharacterOwner);
                 }
 
                 if (ControlsInput.Interact(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     OnInteract(controller);
-                    controller.EventComp.OnInteract?.Invoke(controller.CharacterOwner);
+                    controller.EventComp.OnInteract?.Invoke(controller, controller.CharacterOwner);
+                }
+
+                if (ControlsInput.Block(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
+                {
+                    OnBlockHeld(controller);
+                    controller.EventComp.OnRightClickHeld?.Invoke(controller, controller.CharacterOwner);
+                }
+                else if(ControlsInput.BlockRelease(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
+                {
+                    OnBlockReleased(controller);
+                    controller.EventComp.OnRightClick?.Invoke(controller, controller.CharacterOwner);
+                }
+
+                if (ControlsInput.StealthButton(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
+                {
+                    OnCrouch(controller);
+                    controller.EventComp.OnCrouch?.Invoke(controller, controller.CharacterOwner);
                 }
 
                 if (ControlsInput.Attack1Release(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     OnAttack1(controller);
+                    controller.EventComp.OnLeftClick?.Invoke(controller, controller.CharacterOwner);
                 }
 
                 if (ControlsInput.Attack2Release(controller.CharacterOwner.OwnerPlayerSys.PlayerID))
                 {
                     OnAttack2(controller);
+                    controller.EventComp.OnShiftLeftClick?.Invoke(controller, controller.CharacterOwner);
                 }
             }
         }

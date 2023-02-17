@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace EmoMount
@@ -12,6 +13,7 @@ namespace EmoMount
         {
             get; private set;
         }
+
         public Image HungerBar
         {
             get; private set;
@@ -21,10 +23,21 @@ namespace EmoMount
             get; private set;
         }
 
+        public Image WeightBar
+        {
+            get; private set;
+        }
+        public Text WeightLabel
+        {
+            get; private set;
+        }
+
+
         public Text NameLabel
         {
             get; private set;
         }
+
         public BasicMountController MountController
         {
             get; private set;
@@ -35,6 +48,9 @@ namespace EmoMount
             NameLabel = transform.Find("NameLabel").GetComponent<Text>();
             HungerLabel = transform.Find("HungerLabel").GetComponent<Text>();
             HungerBar = transform.Find("Hunger/FG").GetComponent<Image>();
+            WeightLabel = transform.Find("WeightLabel").GetComponent<Text>();
+            WeightBar = transform.Find("Weight/FG").GetComponent<Image>();
+
             StatusIcon = transform.Find("StatusIcon").GetComponent<Image>();
         }
 
@@ -44,7 +60,31 @@ namespace EmoMount
             UpdateNameLabel(basicMount.MountName);
 
             MountController.MountFood.OnChange += UpdateUI;
+
+            MountController.EventComp.OnMounted += OnMounted;
+            MountController.EventComp.OnUnMounted += OnUnMounted;
             UpdateUI();
+        }
+
+        private void OnUnMounted(BasicMountController MountController, Character obj)
+        {
+            UpdateWeightBar(MountController.CurrentCarryWeight / MountController.MaximumCarryWeight);
+            UpdateWeightLabel($"{MountController.CurrentCarryWeight} / {MountController.MaximumCarryWeight}");
+        }
+
+        private void OnMounted(BasicMountController MountController, Character obj)
+        {
+            if (MountController.WeightAsNormalizedPercent > MountController.CarryWeightEncumberenceLimit)
+            {
+                UpdateWeightLabel($"<color=red>{MountController.CurrentCarryWeight}</color> / {MountController.MaximumCarryWeight}");
+            }
+            else
+            {
+                UpdateWeightLabel($"{MountController.CurrentCarryWeight} / {MountController.MaximumCarryWeight}");
+            }
+
+            UpdateWeightBar(MountController.WeightAsNormalizedPercent);
+            
         }
 
         private void UpdateUI()
@@ -60,6 +100,23 @@ namespace EmoMount
                 StatusIcon.sprite = sprite;
             }
         }
+
+        private void UpdateWeightBar(float value)
+        {
+            if (WeightBar != null)
+            {
+                WeightBar.fillAmount = value;
+            }
+        }
+
+        private void UpdateWeightLabel(string text)
+        {
+            if (WeightLabel != null)
+            {
+                WeightLabel.text = text;
+            }
+        }
+
 
         private void UpdateHungerBar(float value)
         {

@@ -34,13 +34,15 @@ namespace EmoMount.Custom_SL_Effect
         {
             if (_affectedCharacter.IsLocalPlayer)
             {
-                if (!_affectedCharacter.Inventory.QuestKnowledge.IsItemLearned(QuestID))
+                if (!EmoMountMod.QuestManager.CharacterHasQuest(_affectedCharacter, QuestID))
                 {
-                    _affectedCharacter.Inventory.QuestKnowledge.ReceiveQuest(QuestID);
+                    Quest Quest = MountQuestManager.GenerateQuestItemForCharacter(_affectedCharacter, QuestID);
+                    OutwardHelpers.DelayDo(() =>
+                    {
+                        MountQuestManager.StartQuestGraphForQuest(Quest);
+                    }, 1f);
                 }
             }
         }
     }
-
-
 }
