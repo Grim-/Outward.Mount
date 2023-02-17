@@ -19,7 +19,10 @@ namespace EmoMount.Patches
                 {
                     if (__instance.UID == dropData.CharacterUID)
                     {
-                        OutwardHelpers.GrantItemRewardToAllPlayers(dropData.ItemID, dropData.Quantity);
+                        foreach (var item in dropData.ItemDrops)
+                        {
+                            OutwardHelpers.GrantItemRewardToAllPlayers(item.ItemID, item.Quantity);
+                        }
                     }
                 }
             }

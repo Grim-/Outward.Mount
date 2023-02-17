@@ -38,7 +38,12 @@ namespace EmoMount
                     "GoldenPearlBird",
                     "BlackPearlBird"
                 },
-                SpawnMountsInLineUp = true
+                SpawnMountsInLineUp = true,
+                HasUniqueSellable = true,
+                //vendavel succeded
+                UniqueSellableQuestEventID = "HQkEW3Dz2U-MFBNzI73tqg",
+                //alpha coral horn
+                UniqueSellableID = -26302
             },
             new StableMaster()
             {
@@ -69,6 +74,11 @@ namespace EmoMount
                 BootsID = 3100092,
                 WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
+                //bring back a manticore tail quest event
+                HasUniqueSellable = true,
+                UniqueSellableQuestEventID = "PTBnA_hYoUaK0O2CrLeXgw",
+                UniqueSellableID = -26314
+
             },
             new StableMaster()
             {
@@ -82,6 +92,10 @@ namespace EmoMount
                 BootsID = 3100092,
                 WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
+                HasUniqueSellable = true,
+                //bring back shark cartilage
+                UniqueSellableQuestEventID = "sAAoDYrFj0mVcsYfqanDJg",
+                UniqueSellableID = -26315
             },
             new StableMaster()
             {
@@ -227,11 +241,10 @@ namespace EmoMount
                     null,
                     null,
                     null,
-                    null
-                    //new HasQuestEventTriggered()
-                    //{
-                    //    EventUID = UniqueCreatureEvent
-                    //}
+                    new HasQuestEventTriggered()
+                    {
+                        EventUID = UniqueCreatureEvent
+                    }
                 });
 
 

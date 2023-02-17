@@ -20,19 +20,16 @@ namespace EmoMount
 	{
 		#region Egg Quest
 		private const string EggQuestFamily = "MountEggSeries";
-
 		private QuestEventSignature EggQuestPart_1Signature;
 		private QuestEventSignature EggQuestPart_2Signature;
 
 		private const string EggQuestEventOne = "mount.egg.partone";
 		private const string EggQuestEventTwo = "mount.egg.parttwo";
-
-        #endregion
-
-        public Dictionary<int, int> MountToEggMap { get; private set; }
-
-
+		public Dictionary<int, int> MountToEggMap { get; private set; }
 		public List<EggQuestMap> EggQuests { get; private set; }
+		#endregion
+
+
 
 		public MountQuestManager()
 		{

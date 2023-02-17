@@ -84,11 +84,14 @@ namespace EmoMount
         private void AddMountToStore(BasicMountController basicMountController)
         {
             StoredMounts.Add(basicMountController.MountUID, basicMountController.CreateInstanceData());
+            EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
         }
 
         private void UpdateMountInStore(BasicMountController basicMountController)
         {
             StoredMounts[basicMountController.MountUID] = basicMountController.CreateInstanceData();
+
+            EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
         }
 
         /// <summary>

@@ -33,8 +33,8 @@ namespace EmoMount.Custom_SL_Effect
         public string TransformVFX;
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
-            if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
-            {
+            //if (!EmoMountMod.MountManager.CharacterHasMount(_affectedCharacter))
+            //{
                 if (_affectedCharacter.InCombat && EmoMountMod.EnableCombatTransforming.Value == false)
                 {
                     return;
@@ -57,7 +57,7 @@ namespace EmoMount.Custom_SL_Effect
                     OutwardHelpers.SpawnTransformVFX(_affectedCharacter.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                     OutwardHelpers.DelayDo(() =>
                     {  
-                        BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles);
+                        BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountForCharacter(_affectedCharacter, SpeciesName, _affectedCharacter.transform.position, _affectedCharacter.transform.eulerAngles, Color.clear, Color.clear, false);
                         basicMountController.IsTransform = true;
                         basicMountController.MountFood.RequiresFood = false;
 
@@ -71,7 +71,7 @@ namespace EmoMount.Custom_SL_Effect
 
                     }, 0.3f);
                 }
-            }
+            //}
 
         }
 

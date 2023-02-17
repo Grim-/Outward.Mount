@@ -104,8 +104,34 @@ namespace EmoMount
 
         public static List<DropOnCharacterDeath> OnDeathDrops = new List<DropOnCharacterDeath>()
         {
-            new DropOnCharacterDeath("EwoPQ0iVwkK-XtNuaVPf3g", -26610, 1)
-
+            //gold lich - Transmute : Living Gold
+            new DropOnCharacterDeath("EwoPQ0iVwkK-XtNuaVPf3g", new List<DropItemInfo>()
+            {
+                new DropItemInfo()
+                {
+                    ItemID = -26601,
+                    Quantity = 1
+                },
+                new DropItemInfo()
+                {
+                    ItemID = -26610,
+                    Quantity = 1
+                }
+            }),
+            //mad captains bones - Transmute : Living Obsidian
+            new DropOnCharacterDeath("JM_HjGXMlkq7a1Yb6gijgQ",  new List<DropItemInfo>()
+            {
+                new DropItemInfo()
+                {
+                    ItemID = -26608,
+                    Quantity = 1
+                },
+                new DropItemInfo()
+                {
+                    ItemID = -26612,
+                    Quantity = 1
+                }
+            })
         };
 
         public Action<float> OnGameHourPassed;

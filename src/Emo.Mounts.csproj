@@ -374,6 +374,8 @@
     <Compile Include="Mounted States\BaseMountState.cs" />
     <Compile Include="Mounted States\MountState_Caravan.cs" />
     <Compile Include="Mounted States\SimpleTimer.cs" />
+    <Compile Include="Node Canvas Nodes\CharacterHasActiveMountConditionNode.cs" />
+    <Compile Include="Node Canvas Nodes\CharacterHasNOActiveMountConditionNode.cs" />
     <Compile Include="Node Canvas Nodes\GiveItem.cs" />
     <Compile Include="Node Canvas Nodes\RemoveMoney.cs" />
     <Compile Include="NPC\DialogueCharacter.cs" />
