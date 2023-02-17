@@ -1,7 +1,7 @@
 ## Available Mounts
 
 
-### Whistle Items
+### Base Mod Mounts
 | Item ID | Whistle Name | Acquired ? |
 | --------| ------------- | ----------|
 | -26100  | Wolf (Base)  | World Drop |
@@ -26,7 +26,7 @@
 | -26119  | Dragon Boar (Cosmic)  | World Drop |
 
 
-### Ninedots Mount Whistle Items
+### Ninedots Mounts
 | Item ID | Whistle Name | Acquired ? | Notes | Done? |
 | --------| -------------| -----------| ------| ------|
 | -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  *Color Variations drop as eggs from PearlBirds or their Nests.* | X
@@ -45,43 +45,6 @@
 | -26313  | SilverPearlBird | Egg Drop |  Pearl Bird Rare color variationdrops from PearlBirds and Nests with the lowest chance of any variation. | X
 | -26314  | JewelBird | Bought (Berg?) | Not Sure What Quest Yet |
 | -26315  | EliteSandShark | Bought (Levant) | Not Sure What Quest Yet |
-
-
-### Acquisition By Type
-
-#### Bought
-| Item ID | Whistle Name | Acquired ? | Notes |
-| --------| -------------| -----------| ------|
-| -26300  | PearlBird  | Bought (Cierzo) |
-| -26305  | BeastGolem  | Bought (Harmattan) | Also sold in by any stable master if you don't have DLC. |
-| -26307  | SandShark  | Bought (Levant) |
-| -26309  | CoralHornDoe  | Bought (Berg) |
-| -26310  | Taunosaur  | Bought (Monsoon) |
-
-#### Bought After Quest
-| Item ID | Whistle Name | Acquired ? | Notes |
-| --------| -------------| -----------| ------|
-| -26302  | AlphaCoralHorn  | Bought After Quest (Cierzo) | Not Sure What Quest Yet |
-| -26306  | Beetle  | Bought After Quest (Levant) | Not Sure What Quest Yet |
-| -26314  | JewelBird | Bought After Quest  (Berg?) | Not Sure What Quest Yet |
-| -26315  | EliteSandShark | Bought After Quest  (Levant) | Not Sure What Quest Yet |
-
-#### Crafted
-| Item ID | Whistle Name | Acquired ? | Notes |
-| --------| -------------| -----------| ------|
-| -26301  | BlackPearlBird  | Crafted | Rare Alchemy recipe |
-| -26308  | BeastGolemAlternate  | Crafted | Find all 5 Pristine Beast Golem parts picking up a part grants the recipe |
-| -26311  | ObsidianElemental | Crafted | (Recipe gained from defeating X)
-| -26312  | GoldenPearlBird | Crafted  | (Recipe gained from defeating gold lich)
-
-
-#### Eggs
-| Item ID | Species Name | Acquired ? | Notes |
-| --------| -------------| -----------| ------|
-| -26300  | PearlBird (Color Variants)  | Egg Drop |  Color Variations drop as eggs from PearlBirds or their Nests. |
-| -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
-| -26304  | AlphaTaunosaur  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
-| -26313  | SilverPearlBird | Egg Drop |  Pearl Bird Rare color variationdrops from PearlBirds and Nests with the lowest chance of any variation. |
 
 
 ### Skills
