@@ -27,9 +27,9 @@
 
 
 ### Ninedots Mount Whistle Items
-| Item ID | Whistle Name | Acquired ? | Notes |
-| --------| -------------| -----------| ------|
-| -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  (Color Variations drop as eggs from PearlBirds or their Nests.) |
+| Item ID | Whistle Name | Acquired ? | Notes | Done? |
+| --------| -------------| -----------| ------| ------|
+| -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  (Color Variations drop as eggs from PearlBirds or their Nests.) | [ ]
 | -26301  | BlackPearlBird  | Crafted | Rare Alchemy recipe |
 | -26302  | AlphaCoralHorn  | Quest | Bought After Quest (Cierzo) | Not Sure What Quest Yet |
 | -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. |
