@@ -31,11 +31,11 @@
 | --------| -------------| -----------| ------| ------|
 | -26300  | PearlBird  | Bought (Cierzo) (variations : Egg Drop) |  *Color Variations drop as eggs from PearlBirds or their Nests.* | X
 | -26301  | BlackPearlBird  | Crafted | Rare Alchemy recipe gained by defeating [Mad Captain's Bones](https://outward.fandom.com/wiki/Mad_Captain%27s_Bones) | X
-| -26302  | AlphaCoralHorn  | Quest | Bought After Quest (Cierzo) Not Sure What Quest Yet|  
+| -26302  | AlphaCoralHorn  | ???????? | ???????? |  
 | -26303  | Manticore  | Egg Drop | Low drop chance from Manticores, guaranted from Royal Manticores. | X
 | -26304  | AlphaTaunosaur  | Egg Drop | Low drop chance from Manticores, guaranted from Alpha Tuanosaur. | X
 | -26305  | BeastGolem  | Bought (Harmattan) | | X
-| -26306  | Beetle  | Bought After Quest (Levant) | Not Sure What Quest Yet | 
+| -26306  | Beetle  | ???????? | ???????? | 
 | -26307  | SandShark  | Bought (Levant) | | X
 | -26308  | BeastGolemAlternate  | Crafted | Find all 5 Pristine Beast Golem parts picking up a part grants the recipe | X
 | -26309  | CoralHornDoe  | Bought (Berg) | | X
@@ -43,8 +43,8 @@
 | -26311  | ObsidianElemental | Crafted | *Recipe gained from defeating X*  |
 | -26312  | GoldenPearlBird | Crafted  | *Recipe gained from defeating gold lich* |
 | -26313  | SilverPearlBird | Egg Drop |  Rare color variation drops from PearlBirds and Nests with the lowest chance of any variation. | X
-| -26314  | JewelBird | Bought (Berg?) | Not Sure What Quest Yet |
-| -26315  | EliteSandShark | Bought (Levant) | Not Sure What Quest Yet |
+| -26314  | JewelBird |???????? | ???????? |
+| -26315  | EliteSandShark | ???????? | ???????? |
 
 
 ### Skills
