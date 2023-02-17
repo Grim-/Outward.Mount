@@ -204,7 +204,7 @@ namespace EmoMount
             EventComp = gameObject.AddComponent<MountEventComp>();
             SetupInteractionComponents();
 
-            gameObject.layer = LayerMask.GetMask("Characters");
+            gameObject.layer = LayerMask.NameToLayer("Characters");
 
             //needs to be done this way to avoid the jillion racetime errors
             MountFood.Init();

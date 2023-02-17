@@ -35,11 +35,18 @@ namespace EmoMount
         public static float SCENE_LOAD_DELAY = 5f;
         public static bool Debug = false;
 
-        internal static ManualLogSource Log;
+        #region Properties
+
+        public static ManualLogSource Log
+        {
+            get; private set;
+        }
+
         public static Canvas MainCanvas
         {
             get; private set;
         }
+
         public static MountCanvasManager MainCanvasManager
         {
             get; private set;
@@ -56,6 +63,23 @@ namespace EmoMount
             get; private set;
         }
 
+        public static EmoMountMod Instance
+        {
+            get; private set;
+        }
+
+        public static MountQuestManager QuestManager
+        {
+            get; private set;
+        }
+
+        public static MountNPCManager NPCManager
+        {
+            get; private set;
+        }
+        #endregion
+
+        #region Config
 
         public static ConfigEntry<float> WorldDropChanceThreshold;
         public static ConfigEntry<float> WorldDropChanceMinimum;
@@ -64,12 +88,10 @@ namespace EmoMount
         public static ConfigEntry<float> LeashDistance;
         public static ConfigEntry<float> LeashRadius;
 
-
         public static ConfigEntry<int> ColorBerryCost;
 
         public static ConfigEntry<float> FoodLostTravelling;
         public static ConfigEntry<float> TravelDistanceThreshold;
-
         public static ConfigEntry<float> EncumberenceSpeedModifier;
 
         public static ConfigEntry<bool> DisableNonNinedots;
@@ -77,21 +99,8 @@ namespace EmoMount
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
 
-
         public static ConfigEntry<float> WeightLimitOverride;
-
-        public static EmoMountMod Instance
-        {
-            get; private set;
-        }
-        public static MountQuestManager QuestManager
-        {
-            get; private set;
-        }
-        public static MountNPCManager NPCManager
-        {
-            get; private set;
-        }
+        #endregion
 
         public static List<DropOnCharacterDeath> OnDeathDrops = new List<DropOnCharacterDeath>()
         {
