@@ -42,7 +42,7 @@
 | -26310  | Taunosaur  | Bought (Monsoon) | | X
 | -26311  | ObsidianElemental | Crafted | *Recipe gained from defeating X*  |
 | -26312  | GoldenPearlBird | Crafted  | *Recipe gained from defeating gold lich* |
-| -26313  | SilverPearlBird | Egg Drop |  Pearl Bird Rare color variationdrops from PearlBirds and Nests with the lowest chance of any variation. | X
+| -26313  | SilverPearlBird | Egg Drop |  Rare color variation drops from PearlBirds and Nests with the lowest chance of any variation. | X
 | -26314  | JewelBird | Bought (Berg?) | Not Sure What Quest Yet |
 | -26315  | EliteSandShark | Bought (Levant) | Not Sure What Quest Yet |
 
