@@ -28,12 +28,15 @@
 ### Beast Golem Alternate
 
 #### Requires
-- Beast Golem Head (-26602)
-- Beast Golem Torso (-26603)
-- Beast Golem Front Left Leg (-26604)
-- Beast Golem Front Right Leg (-26605)
-- Beast Golem Back Right Leg (-26606)
-- Beast Golem Back Left Leg (-26607)
+
+| Item ID | Item Name     | Acquired |
+| --------| ------------- | -------  |
+| -26602  | Beast Golem Head              | Dropped from Obsidian Elementals
+| -26603  | Beast Golem Torso             | Bought from Alchemists
+| -26604  | Beast Golem Front Left Leg        | Found in world
+| -26605  | Beast Golem Front Right Leg        | Found in world 
+| -26606  | Beast Golem Back Right Leg       | Found in world 
+| -26607  | Beast Golem Back Left Leg       | Found in world 
 
 
 ### Black PearlBird
