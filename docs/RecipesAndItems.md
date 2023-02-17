@@ -20,8 +20,10 @@
 ### Obsidian Elemental (Summon: Obsidian Elemental)
 
 #### Requires
-- Depleted Obsidian Core (-26600)
-- Fire Stone x 3 (6500010)
+| Item ID | Item Name     | Acquired |
+| --------| ------------- | -------  |
+| -26600  | Depleted Obsidian Core   | Dropped from Obsidian Elementals
+| 6500010  | Fire Stone x 3             | 
 
 
 
@@ -42,14 +44,20 @@
 ### Black PearlBird
 
 #### Requires
-- Living Obsidian (-26208)
-- PearlBird Egg (-26602)
-- Occult Remains x 2 (6600110)
+
+| Item ID | Item Name     | Acquired |
+| --------| ------------- | -------  |
+| -26208  | Living Obsidian   | Dropped from Obsidian Elementals
+| -26602  | PearlBird Egg             | 
+| 6600110  | Occult Remains x 2             | 
 
 
 ### Golden PearlBird
 
 #### Requires
-- Living Gold (-26201)
-- PearlBird Egg (-26602)
-- Mana Stone x 2 (6400130)
+| Item ID | Item Name     | Acquired |
+| --------| ------------- | -------  |
+| -26201  | Living Gold   | Dropped from Obsidian Elementals
+| -26602  | PearlBird Egg             | 
+| 6400130  | Mana Stone x 2             | 
+
