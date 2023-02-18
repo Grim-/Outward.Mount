@@ -47,12 +47,27 @@ This request started with asking for a *single* Coral Horn prefab and we ended u
 
 
 ## Mounts Acquisition
-Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mounts.md) page for more information.
+
+As a general summary you can buy a basic mount for 300 silver from Stable Masters in each of the four base game cities (this is done to not lock out anyone without DLC)
+
+Each of these Stable Masters also another mount that becomes available after completing certain tasks for other NPC'S in the same city.
+
+There are also better mounts that cannot be found anywhere except through crafting the recipes are acquired through defeating certain enemies or finding certain items.
+
+The reagents for these recipes are available at your nearest Alchemy vendor these are quite expensive but fear not they can also drop from the creature/place that provides the recipe.
+
+
+
+Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mounts.md) page for more information, this is spoiler heavy.
 
 
 
 ## Mount Components
-These are components I created that you can add to a mount by editing the MountSpecies definition under the <MountComponents> </MountComponents> section these are rarely used by the mod itself, some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story and they are most something I provided as a test of data-orientated design and to give users some features requested without making them mandatory for everyone.
+These are components I created that you can add to a mount by editing the MountSpecies definition under the ```<MountComponents> </MountComponents>``` section these are rarely used by the mod itself.
+
+Some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story.
+
+They are mostly something I provided as a test of data-orientated design within Unity itself and to give users some features requested without making them mandatory for everyone.
 
 I am open to adding more of these at a later date, suggestions welcome.
 
@@ -61,9 +76,11 @@ You can find the full list with examples [here](https://github.com/Grim-/Outward
 
 ## FAQ 
 
-- Why no horse? - These are all freely available assets made available by generous 3D Artists that I have used to create the available mounts, simply put I could not find a free Horse model that is fully rigged with the minimum required animations.
+- Why no horse? 
 
-- __Why dont you use the in-game Animals?__ - It does now!
+These are all freely available assets made available by generous 3D Artists that I have used to create the available mounts, simply put I could not find a free Horse model that is fully rigged with the minimum required animations.
+
+- __Why dont you use the in-game Animals?__ - It does now (14!)!
 
 Exporting all the required Assets from the game files is actually massively time consuming and requires often the armature and rigging, weighting to be redone. I am looking into another method of obtaining the resources I need to make this happen eventually.
 
@@ -97,5 +114,3 @@ v.1.0.3
 - [Dungeon Mason](https://assetstore.unity.com/packages/3d/characters/creatures/dragon-the-soul-eater-and-dragon-boar-77121#description) for the DragonBoar and the Golem!
 
 - [Dzen Games](https://assetstore.unity.com/packages/3d/characters/animals/wolf-animated-45505#description) for the Wolf.
-
-- ChatGPT for coming up with all the names for the species :D
