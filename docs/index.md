@@ -14,6 +14,8 @@ This update has been a long time coming due to family health issues I had to pos
 
 - Added Mounts components system allowing players to customize certain aspects of the mount.
 
+- Added Eggs for certain species where applicable otherwise whistles still remain.
+
 - All Mounts can now sprint.
 
 - Added two stable masters to the final two game areas (Harmattan and New Sirocco)
@@ -41,7 +43,7 @@ This update has been a long time coming due to family health issues I had to pos
 
 - Bags are gone and replaced with access to the Player Stash.
 
-    The serialization and deserialization of a bag and it's contents has always been the biggest cause of problems within the mod itself often what happens is the bag registered to the mount is not always correctly ignored by the ItemManager, causing either the bag to be deleted on a scene close, or sometimes be duplicated causing issues with the mounting and dismounting process leading to **all sorts** of wierd problems, such as missing hit boxes, losing the ability to interact and in the case of one bug report 'Disabling my husbands character'
+    The serialization and deserialization of a bag and it's contents has always been the biggest cause of problems within the mod itself often what happens is the bag registered to the mount is not always correctly ignored by the ItemManager, causing either the bag to be deleted on a scene close, or sometimes be duplicated causing issues with the mounting and dismounting process leading to **all sorts** of wierd problems, such as missing hit boxes, losing the ability to interact and other wierd otherwise unexplainable issues.
 
 ## Mounts
 
@@ -54,11 +56,11 @@ Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore,
 **Ofcourse big thanks to 9dots, Gheyoom brought this up with their team and their lead designer Devo was happy to share their work!**
 
 
+### Mounts Acquisition
 
+As a general summary you can buy a basic mount for 300 silver from Stable Masters in each of the four base game cities (this is done to not lock out anyone without DLC).
 
-## Mounts Acquisition
-
-As a general summary you can buy a basic mount for 300 silver from Stable Masters in each of the four base game cities (this is done to not lock out anyone without DLC)
+You can also find PearlBird eggs as drops from PearlBirds and their nests with nests having double the chance of dropping an egg.
 
 Each of these Stable Masters also another mount that becomes available after completing certain tasks for other NPC'S in the same city.
 
@@ -71,6 +73,17 @@ The reagents for these recipes are available at your nearest Alchemy vendor thes
 Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mounts.md) page for more information, this is spoiler heavy.
 
 
+
+## Eggs?
+1.1.0 introduces Eggs into the mod.
+
+Eggs can either drop from certain creatures upon defeat or found in their nests.
+
+Eggs are only available where it would make sense.
+
+These Eggs when acquired and used from the inventory which will start a quest where you must simply keep the egg present in your inventory for 12 hours at which time it will hatch in the case of pearlbirds you might get an egg with a slight color variation and if you are very lucky you might even find the fabled *QuickSilver PearlBird.*
+
+Certain PearlBird variants have ....darker origins and must be 'created'.
 
 ## Mount Components
 These are components I created that you can add to a mount by editing the MountSpecies definition under the ```<MountComponents> </MountComponents>``` section these are rarely used by the mod itself.
