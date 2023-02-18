@@ -3,7 +3,7 @@ Please visit [ExampleMountDefinition](https://github.com/Grim-/Outward.Mount/edi
 
 
  GlideComp
-> This just adds the ability to lift a little off the ground.
+> This just adds the ability to lift a little off the ground when pressing dodge while mounted.
 
 ```xml
 <MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
@@ -15,7 +15,7 @@ Please visit [ExampleMountDefinition](https://github.com/Grim-/Outward.Mount/edi
  ColorableComp 
 > 
 > Forces a species to spawn in, as a certain color, the
-> color is in hexadecimal format.
+> color is in hexadecimal format, this can also be achieved through the MountSpecies XML
 
 ```xml
 <MountCompProp CompName="ColorableComp" xsi:type="ColorableCompProp">
@@ -66,6 +66,7 @@ Please visit [ExampleMountDefinition](https://github.com/Grim-/Outward.Mount/edi
 
  LightableComp 
 > Creates a Light at the specified position on relative to the mount's local space, you can also specify the color, range and intensity of the light.
+> You can toggle this Light on and off with the dodge key while mounted.
 
 ```xml
 		<MountCompProp CompName="LightableComp" xsi:type="LightableCompProp">
