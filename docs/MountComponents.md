@@ -3,10 +3,7 @@ Please visit [ExampleMountDefinition](https://github.com/Grim-/Outward.Mount/edi
 
 
  GlideComp
-> 
-> This just adds the ability to sprint to the mounts, the speed bonus
-> can be modified as are most things in this mod, it will also lift a
-> little off the ground.
+> This just adds the ability to lift a little off the ground.
 
 ```xml
 <MountCompProp CompName="GlideComp" xsi:type="GlideCompProp">
