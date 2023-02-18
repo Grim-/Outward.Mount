@@ -19,6 +19,13 @@ All the added ninedots mounts are color tintable by default, due to the base tex
 
 - All 4 original Stable Masters now sell a mount (either egg or whistle) for 300 silver, maybe they even sell something else after certain conditions are met? 
 
+- Mounts now act a little bit more alive, this is again limited by the animations I have available for all models, but they should while idle feel a little more alive.
+
+- Added config options for Mount Leash Distance, Leash Radius, ColorBerry cost, FoodLostTraveling, TravelDistanceThreshold, EncumberanceModifier, DisableNonNinedots, EnableFoodNeed, EnableWeightLimit, WeightLimitOverride.
+
+Any of these settings will override for all mount species, if you just want to make an edit to a single species, this can be done in the xml file for that Species located in 'ModFolder/MountSpecies' please visit [Example Mount Definition](https://github.com/Grim-/Outward.Mount/edit/main/docs/ExampleMountDefinition.md) for more information.
+
+
 *You should probably check around the town for people needing help?*
 
 - Dismount/Revert Form are both now bound to whatever key you use for interacting by default. 
