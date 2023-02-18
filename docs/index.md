@@ -91,7 +91,7 @@ Eggs can either drop from certain creatures upon defeat or found in their nests.
 
 Eggs are only available where it would make sense.
 
-These Eggs when acquired and used from the inventory which will start a quest where you must simply keep the egg present in your inventory for 12 hours at which time it will hatch in the case of pearlbirds you might get an egg with a slight color variation and if you are very lucky you might even find the fabled *QuickSilver PearlBird.*
+These Eggs when acquired and used from the inventory which will start a quest where you must simply keep the egg present in your inventory for 12 hours at which time it will hatch in the case of pearlbirds you might get an egg with a slight color variation and if you are very lucky you might even find the fabled *QuickSilver PearlBird.* (This is a small tribute to my favourite child hood game)
 
 Certain PearlBird variants have ....darker origins and must be 'created'.
 
