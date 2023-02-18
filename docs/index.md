@@ -1,17 +1,13 @@
 ## Mount Mod 1.1.0
-
 Hi! 
 
 Welcome to the 1.1.0 update page for Emo's Mount Mod!
 
-
-
-
 ### Changes Summary 
 
-- Added [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md)(**WARNING SPOILER HEAVY**) made available by ninedots these can be acquired in various ways.
+- Added [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md) (**WARNING SPOILER HEAVY PAGE**) made available by ninedots these can be acquired in various ways.
 
-All the added ninedots mounts are color tintable by default, due to the base textures available for these mounts the tinting works better for some species (PearlBird) than the others, all the ninedot mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark)
+    All the added ninedots mounts are color tintable by default, due to the base textures available for these mounts the tinting works better for some species (PearlBird) than the others, all the ninedot mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark) which works perfectly fine.
 
 - Added Mounts components system allowing players to customize certain aspects of the mount.
 
@@ -19,18 +15,21 @@ All the added ninedots mounts are color tintable by default, due to the base tex
 
 - All 4 original Stable Masters now sell a mount (either egg or whistle) for 300 silver, maybe they even sell something else after certain conditions are met? 
 
-*You should probably check around the town for people needing help?* (or visit [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md)(**WARNING SPOILER HEAVY**))
+    *You should probably check around the town for people needing help?* or visit [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md)(**WARNING SPOILER HEAVY**)
 
 
 - Mounts now act a little bit more alive, this is again limited by the animations I have available for all models, but they should while idle feel a little more alive.
 
 - Added config options for Mount Leash Distance, Leash Radius, ColorBerry cost, FoodLostTraveling, TravelDistanceThreshold, EncumberanceModifier, DisableNonNinedots, EnableFoodNeed, EnableWeightLimit, WeightLimitOverride.
+    
+    Any of these settings will override for all mount species, if you just want to make an edit to a single species, this can be done in the xml file for that Species located in **'ModFolder/MountSpecies'** please visit [Example Mount Definition](https://github.com/Grim-/Outward.Mount/edit/main/docs/ExampleMountDefinition.md) for more information.
 
-Any of these settings will override for all mount species, if you just want to make an edit to a single species, this can be done in the xml file for that Species located in 'ModFolder/MountSpecies' please visit [Example Mount Definition](https://github.com/Grim-/Outward.Mount/edit/main/docs/ExampleMountDefinition.md) for more information.
-
+- Icons!
+    Thanks to Schnabeldoktor &  Libre comme l'air of the modding discord for all the egg, skill icons and item icons! <3
 
 - Dismount/Revert Form are both now bound to whatever key you use for interacting by default. 
-Default F on PC.
+
+    Default F on PC.
 
 - Bags are gone and replaced with access to the Player Stash.
 
@@ -92,6 +91,8 @@ v.1.0.3
 - Faeryn for their patches allowing mounts to be fed by right clicking the item in your inventory.
 
 - AlienVsYourMom and Avrixel of the modding Discord for testing and providing feedback.
+
+- Schnabeldoktor &  Libre comme l'air of the modding discord for all the egg, skill icons and item icons! No more Push Kick icon!
 
 - [Dungeon Mason](https://assetstore.unity.com/packages/3d/characters/creatures/dragon-the-soul-eater-and-dragon-boar-77121#description) for the DragonBoar and the Golem!
 
