@@ -3,7 +3,17 @@ Hi!
 
 Welcome to the 1.1.0 update page for Emo's Mount Mod!
 
-This update has been a long time coming due to family health issues I had to postpone the mod for almost 7 months and since then I have only been able to work on it in small amounts due to having very limited free time, having said that I think I managed to 
+This update has been a long time coming but due to family health issues I had to postpone the mod for almost 7 months and since then I have only been able to work on it in small amounts due to having very limited free time.
+
+Although changes come at a slower pace than I'd like this is due to the wide scope of the mod while the intent is seemingly simple on the surface 'add a faster way to travel around Aurai without teleporting' all the accompanying systems such as custom quests, dialogue, NPCs, UI, Skills, Items, The Mount themselves are slightly more complex in most cases than SideLoader allows (with very good reason).
+
+If you have ever had to programmatically write a node-graph (or any kind of graph) without an accompanying UI you will understand this is not a simple task, the documentation for NodeCanvas (the package used by 9dots in this case) simply states its an advanced topic and doesn't elobrate. \o/
+
+
+**My gripes and excuses for the pathetic update rate out of the way here are (most of) the changes I have made. (or Just skip to here!)**
+
+
+
 ### Changes Summary 
 
 - Added [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md) (**WARNING SPOILER HEAVY PAGE**) made available by **9dots** these can be acquired in various ways.
@@ -133,6 +143,8 @@ v.1.0.3
 - AlienVsYourMom and Avrixel of the modding Discord for testing and providing feedback.
 
 - Schnabeldoktor &  Libre comme l'air of the modding discord for all the egg, skill icons and item icons! No more Push Kick icon!
+
+- [Exp111](https://exp111.github.io/OutwardNodeCanvasViewer/#quests/7011000_Neutral_RealIntro_Quest.json) of the modding discord for his OutwardNodeCanvasViewer which while it came along late into the mods development but hugely increased my understanding of the games graph system, and therefore speed in getting the mod out -  thank you!
 
 - [Dungeon Mason](https://assetstore.unity.com/packages/3d/characters/creatures/dragon-the-soul-eater-and-dragon-boar-77121#description) for the DragonBoar and the Golem!
 
