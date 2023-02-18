@@ -52,7 +52,7 @@ I am open to adding more of these at a later date, suggestions welcome.
 
 You can find the full list with examples [here](https://github.com/Grim-/Outward.Mount/blob/main/docs/MountComponents.md)
 
-### FAQ 
+## FAQ 
 
 - Why no horse? - These are all freely available assets made available by generous 3D Artists that I have used to create the available mounts, simply put I could not find a free Horse model that is fully rigged with the minimum required animations.
 
@@ -60,7 +60,7 @@ You can find the full list with examples [here](https://github.com/Grim-/Outward
 
 Exporting all the required Assets from the game files is actually massively time consuming and requires often the armature and rigging, weighting to be redone. I am looking into another method of obtaining the resources I need to make this happen eventually.
 
-### Change Log
+## Change Log
 
 v.1.0.3 
 - Added ModConfig Options for Enabling Food and Weight Requirements and whistle drop chances.
@@ -71,7 +71,7 @@ v.1.0.3
 - Updated the cosmic skin shader, updated the holy wolf, air golem visuals.
 - Added Raptor mount type and Lizard mount type, bringing the total to 5 mounts with different variations.
 
-### Known Issues
+## Known Issues
 - The Mount currently teleports to you while using combat teleports, this isn't intended and is a side effect of me trying to keep the mount with the player between area changes, it will hopefully be fixed.
 
 ### Potential Future Updates
