@@ -7,7 +7,7 @@ This update has been a long time coming but due to family health issues I had to
 
 Although changes come at a slower pace than I'd like this is due to the wide scope of the mod while the intent is seemingly simple on the surface 'add a faster way to travel around Aurai without teleporting' all the accompanying systems such as custom quests, dialogue, NPCs, UI, Skills, Items, The Mount themselves are slightly more complex in most cases than SideLoader allows (with very good reason).
 
-If you have ever had to programmatically write a node-graph (or any kind of graph) without an accompanying UI you will understand this is not a simple task, the documentation for NodeCanvas (the package used by 9dots in this case) simply states its an advanced topic and doesn't elobrate. \o/
+If you have ever had to programmatically write a node-graph (or any kind of graph) without an accompanying UI you will understand this is not a simple task, the documentation for NodeCanvas (the package used by 9dots in this case) simply states its an advanced topic and doesn't elobrate, the joys of modding!
 
 
 **My gripes and excuses for the pathetic update rate out of the way here are (most of) the changes I have made. (or Just skip to here!)**
@@ -22,7 +22,7 @@ If you have ever had to programmatically write a node-graph (or any kind of grap
 
     All the **9dot** mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark).
 
-- Added Mounts components system allowing players to customize certain aspects of the mount.
+- Added [Mounts components](https://github.com/Grim-/Outward.Mount/blob/main/docs/MountComponents.md) system allowing players to customize certain aspects of the mount.
 
 - Added Eggs for certain species where applicable otherwise whistles still remain.
 
