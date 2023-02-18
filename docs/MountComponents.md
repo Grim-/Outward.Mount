@@ -1,4 +1,7 @@
 
+PLease visit [ExampleMountDefinition](https://github.com/Grim-/Outward.Mount/edit/main/docs/ExampleMountDefinition.md) if you are un-sure where to place the XML, you will find the example contains various MountComponents near the bottom of the XML.
+
+
  GlideComp
 > 
 > This just adds the ability to sprint to the mounts, the speed bonus
