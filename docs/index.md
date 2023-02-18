@@ -97,3 +97,5 @@ v.1.0.3
 - [Dungeon Mason](https://assetstore.unity.com/packages/3d/characters/creatures/dragon-the-soul-eater-and-dragon-boar-77121#description) for the DragonBoar and the Golem!
 
 - [Dzen Games](https://assetstore.unity.com/packages/3d/characters/animals/wolf-animated-45505#description) for the Wolf.
+
+- ChatGPT for coming up with all the names for the species :D
