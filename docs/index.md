@@ -3,13 +3,18 @@ Hi!
 
 Welcome to the 1.1.0 update page for Emo's Mount Mod!
 
+This update has been a long time coming due to family health issues I had to postpone the mod for almost 7 months and since then I have only been able to work on it in small amounts due to having very limited free time, having said that I think I managed to 
 ### Changes Summary 
 
-- Added [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md) (**WARNING SPOILER HEAVY PAGE**) made available by ninedots these can be acquired in various ways.
+- Added [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md) (**WARNING SPOILER HEAVY PAGE**) made available by **9dots** these can be acquired in various ways.
 
-    All the added ninedots mounts are color tintable by default, due to the base textures available for these mounts the tinting works better for some species (PearlBird) than the others, all the ninedot mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark) which works perfectly fine.
+    All the added **9dots** mounts are color tintable by default due to the base textures available for these mounts the tinting works better for some species (PearlBird) than the others.
+
+    All the **9dot** mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark).
 
 - Added Mounts components system allowing players to customize certain aspects of the mount.
+
+- All Mounts can now sprint.
 
 - Added two stable masters to the final two game areas (Harmattan and New Sirocco)
 
@@ -17,33 +22,38 @@ Welcome to the 1.1.0 update page for Emo's Mount Mod!
 
     *You should probably check around the town for people needing help?* or visit [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/docs/Mounts.md)(**WARNING SPOILER HEAVY**)
 
+- Removed Mount/Dismount custom keybind
 
-- Mounts now act a little bit more alive, this is again limited by the animations I have available for all models, but they should while idle feel a little more alive.
+- Mounts now act a little bit more alive this is again limited by the animations I have available for all models, but they should while idle feel a little more alive hopefully.
 
 - Added config options for Mount Leash Distance, Leash Radius, ColorBerry cost, FoodLostTraveling, TravelDistanceThreshold, EncumberanceModifier, DisableNonNinedots, EnableFoodNeed, EnableWeightLimit, WeightLimitOverride.
     
     Any of these settings will override for all mount species, if you just want to make an edit to a single species, this can be done in the xml file for that Species located in **'ModFolder/MountSpecies'** please visit [Example Mount Definition](https://github.com/Grim-/Outward.Mount/edit/main/docs/ExampleMountDefinition.md) for more information.
 
+- The 9dots mounts have both walking and running animations and so use a better animator controller to take advantage of this.
+
 - Icons!
     Thanks to Schnabeldoktor &  Libre comme l'air of the modding discord for all the egg, skill icons and item icons! <3
 
-- Dismount/Revert Form are both now bound to whatever key you use for interacting by default. 
+-  Removed Mount&Dismount custom keybind & Mount&Dismount/Revert Form are both now bound to whatever key you use for interacting by default. 
 
     Default F on PC.
 
 - Bags are gone and replaced with access to the Player Stash.
 
-The serialization and deserialization of a bag and it's contents has always been the biggest cause of problems within the mod itself, often what happens is the bag registered to the mount is not always correctly ignored by the ItemManager, causing either the bag to be deleted on a scene close, or sometimes be duplicated causing issues with the mounting and dismounting process leading to all sorts of wierd problems.
+    The serialization and deserialization of a bag and it's contents has always been the biggest cause of problems within the mod itself often what happens is the bag registered to the mount is not always correctly ignored by the ItemManager, causing either the bag to be deleted on a scene close, or sometimes be duplicated causing issues with the mounting and dismounting process leading to **all sorts** of wierd problems, such as missing hit boxes, losing the ability to interact and in the case of one bug report 'Disabling my husbands character'
 
 ## Mounts
+
+This request started with asking for a *single* Coral Horn prefab and we ended up with **14(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental, Beetle, Sand Shark from the base game as collectible mounts. 
 
 **Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs** 
 
-**Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and their lead designer Devo was happy to share their work!**
+**Ofcourse big thanks to 9dots, Gheyoom brought this up with their team and their lead designer Devo was happy to share their work!**
 
-This request started with asking for a *single* Coral Horn prefab and we ended up with **14(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
+
 
 
 ## Mounts Acquisition
@@ -65,7 +75,7 @@ Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mount
 ## Mount Components
 These are components I created that you can add to a mount by editing the MountSpecies definition under the ```<MountComponents> </MountComponents>``` section these are rarely used by the mod itself.
 
-Some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story.
+Some are overpowered in the context of Outward others people simply would not like them detracting from a certain RP element, think them silly or any reason really the choice is yours.
 
 They are mostly something I provided as a test of data-orientated design within Unity itself and to give users some features requested without making them mandatory for everyone.
 
