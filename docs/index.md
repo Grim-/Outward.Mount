@@ -28,8 +28,29 @@ Default F on PC.
 
 The serialization and deserialization of a bag and it's contents has always been the biggest cause of problems within the mod itself, often what happens is the bag registered to the mount is not always correctly ignored by the ItemManager, causing either the bag to be deleted on a scene close, or sometimes be duplicated causing issues with the mounting and dismounting process leading to all sorts of wierd problems.
 
+## Mounts
+
+Added Pearl Bird, Black Pearl Bird, Alpha Coral Horn, Coral Horn Doe, Manticore, Alpha Tuanosaur, Tuanosaur, Beast Golem, Beast Golem Alternate(Boss model), Obsidian Elemental, Beetle, Sand Shark from the base game as collectible mounts. 
+
+**Special thanks goes to @Proboina for making this possible by bringing up the idea and then asking ninedots for the prefabs** 
+
+**Ofcourse big thanks to ninedots, Gheyoom brought this up with their team and their lead designer Devo was happy to share their work!**
+
+This request started with asking for a *single* Coral Horn prefab and we ended up with **14(!)** prefabs from ninedots they went above and beyond I'd just like to acknowledge that and thank them.
 
 
+## Mounts Acquisition
+Please visit the [Mounts](https://github.com/Grim-/Outward.Mount/blob/main/Mounts.md) page for more information.
+
+
+
+## Mount Components
+These are components I created that you can add to a mount by editing the MountSpecies definition under the <MountComponents> </MountComponents> section these are rarely used by the mod itself, some are overpowered in the context of Outward, others people simply would not like them detracting from a certain RP element or story and they are most something I provided as a test of data-orientated design and to give users some features requested without making them mandatory for everyone.
+
+I am open to adding more of these at a later date, suggestions welcome.
+
+
+You can find the full list with examples [here](https://github.com/Grim-/Outward.Mount/blob/main/docs/MountComponents.md)
 
 ### FAQ 
 
