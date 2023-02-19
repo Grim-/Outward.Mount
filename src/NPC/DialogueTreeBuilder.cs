@@ -58,7 +58,7 @@ namespace EmoMount
             return multiChoice;
         }
 
-        public StatementNodeExt CreateNPCStatement(string AnswerText, bool ContinueOnFinish = true)
+        public StatementNodeExt CreateNPCStatement(string AnswerText, bool ContinueOnFinish = false)
         {
             StatementNodeExt AnswerStatement = TargetDialogueTree.AddNode<StatementNodeExt>();
             AnswerStatement.statement = new(AnswerText);
@@ -83,6 +83,7 @@ namespace EmoMount
             TargetDialogueTree.ConnectNodes(multiChoice, NewNode, answerIndex);
             return NewNode;
         }
+
 
         public ConditionNode AddConditionalAnswerToMultiChoice(MultipleChoiceNodeExt multiChoice, DialogueTree DT, int answerIndex, ConditionTask Condition)
         {

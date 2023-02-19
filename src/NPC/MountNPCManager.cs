@@ -102,8 +102,8 @@ namespace EmoMount
                 UID = "emomount.mountcharacterharmattan",
                 Name = "Libre, Harmattan Stable Master",
                 SpawnSceneBuildName = "Harmattan",
-                SpawnPosition = new(-39.7222f, 0.2239f, 120.0354f),
-                SpawnRotation = new(0, 218f, 0),
+                SpawnPosition = new(83.745f, 64.8413f, 802.2937f),
+                SpawnRotation = new(0, 156.0281f, 0),
                 HelmetID = 3100261,
                 ChestID = 3100260,
                 BootsID = 3100262,
@@ -120,7 +120,7 @@ namespace EmoMount
                 {
                     "PearlBird"
                 },
-                SpawnMountsInLineUp = true
+                SpawnMountsInLineUp = false
             },
             new StableMaster()
             {
@@ -300,37 +300,35 @@ namespace EmoMount
 
             #endregion
 
+           var InitialBuyStatement = dialogueTreeBuilder.AddAnswerToMultipleChoice<StatementNodeExt>(initialChoice, 4, $"I can sell you a mount for {BuyItemCost}", dialogueTreeBuilder.CreateNPCStatement($"I can sell you a mount for {BuyItemCost}"));
 
+            ConditionNode BuyChoice = graph.AddNode<ConditionNode>();
 
-            ConditionNode BuyChoice = dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 4, "Aye, that I can do.", graph.AddNode<ConditionNode>());
             BuyChoice.SetCondition(new HasCurrency()
             {
                 AmountRequired = BuyItemCost
             });
 
-
+            InitialBuyStatement.ConnectTo(graph, BuyChoice);
 
             BuyChoice.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement("Thank you."))
             .ConnectTo(graph, new RemoveMoneyAction(BuyItemCost))
-            .ConnectTo(graph, new GiveItem(BuyItemID))
-            .ConnectTo(graph, new FinishNode());
+            .ConnectTo(graph, new GiveItem(BuyItemID));
+
+            BuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."));
 
 
-            BuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."))
-            .ConnectTo(graph, new FinishNode());
+            var InitialUniqueBuyStatement = dialogueTreeBuilder.AddAnswerToMultipleChoice<DTNode>(initialChoice, 5, $"You have proven yourself capable, I can sell it to you a more unique mount for {BuyItemCost}.", dialogueTreeBuilder.CreateNPCStatement($"I can sell you a mount for {BuyItemCost}"));
+            ConditionNode UniqueBuyChoice = graph.AddNode<ConditionNode>();
 
-
-            ConditionNode UniqueBuyChoice = dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 5, "Ofcourse, take a look.", graph.AddNode<ConditionNode>());
-
+            InitialUniqueBuyStatement.ConnectTo(graph, UniqueBuyChoice);
             UniqueBuyChoice.SetCondition(new HasCurrency(BuyItemCost));
 
             UniqueBuyChoice.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement("Thank you."))
             .ConnectTo(graph, new RemoveMoneyAction(BuyItemCost))
-            .ConnectTo(graph, new GiveItem(UniqueBuyItemID))
-            .ConnectTo(graph, new FinishNode());
+            .ConnectTo(graph, new GiveItem(UniqueBuyItemID));
 
-            UniqueBuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."))
-            .ConnectTo(graph, new FinishNode());
+            UniqueBuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."));
         }
 
 

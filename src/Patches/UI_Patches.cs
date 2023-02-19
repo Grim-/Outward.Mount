@@ -21,14 +21,7 @@ namespace EmoMount.Patches
 
                 if (characterMount && characterMount.ActiveMount)
                 {
-                    __result.Add(69696969);
-                    //if (__instance.m_pendingItem != null && __instance.m_pendingItem is Food)
-                    //{
-                    //    if (characterMount.ActiveMount.MountFood.CanEat(__instance.m_pendingItem))
-                    //    {
-                    //        __result.Add(69696969);
-                    //    }
-                    //}              
+                    __result.Add(69696969);              
                 }
             }
 
@@ -62,10 +55,10 @@ namespace EmoMount.Patches
 
                     if (characterMount != null && characterMount.ActiveMount != null)
                     {
-                        //if (__instance.m_pendingItem != null && __instance.m_pendingItem is Food)
-                        //{
+                        if (__instance.m_pendingItem != null && __instance.m_pendingItem is Food)
+                        {
                             __result = $"Feed to {characterMount.ActiveMount.MountName}";
-                        //}                  
+                        }                  
                     }
 
                     //DONT do the original method 

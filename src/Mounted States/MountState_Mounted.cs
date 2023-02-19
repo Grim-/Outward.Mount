@@ -150,24 +150,26 @@ namespace EmoMount
             base.OnAttack1(MountController);
 
 
-
-            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
-
-            if (AreaSwitches != null)
+            if (EmoMountMod.EnableTestFeatures.Value)
             {
-                if (CurrentAreaSwitch >= AreaSwitches.Count)
+
+                List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+
+                if (AreaSwitches != null)
                 {
-                    CurrentAreaSwitch = -1;
-                }
-                else
-                {
-                    CurrentAreaSwitch++;
-                    MountController.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
+                    if (CurrentAreaSwitch >= AreaSwitches.Count)
+                    {
+                        CurrentAreaSwitch = -1;
+                    }
+                    else
+                    {
+                        CurrentAreaSwitch++;
+                        MountController.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
+                    }
                 }
             }
-
-
         }
+
         public override void OnSprint(BasicMountController MountController)
         {
             base.OnSprint(MountController);
@@ -189,20 +191,27 @@ namespace EmoMount
         {
             base.OnBlockReleased(MountController);
 
-            List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
 
-            if (AreaSwitches != null)
+
+            if (EmoMountMod.EnableTestFeatures.Value)
             {
-                if (CurrentAreaSwitch >= 0)
-                {
-                    if (CurrentAreaSwitch > AreaSwitches.Count)
-                    {
-                        CurrentAreaSwitch = AreaSwitches.Count;
-                    }
+                List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
 
-                    SwitchAutoMove(MountController, TryGetNavMeshPositionOnTerrain(MountController, GetAreaSwitchPosition(AreaSwitches, CurrentAreaSwitch), 30f), AreaSwitches[CurrentAreaSwitch].m_area);
+                if (AreaSwitches != null)
+                {
+                    if (CurrentAreaSwitch >= 0)
+                    {
+                        if (CurrentAreaSwitch > AreaSwitches.Count)
+                        {
+                            CurrentAreaSwitch = AreaSwitches.Count;
+                        }
+
+                        SwitchAutoMove(MountController, TryGetNavMeshPositionOnTerrain(MountController, GetAreaSwitchPosition(AreaSwitches, CurrentAreaSwitch), 30f), AreaSwitches[CurrentAreaSwitch].m_area);
+                    }
                 }
             }
+
+
 
         }
 

@@ -128,6 +128,11 @@ namespace EmoMount
             get; private set; 
         }
 
+        public Hitbox HitBox
+        {
+            get;  set;
+        }
+
         public StackBasedStateMachine<BasicMountController> MountFSM
         {
             get; private set;
@@ -429,15 +434,43 @@ namespace EmoMount
         public void MountCharacter(Character _affectedCharacter)
         {
             CurrentlyMountedCharacter = _affectedCharacter;
-            PrepareCharacter(_affectedCharacter);
+            //HitBox.OwnerChar = CurrentlyMountedCharacter;
+            _affectedCharacter.CharacterController.enabled = false;
+            _affectedCharacter.CharacterControl.enabled = false;
+            //cancel movement in animator
+
+            if (IsTransform)
+            {
+                //character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 0);
+            }
+            else
+            {
+                _affectedCharacter.SetAnimMove(0, 0);
+                _affectedCharacter.SpellCastAnim(MountAnimation, Character.SpellCastModifier.Immobilized, 1);
+            }
+
+            TryToParent(_affectedCharacter, gameObject);
+            OriginalPlayerCameraOffset = _affectedCharacter.CharacterCamera.Offset;
+
+            SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset + MountedCameraOffset);
             DisableNavMeshAgent();
             UpdateCurrentWeight(_affectedCharacter.Inventory.TotalWeight);
+
             MountFSM.PushDynamicState(new MountState_Mounted(CurrentlyMountedCharacter));
+
             EventComp.OnMounted?.Invoke(this, CurrentlyMountedCharacter);
-            CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(true);
+
+            if (CurrentlyMountedCharacter != null)
+            {
+                CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(true);
+            }
+
+
+            
         }
         public void DismountCharacter(Character _affectedCharacter)
         {
+            //HitBox.OwnerChar = null;
             _affectedCharacter.CharacterController.enabled = true;
             _affectedCharacter.CharacterControl.enabled = true;
             _affectedCharacter.Animator.Update(Time.deltaTime);
@@ -472,26 +505,6 @@ namespace EmoMount
             CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(false);
             CurrentlyMountedCharacter = null;
             MountFSM.PopState();
-        }
-        private void PrepareCharacter(Character character)
-        {
-            character.CharacterController.enabled = false;
-            character.CharacterControl.enabled = false;
-            //cancel movement in animator
-
-            if (IsTransform)
-            {
-                //character.SpellCastAnim(TransformAnimation, Character.SpellCastModifier.Mobile, 0);
-            }
-            else
-            {
-                character.SetAnimMove(0, 0);
-                character.SpellCastAnim(MountAnimation, Character.SpellCastModifier.Immobilized, 1);
-            }
-           
-            TryToParent(character, gameObject);
-            OriginalPlayerCameraOffset = character.CharacterCamera.Offset;
-            SetCharacterCameraOffset(character, OriginalPlayerCameraOffset + MountedCameraOffset);
         }
 
         public void SetIsMounted(bool isMounted)
@@ -616,6 +629,41 @@ namespace EmoMount
             return mountInstanceData;
         }
 
+        public void EnableCharacterRenderers(Character Character)
+        {
+            foreach (var item in Character.Visuals.ActiveVisualsHead.Renderers)
+            {
+                item.enabled = true;
+            }
+
+            foreach (var item in Character.Visuals.ActiveVisualsBody.Renderers)
+            {
+                item.enabled = true;
+            }
+
+            foreach (var item in Character.Visuals.ActiveVisualsFoot.Renderers)
+            {
+                item.enabled = true;
+            }
+        }
+
+        public void DisableCharacterRenderers(Character Character)
+        {
+            foreach (var item in Character.Visuals.ActiveVisualsHead.Renderers)
+            {
+                item.enabled = false;
+            }
+
+            foreach (var item in Character.Visuals.ActiveVisualsBody.Renderers)
+            {
+                item.enabled = false;
+            }
+
+            foreach (var item in Character.Visuals.ActiveVisualsFoot.Renderers)
+            {
+                item.enabled = false;
+            }
+        }
 
         private void TryToParent(Character _affectedCharacter, GameObject MountInstance)
         {

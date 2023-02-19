@@ -37,7 +37,7 @@ namespace EmoMount.Mount_Components
                 return;
             }
 
-            if (ISActive)
+            if (ISActive && Controller.CharacterOwner != null)
             {
                 if (Controller.DistanceToOwner <= Radius)
                 {
@@ -57,12 +57,14 @@ namespace EmoMount.Mount_Components
                 return;
             }
 
-            if (!Character.StatusEffectMngr.HasStatusEffect(StatusName))
+            StatusEffect statusEffectPrefab = ResourcesPrefabManager.Instance.GetStatusEffectPrefab(StatusName);
+
+            if (statusEffectPrefab != null && !Character.StatusEffectMngr.HasStatusEffect(StatusName))
             {
                 StatusEffect statusEffect = Character.StatusEffectMngr.AddStatusEffect(StatusName);
-
                 GrantedStatusUID = statusEffect.UID;
             }
+
         }
 
         public void RemoveStatusFromCharacter(Character Character)

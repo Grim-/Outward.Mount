@@ -15,6 +15,8 @@ namespace EmoMount.Mount_Components
 
         private bool IsGlidingUp = false;
 
+        private float DistanceFromGround;
+
         public override void Update()
         {
             if (Controller.IsMounted)
@@ -27,11 +29,24 @@ namespace EmoMount.Mount_Components
                     }
 
                 }
-            }          
+            }
+
+
+
+            if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 10000f, Controller.MoveToLayerMask))
+            {
+                Vector3 TerrainHitPoint = hit.point;
+                DistanceFromGround = Vector3.Distance(transform.position, TerrainHitPoint);
+            }
         }
 
         private IEnumerator GentlePushUp(Transform Transform, float GlideUpTime = 0.2f)
         {
+            if (DistanceFromGround > 3f)
+            {
+                yield break;
+            }
+
             IsGlidingUp = true;
             float Timer = 0;
 
@@ -51,7 +66,7 @@ namespace EmoMount.Mount_Components
 
             while (Timer < GlideUpTime)
             {
-                Transform.position = Vector3.MoveTowards(Transform.position, TargetPos, 0.4f);
+                Transform.position = Vector3.MoveTowards(Transform.position, TargetPos, 0.11f);
                 Timer += Time.deltaTime;
                 yield return null;
             }

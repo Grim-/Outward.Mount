@@ -98,6 +98,7 @@ namespace EmoMount
         public static ConfigEntry<bool> EnableCombatTransforming;
         public static ConfigEntry<bool> EnableFoodNeed;
         public static ConfigEntry<bool> EnableWeightLimit;
+        public static ConfigEntry<bool> EnableTestFeatures;
 
         public static ConfigEntry<float> WeightLimitOverride;
         #endregion
@@ -191,6 +192,7 @@ namespace EmoMount
             EnableCombatTransforming = Config.Bind<bool>(NAME, "Enable Transforming in Combat?", false, "If enabled you will be able to transform into a mount even in combat.");
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
+            EnableTestFeatures = Config.Bind<bool>(NAME, "Enable Test Features", true, "Enables any test features that aren't quite ready for release.");
         }
         private void CreateMainCanvas()
         {

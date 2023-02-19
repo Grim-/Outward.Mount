@@ -42,6 +42,27 @@ namespace EmoMount
         }
     }
 
+    [HarmonyPatch(typeof(Character), nameof(Character.Die))]
+    public class CharacterDiePatch
+    {
+        static void Prefix(Character __instance, Vector3 _hitVec, bool _loadedDead = false)
+        {
+            if (!_loadedDead)
+            {
+                CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
+
+                if (characterMount)
+                {
+                    if (characterMount.HasActiveMount && characterMount.IsMounted)
+                    {
+                        EmoMountMod.Log.LogMessage($"Character died while mounted, dismounting.");
+                        characterMount.ActiveMount.DismountCharacter(__instance);
+                    }
+                }
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3) })]
     public class CharacterTeleport
     {
@@ -49,10 +70,26 @@ namespace EmoMount
         {
             CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
 
-            if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
+            if (characterMount != null)
             {
+                if (characterMount.HasActiveMount)
+                {
+                    if (characterMount.ActiveMount.IsTransform)
+                    {
+                        return;
+                    }
+
+                    //only teleport if the player is not mounted on the active mount
+                    if (!characterMount.IsMounted)
+                    {
+                        characterMount.ActiveMount.Teleport(_pos, _rot);
+                    }
+
+                   
+                }
+
                 //EmoMountMod.Log.LogMessage($"Warping {characterMount.ActiveMount.MountName} with {characterMount.Character.Name}");
-                characterMount.ActiveMount.Teleport(_pos, _rot);
+                
             }
         }
     }
