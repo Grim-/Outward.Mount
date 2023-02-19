@@ -48,6 +48,11 @@ namespace EmoMount.Mount_Components
         {
             Controller = null;
         }
+
+        public void OnDestroy()
+        {
+            OnRemove(Controller);
+        }
     }
 
     public class MountCompProp
