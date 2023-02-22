@@ -1,36 +1,70 @@
 
-Standard Speed
+Tier 0 - The bought stuff - the easy to get drop stuff, decently speedy
 
-<MoveSpeed>5.5</MoveSpeed>
-<SprintModifier>2</SprintModifier>
-<RotateSpeed>240</RotateSpeed>
-<Acceleration>5</Acceleration>
-<!-- Food !-->
-<RequiresFood>true</RequiresFood>
-<MaximumFood>200</MaximumFood>
-<!-- The time between food being taken from your mount !-->
-<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
-<!-- The amount of food being taken from your mount !-->
-<PassiveFoodLoss>10</PassiveFoodLoss>
-  <!-- The amount of distance your mount can travel before needing to use some food !-->
-<TravelDistanceThreshold>150</TravelDistanceThreshold>
-  <!-- The amount of food being taken from your mount !-->
-<FoodLostPerTravelDistance>10</FoodLostPerTravelDistance>
+	<!-- Speed !-->
+	<MoveSpeed>7</MoveSpeed>
+	<SprintModifier>2</SprintModifier>
+	<RotateSpeed>240</RotateSpeed>
+	<Acceleration>5</Acceleration>
+	<!-- Carry Weight !-->
+	<MaximumCarryWeight>200</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>0.9</EncumberenceSpeedModifier>
+	<!-- Food !-->
+	<RequiresFood>true</RequiresFood>
+	<MaximumFood>200</MaximumFood>
+	<!-- The time between food being taken from your mount !-->
+	<PassiveFoodLossTickTime>160</PassiveFoodLossTickTime>
+	<!-- The amount of food being taken from your mount !-->
+	<PassiveFoodLoss>10</PassiveFoodLoss>
+		<!-- The amount of distance your mount can travel befor needing to use some food !-->
+	<TravelDistanceThreshold>150</TravelDistanceThreshold>
+		<!-- The amount of food being taken from your mount !-->
+	<FoodLostPerTravelDistance>20</FoodLostPerTravelDistance>
 
 
-Fast Speed
-<MoveSpeed>8</MoveSpeed>
-<SprintModifier>2</SprintModifier>
-<RotateSpeed>240</RotateSpeed>
-<Acceleration>5</Acceleration>
-<!-- Food !-->
-<RequiresFood>true</RequiresFood>
-<MaximumFood>200</MaximumFood>
-<!-- The time between food being taken from your mount !-->
-<PassiveFoodLossTickTime>185</PassiveFoodLossTickTime>
-<!-- The amount of food being taken from your mount !-->
-<PassiveFoodLoss>10</PassiveFoodLoss>
-  <!-- The amount of distance your mount can travel befor needing to use some food !-->
-<TravelDistanceThreshold>120</TravelDistanceThreshold>
-  <!-- The amount of food being taken from your mount !-->
-<FoodLostPerTravelDistance>10</FoodLostPerTravelDistance>
+Tier 1 - The stuff locked behind quests, pretty fuckin' quick.
+
+	<!-- Speed !-->
+	<MoveSpeed>9</MoveSpeed>
+	<SprintModifier>2.1</SprintModifier>
+	<RotateSpeed>300</RotateSpeed>
+	<Acceleration>5</Acceleration>
+	<!-- Carry Weight !-->
+	<MaximumCarryWeight>380</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>1</EncumberenceSpeedModifier>
+	<!-- Food !-->
+	<RequiresFood>true</RequiresFood>
+	<MaximumFood>200</MaximumFood>
+	<!-- The time between food being taken from your mount !-->
+	<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
+	<!-- The amount of food being taken from your mount !-->
+	<PassiveFoodLoss>5</PassiveFoodLoss>
+	<!-- The amount of distance your mount can travel befor needing to use some food !-->
+	<TravelDistanceThreshold>150</TravelDistanceThreshold>
+	<!-- The amount of food being taken from your mount !-->
+	<FoodLostPerTravelDistance>20</FoodLostPerTravelDistance>
+
+Tier 2 - The stuff locked behind recipes gained from unique enemy fights, stupidly potentianlly game breakingly fast.
+
+	<!-- Speed !-->
+	<MoveSpeed>10</MoveSpeed>
+	<SprintModifier>2</SprintModifier>
+	<RotateSpeed>300</RotateSpeed>
+	<Acceleration>6</Acceleration>
+	<!-- Carry Weight !-->
+	<MaximumCarryWeight>500</MaximumCarryWeight>
+	<CarryWeightEncumberenceLimit>1</CarryWeightEncumberenceLimit>
+	<EncumberenceSpeedModifier>1</EncumberenceSpeedModifier>
+	<!-- Food !-->
+	<RequiresFood>true</RequiresFood>
+	<MaximumFood>200</MaximumFood>
+	<!-- The time between food being taken from your mount !-->
+	<PassiveFoodLossTickTime>160</PassiveFoodLossTickTime>
+	<!-- The amount of food being taken from your mount !-->
+	<PassiveFoodLoss>10</PassiveFoodLoss>
+		<!-- The amount of distance your mount can travel befor needing to use some food !-->
+	<TravelDistanceThreshold>200</TravelDistanceThreshold>
+		<!-- The amount of food being taken from your mount !-->
+	<FoodLostPerTravelDistance>20</FoodLostPerTravelDistance>
