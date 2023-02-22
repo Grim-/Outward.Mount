@@ -49,9 +49,19 @@ namespace EmoMount.Mount_Components
             Controller = null;
         }
 
+        public virtual bool CanRun(BasicMountController Controller)
+        {
+            if (Controller.IsTransform)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void OnDestroy()
         {
-            OnRemove(Controller);
+           // OnRemove(Controller);
         }
     }
 

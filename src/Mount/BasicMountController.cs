@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using EmoMount.Mount_Components;
 using Random = UnityEngine.Random;
 
 namespace EmoMount
@@ -36,10 +37,7 @@ namespace EmoMount
         {
             get; private set;
         }
-        //public Item BagContainer
-        //{
-        //    get; private set;
-        //}
+
         public MountFood MountFood
         {
             get; private set;
@@ -147,6 +145,8 @@ namespace EmoMount
         public Color CurrentTintColor => SkinnedMeshRenderer.material.GetColor("_TintColor");
         public Color CurrentEmissionColor => SkinnedMeshRenderer.material.GetColor("_EmissionColor");
 
+        public Transform MountPoint => transform.FindInAllChildren("SL_MOUNTPOINT");
+
         #endregion
 
         public Action OnSpawnComplete;
@@ -177,9 +177,6 @@ namespace EmoMount
         #endregion
 
         public bool IsTransform = false;
-
-
-
         public float LeashDistance => EmoMountMod.LeashDistance.Value;
         //A Point is randomly chosen in LeashPointRadius around player to leash to.
         public float LeashPointRadius => EmoMountMod.LeashRadius.Value;
@@ -622,6 +619,14 @@ namespace EmoMount
             mountInstanceData.MountSpecies = SpeciesName;
             mountInstanceData.CurrentFood = MountFood.CurrentFood;
             mountInstanceData.MaximumFood = MountFood.MaximumFood;
+
+
+            AgeComp AgeComp = GetComponent<AgeComp>();
+            if (AgeComp)
+            {
+                mountInstanceData.AgeInSeconds = AgeComp.AgeInHours;
+            }
+
             mountInstanceData.Position = transform.position;
             mountInstanceData.Rotation = transform.eulerAngles;
             mountInstanceData.TintColor = CurrentTintColor;
@@ -668,11 +673,11 @@ namespace EmoMount
         private void TryToParent(Character _affectedCharacter, GameObject MountInstance)
         {
             //probably insanely inefficient, or uses some bizzare form of windings to find the transform, who knows with extension methods :shrug:
-            Transform mountPointTransform = transform.FindInAllChildren("SL_MOUNTPOINT");
+            //Transform mountPointTransform = transform.FindInAllChildren("SL_MOUNTPOINT");
 
-            if (mountPointTransform != null)
+            if (MountPoint != null)
             {
-                _affectedCharacter.transform.parent = mountPointTransform;
+                _affectedCharacter.transform.parent = MountPoint;
                 _affectedCharacter.transform.localPosition = Vector3.zero;
                 _affectedCharacter.transform.localEulerAngles = Vector3.zero;
             }

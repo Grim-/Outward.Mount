@@ -64,6 +64,13 @@ namespace EmoMount.Mount_Components
             EmoMountMod.Instance.OnGameHourPassed -= OnGameHourPassed;
         }
 
+        public void SetAge(int newAge)
+        {
+            AgeInHours = newAge;
+
+            UpdateScale();
+        }
+
         private void UpdateScale()
         {
             Controller.transform.localScale = new Vector3(CurrentTargetScale, CurrentTargetScale, CurrentTargetScale);
@@ -74,7 +81,7 @@ namespace EmoMount.Mount_Components
     public class AgeCompProp : MountCompProp
     {
         [XmlElement("AgeModifier")]
-        public float AgeModifier;
+        public float AgeModifier = 1f;
         [XmlAttribute("BabyScale")]
         public float BabyScale = 0.4f;
         [XmlAttribute("JuvenileScale")]

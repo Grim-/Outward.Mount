@@ -281,11 +281,11 @@ namespace EmoMount
         /// <summary>
         /// Creates a new Mount in the scene next to the Owner Player from SaveData. If SetAsActive is true this also calls MountCanvasManager.RegisterMount and sets the mount as the CurrentActiveMount for the Character.
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="CharacterMount"></param>
         /// <param name="mountInstanceData"></param>
         /// <param name="SetAsActive"></param>
         /// <returns></returns>
-        public BasicMountController CreateMountFromInstanceData(Character character, MountInstanceData mountInstanceData, Vector3 Position, Vector3 Rotation, bool SetAsActive = true, Action<BasicMountController> OnMountSpawnComplete = null)
+        public BasicMountController CreateMountFromInstanceData(CharacterMount CharacterMount, MountInstanceData mountInstanceData, Vector3 Position, Vector3 Rotation, bool SetAsActive = true, Action<BasicMountController> OnMountSpawnComplete = null)
         {
             if (mountInstanceData == null)
             {
@@ -293,7 +293,7 @@ namespace EmoMount
                 return null;
             }
 
-            BasicMountController basicMountController = CreateMountForCharacter(character, mountInstanceData.MountSpecies, Position, Rotation, mountInstanceData.TintColor, mountInstanceData.EmissionColor, SetAsActive);
+            BasicMountController basicMountController = CreateMountForCharacter(CharacterMount.Character, mountInstanceData.MountSpecies, Position, Rotation, mountInstanceData.TintColor, mountInstanceData.EmissionColor, SetAsActive);
 
 
             if (basicMountController == null)
@@ -308,6 +308,13 @@ namespace EmoMount
             basicMountController.MountFood.CurrentFood = mountInstanceData.CurrentFood;
             basicMountController.MountFood.MaximumFood = mountInstanceData.MaximumFood;
 
+            AgeComp AgeComp = basicMountController.GetComponent<AgeComp>();
+
+            if (AgeComp)
+            {
+                AgeComp.SetAge((int)mountInstanceData.AgeInSeconds);
+            }
+
             basicMountController.SetTintColor(mountInstanceData.TintColor);
             basicMountController.SetEmissionColor(mountInstanceData.EmissionColor);
 
@@ -315,7 +322,7 @@ namespace EmoMount
             if (SetAsActive)
             {
                 EmoMountMod.MainCanvasManager.RegisterMount(basicMountController);
-                character.GetComponent<CharacterMount>().SetActiveMount(basicMountController);
+                CharacterMount.SetActiveMount(basicMountController);
             }
 
             basicMountController.OnSpawnComplete += () =>

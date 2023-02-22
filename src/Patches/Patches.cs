@@ -36,8 +36,12 @@ namespace EmoMount
         {
             foreach (var item in EmoMountMod.MountManager.MountControllers)
             {
+                if (item.Value.CurrentlyMountedCharacter != null)
+                {
+                    item.Value.DismountCharacter(item.Value.CurrentlyMountedCharacter);
+                }
                 //EmoMountMod.Log.LogMessage($"Dismount {item.Key} from {item.Value.MountName} before defeat scenario");
-                item.Value.DismountCharacter(item.Value.CharacterOwner);
+              
             }
         }
     }
@@ -53,7 +57,7 @@ namespace EmoMount
 
                 if (characterMount)
                 {
-                    if (characterMount.HasActiveMount && characterMount.IsMounted)
+                    if (characterMount.ActiveMount && characterMount.ActiveMount.CurrentlyMountedCharacter == __instance && characterMount.IsMounted)
                     {
                         EmoMountMod.Log.LogMessage($"Character died while mounted, dismounting.");
                         characterMount.ActiveMount.DismountCharacter(__instance);
@@ -79,10 +83,19 @@ namespace EmoMount
                         return;
                     }
 
+                    if (characterMount.IsMounted)
+                    {
+                        characterMount.ActiveMount.DismountCharacter(characterMount.ActiveMount.CurrentlyMountedCharacter);
+                    }
+
                     //only teleport if the player is not mounted on the active mount
-                    if (!characterMount.IsMounted)
+                    if (characterMount.ActiveMount.CurrentlyMountedCharacter != __instance)
                     {
                         characterMount.ActiveMount.Teleport(_pos, _rot);
+                    }
+                    else
+                    {
+                        EmoMountMod.Log.LogMessage($"Character is mounted while teleport is sent, died while mounted, dismounting.");
                     }
 
                    

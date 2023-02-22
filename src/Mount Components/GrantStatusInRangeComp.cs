@@ -20,6 +20,13 @@ namespace EmoMount.Mount_Components
         {
             base.OnApply(BasicMountController);
 
+
+            if (BasicMountController.IsTransform)
+            {
+                return;
+            }
+
+
             BasicMountController.EventComp.OnDodgeDown += OnDodge;
         }
 
@@ -30,14 +37,12 @@ namespace EmoMount.Mount_Components
 
         public override void Update()
         {
-            base.Update();
-
-            if (string.IsNullOrEmpty(StatusName))
+            if (string.IsNullOrEmpty(StatusName) || Controller == null || Controller.CharacterOwner == null || Controller.IsTransform)
             {
                 return;
             }
 
-            if (ISActive && Controller.CharacterOwner != null)
+            if (ISActive)
             {
                 if (Controller.DistanceToOwner <= Radius)
                 {
@@ -57,9 +62,9 @@ namespace EmoMount.Mount_Components
                 return;
             }
 
-            StatusEffect statusEffectPrefab = ResourcesPrefabManager.Instance.GetStatusEffectPrefab(StatusName);
+           // StatusEffect statusEffectPrefab = ResourcesPrefabManager.Instance.GetStatusEffectPrefab(StatusName);
 
-            if (statusEffectPrefab != null && !Character.StatusEffectMngr.HasStatusEffect(StatusName))
+            if (!Character.StatusEffectMngr.HasStatusEffect(StatusName))
             {
                 StatusEffect statusEffect = Character.StatusEffectMngr.AddStatusEffect(StatusName);
                 GrantedStatusUID = statusEffect.UID;

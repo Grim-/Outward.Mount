@@ -104,7 +104,7 @@ namespace EmoMount
             if (StoredMounts != null && HasStoredMount(MountUID))
             {
                 MountInstanceData mountInstanceData = GetStoredMountData(MountUID);
-                BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(Character, mountInstanceData, Character.transform.position, Character.transform.eulerAngles);
+                BasicMountController basicMountController =  EmoMountMod.MountManager.CreateMountFromInstanceData(this, mountInstanceData, Character.transform.position, Character.transform.eulerAngles);
                 StoredMounts.Remove(MountUID);
                 return basicMountController;
             }

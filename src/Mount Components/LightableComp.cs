@@ -57,6 +57,11 @@ namespace EmoMount.Mount_Components
             }
         }
 
+        public override bool CanRun(BasicMountController Controller)
+        {
+            return true;
+        }
+
     }
 
     [XmlType("LightableCompProp")]

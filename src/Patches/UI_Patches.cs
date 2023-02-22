@@ -21,7 +21,11 @@ namespace EmoMount.Patches
 
                 if (characterMount && characterMount.ActiveMount)
                 {
-                    __result.Add(69696969);              
+                    if (__instance.m_pendingItem != null && __instance.m_pendingItem is Food)
+                    {
+                        __result.Add(69696969);
+                    }
+                                 
                 }
             }
 

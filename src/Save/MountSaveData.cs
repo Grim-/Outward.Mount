@@ -92,7 +92,7 @@ namespace EmoMount
             {
                 OutwardHelpers.DelayDo(() =>
                 {
-                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(character, this.ActiveMountInstance, OutwardHelpers.GetRandomPositionAroundCharacter(character), characterMount.transform.eulerAngles);
+                    BasicMountController basicMountController = EmoMountMod.MountManager.CreateMountFromInstanceData(characterMount, this.ActiveMountInstance, OutwardHelpers.GetRandomPositionAroundCharacter(character), characterMount.transform.eulerAngles);
                 }, 10f);
             }      
         }

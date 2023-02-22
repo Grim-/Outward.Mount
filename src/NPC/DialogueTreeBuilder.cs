@@ -125,10 +125,9 @@ namespace EmoMount
 
         public static ConditionNode SetCondition(this ConditionNode sourceNode, ConditionTask Condition)
         {
-            if (Condition != null) sourceNode.task = Condition;
+            if (Condition != null) sourceNode.condition = Condition;
             return sourceNode;
         }
-
 
         public static DTNode OnSuccess(this ConditionNode sourceNode, DialogueTree DT, DTNode SuccessfulNode)
         {

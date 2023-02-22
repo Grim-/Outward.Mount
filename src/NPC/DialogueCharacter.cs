@@ -1,8 +1,5 @@
-﻿using NodeCanvas.DialogueTrees;
-using NodeCanvas.Framework;
-using SideLoader;
+﻿using SideLoader;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -67,27 +64,5 @@ namespace EmoMount
             
             return template;
         }
-    }
-
-    public class StableMaster : DialogueCharacter
-    {
-        public List<string> BuddySpecies = new List<string>
-        {
-            "PearlBird"
-        };
-
-        public string SellText = "I can sell you a PearlBird Egg for 300 silver, keep it on you for 12 hours and it will hatch.";
-        public int EggItemID = -26202;
-        public int SellPrice = 300;
-
-        public bool SellsWhistle = false;
-        public int SellableID = -26202;
-
-        public bool HasUniqueSellable = false;
-        public int UniqueSellableID = -26203;
-        public string UniqueSellableQuestEventID = string.Empty;
-
-
-        public bool SpawnMountsInLineUp = false;
     }
 }

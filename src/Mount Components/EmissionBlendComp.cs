@@ -19,7 +19,7 @@ namespace EmoMount.Mount_Components
 
         private SkinnedMeshRenderer CachedRenderer;
 
-        private bool CanRun = true;
+        private bool IsRunning = true;
         private bool ShouldReverse = false;
 
         public override void OnApply(BasicMountController BasicMountController)
@@ -33,9 +33,9 @@ namespace EmoMount.Mount_Components
 
         private void OnDodgeKey(BasicMountController MountController, Character obj)
         {
-            CanRun = !CanRun;
+            IsRunning = !IsRunning;
 
-            if (CanRun == false)
+            if (IsRunning == false)
             {
                 Controller.DisableEmission();
             }
@@ -45,7 +45,7 @@ namespace EmoMount.Mount_Components
         {
             base.Update();
 
-            if (CachedRenderer && CanRun)
+            if (CachedRenderer && IsRunning)
             {
                 if (Timer >= BlendTime)
                 {
@@ -66,6 +66,11 @@ namespace EmoMount.Mount_Components
 
                 Timer += Time.deltaTime;
             }     
+        }
+
+        public override bool CanRun(BasicMountController Controller)
+        {
+            return true;
         }
     }
 

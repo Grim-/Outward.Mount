@@ -44,12 +44,15 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
             EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Character has an active mount");
             newMount = EmoMountMod.MountManager.CreateMountFromSpecies(SpeciesID, Vector3.zero, Vector3.zero, Color.clear, Color.clear);
             SetTintColour(newMount, mountSpecies);
+            Character.CharacterUI.ShowInfoNotification($"Your newly hatched {mountSpecies.SpeciesName} was sent to the stables!");
             CharacterMount.StoreMount(newMount);
+
         }
         else
         {
             EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Character has no active mount");
             newMount = EmoMountMod.MountManager.CreateMountForCharacter(Character, SpeciesID, Character.transform.position, Character.transform.eulerAngles);
+            Character.CharacterUI.ShowInfoNotification($"{mountSpecies.SpeciesName} has just hatched!");
             SetTintColour(newMount, mountSpecies);
         }
 

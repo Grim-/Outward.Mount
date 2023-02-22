@@ -12,8 +12,10 @@ namespace EmoMount
         public string BagUID;
         public float CurrentFood;
         public float MaximumFood;
+        public float AgeInSeconds;
         public Vector3 Position;
         public Vector3 Rotation;
+        public Vector3 Scale;
         public Color TintColor;
         public Color EmissionColor;
 

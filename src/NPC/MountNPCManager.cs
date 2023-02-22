@@ -35,15 +35,21 @@ namespace EmoMount
                 {
                     "PearlBird",
                     "SilverPearlBird",
-                    "GoldenPearlBird",
-                    "BlackPearlBird"
+                    "PearlBird",
+                    "PearlBird"
                 },
-                SpawnMountsInLineUp = true,
-                HasUniqueSellable = true,
+                //PearlBird Egg Basic
+                BuyItemID = -26202,
+                BuyText = $"I have a spare PearlBird egg for sale, 500 silver - have you ever tried training a PearlBird? That's a bargain.",
+                BuyPrice = 500,
+                HasUniqueBuyable = true,
                 //vendavel succeded
-                UniqueSellableQuestEventID = "HQkEW3Dz2U-MFBNzI73tqg",
+                UniqueBuyQuestID = 7011004,
                 //alpha coral horn
-                UniqueSellableID = -26302
+                UniqueBuyableID = -26302,
+                UniqueBuyText =  $"I have some <color=green>Alpha CoralHorns</color> for sale since you helped with those bastards in Vendavel - for you 500 silver.",
+                UniqueSellableHint = $"Sorry I cannot ensure I can feed my own <color=green>Alpha CoralHorns</color> I already have due to the problems we've been having with that lot of gits in Vendavel bloody Bandit 'Fortress'," +
+                $" the last feed merchant through thought it was a bloody inn! Got robbed of everything.. if they were gone on the other hand..."
             },
             new StableMaster()
             {
@@ -60,7 +66,11 @@ namespace EmoMount
                 {
                     Gender =  Character.Gender.Female
                 },
-                StartingPose = Character.SpellCastType.IdleAlternate
+                StartingPose = Character.SpellCastType.IdleAlternate,
+                BuyItemID = -26310,
+                BuyPrice = 500,
+                BuyText = $"I can sell you a <color=red>Tuanosaur</color egg - due to hatch very soon! 500 silver, I am required by local by-law to state these little buggers nip.",
+                HasUniqueBuyable = false
             },
             new StableMaster()
             {
@@ -74,10 +84,16 @@ namespace EmoMount
                 BootsID = 3100092,
                 WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
+                BuyItemID = -26309,
+                BuyPrice = 500,
+                BuyText = $"I can sell you the whistle for this <color=green>Coral Horn Doe</color>, 500 silver.",
                 //bring back a manticore tail quest event
-                HasUniqueSellable = true,
-                UniqueSellableQuestEventID = "PTBnA_hYoUaK0O2CrLeXgw",
-                UniqueSellableID = -26314
+                HasUniqueBuyable = true,
+                UniqueBuyQuestID = 7011606,
+                //JewelBird???
+                UniqueBuyableID = -26314,
+                UniqueBuyText =  $"Excellent thank you - Manticore venom has many uses. I can sell you this<color=purple> Jewel Bird</color> Whistle for 800 silver.",
+                UniqueSellableHint = $"If you can help Chef Iasu with his Manticore 'problem'. I might have some nice <color=purple> Jewel Birds </color> I could sell you."
 
             },
             new StableMaster()
@@ -92,10 +108,15 @@ namespace EmoMount
                 BootsID = 3100092,
                 WeaponID = 2100030,
                 StartingPose = Character.SpellCastType.IdleAlternate,
-                HasUniqueSellable = true,
+                BuyItemID = -26307,
+                BuyPrice = 500,
+                BuyText = "I can sell you the whistle for a <color=yellow>Crescent Shark</color>, great for desert travel, 500 silver!",
+                HasUniqueBuyable = true,
                 //bring back shark cartilage
-                UniqueSellableQuestEventID = "sAAoDYrFj0mVcsYfqanDJg",
-                UniqueSellableID = -26315
+                UniqueBuyQuestID = 7011613,
+                UniqueBuyableID = -26315,
+                UniqueSellableHint = $"Chef Tenno wants some shark fins bringing back, I need someone to thin them out a bit, speak with me after you've helped Chef Tenno out and I can sell you an <color=yellow>Elite Crescent Shark</color>.",
+                UniqueBuyText =  $"Thanks for your help the deserts are a little safer for travelers thanks to you. I can sell you this particular variant of the <color=yellow>Elite Crescent Shark</color> for 800 silver."
             },
             new StableMaster()
             {
@@ -120,15 +141,18 @@ namespace EmoMount
                 {
                     "PearlBird"
                 },
-                SpawnMountsInLineUp = false
+                BuyItemID = -26305,
+                BuyPrice = 500,
+                BuyText = "I can sell you the controller for a <color=cyan> Beast Golem </color> for 500 Silver.",
+                HasUniqueBuyable = false
             },
             new StableMaster()
             {
                 UID = "emomount.mountcharactercaldera",
                 Name = "Schnabeldoktor, New Sirocco Stable Master",
                 SpawnSceneBuildName = "NewSirocco",
-                SpawnPosition = new(-39.7222f, 0.2239f, 120.0354f),
-                SpawnRotation = new(0, 218f, 0),
+                SpawnPosition = new(46.7443f, 55.8582f, -68.3737f),
+                SpawnRotation = new(0, 295f, 0),
                 HelmetID = 3100261,
                 ChestID = 3100260,
                 BootsID = 3100262,
@@ -141,7 +165,12 @@ namespace EmoMount
                     HairStyleIndex = 8,
                     HairColorIndex = 4,
                     HeadVariationIndex = 4
-                }
+                },
+                 
+                BuyItemID = -26306,
+                BuyPrice = 500,
+                BuyText = "I can sell you the whistle for a <color=red> Fire Beetle</color>, for a mere 500 silver!",
+                HasUniqueBuyable = false
             }
 
         };
@@ -159,12 +188,12 @@ namespace EmoMount
             }
         }
 
-        private void SetupNPC(StableMaster DialogueCharacter)
+        private void SetupNPC(StableMaster StableMaster)
         {
-            EmoMountMod.Log.LogMessage($"EmoMountMod :: Setting up NPC {DialogueCharacter.Name}");
+            EmoMountMod.Log.LogMessage($"EmoMountMod :: Setting up NPC {StableMaster.Name}");
 
             // Create and apply the template
-            var template = DialogueCharacter.CreateAndApplyTemplate((SL_Character SLTemplate, Character Character, string RPCData) =>
+            var template = StableMaster.CreateAndApplyTemplate((SL_Character SLTemplate, Character Character, string RPCData) =>
             {
                 EmoMountMod.Log.LogMessage($"EmoMountMod :: Applying Template to  {SLTemplate.Name}");
 
@@ -186,8 +215,8 @@ namespace EmoMount
                 actors[0].name = ourActor.name;
 
 
-                BuildDialouge((DialogueTree)graph, Character, DialogueCharacter.SellText, DialogueCharacter.SellableID, DialogueCharacter.SellPrice, DialogueCharacter.UniqueSellableQuestEventID, DialogueCharacter.UniqueSellableID);
-                CreateBuddySpeciesForStableMaster(DialogueCharacter, Character);
+                StableMaster.BuildDialogueForCharacter((DialogueTree)graph, Character);
+                CreateBuddySpeciesForStableMaster(StableMaster, Character);
             });
 
             template.ShouldSpawn = () => true;
@@ -201,180 +230,10 @@ namespace EmoMount
                 {
                     if (!string.IsNullOrEmpty(DialogueCharacter.BuddySpecies[i]))
                     {
-                        if (DialogueCharacter.SpawnMountsInLineUp)
-                        {
-                            SpawnCharacterMountBuddy(Character, DialogueCharacter.BuddySpecies[i], true, i);
-                        }
-                        else
-                        {
-                            SpawnCharacterMountBuddy(Character, DialogueCharacter.BuddySpecies[i]);
-                        }
-
+                      DialogueCharacter.SpawnCharacterMountBuddy(Character, DialogueCharacter.BuddySpecies[i], i, true);
                     }
                 }
             }
-        }
-
-        private void BuildDialouge(DialogueTree graph, Character character, string BuyText, int BuyItemID, int BuyItemCost, string UniqueCreatureEvent = "", int UniqueBuyItemID = -1)
-        {
-            DialogueTreeBuilder dialogueTreeBuilder = new DialogueTreeBuilder(graph);
-            ((DialogueTreeExt)graph).SetCanBenInterrupted(false);
-
-            //You must always set the intial statement
-            StatementNodeExt InitialStatement = dialogueTreeBuilder.SetInitialStatement("Welcome traveler.");
-
-
-            #region Initial Choice
-            MultipleChoiceNodeExt initialChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
-                {
-                    "Can you look after my current mount?",
-                    "I want to retrieve a mount.",
-                    "Can you teach me some mount skills?",
-                    "I want to buy some color berries",
-                    "Do you have any creatures for sale?",
-                    "Do you have any unique creatures for sale?"
-                },
-                new ConditionTask[]
-                    {
-                    new CharacterHasActiveMountConditionNode(),
-                    new CharacterHasNOActiveMountConditionNode(),
-                    null,
-                    null,
-                    null,
-                    new HasQuestEventTriggered()
-                    {
-                        EventUID = UniqueCreatureEvent
-                    }
-                });
-
-
-
-            //you must connect the inital statement and inital node
-            graph.ConnectNodes(InitialStatement, initialChoice);
-            #endregion
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 0, "Aye, that I can do.", new DismissMountActionNode());
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 1, "Here's a list of what you have in my stables.", new DisplayMountStorageListNode());
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 2, "Heres watcha do...", new LearnMountSkillsNode());
-
-            #region COlor Berry Choice
-
-            MultipleChoiceNodeExt ColorBerryChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
-            {
-                "Red?",
-                "Green?",
-                "Blue?",
-                "Cyan?",
-                "Purple?",
-                "Yellow?",
-                "Black?",
-                "Reset? (removes current tint if any)"
-            });
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, "There are many available, take a look", ColorBerryChoice);
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 0, "Cheers", new GiveItem(-26280))
-                 .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 1, "Cheers", new GiveItem(-26281))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 2, "Cheers", new GiveItem(-26282))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 3, "Cheers", new GiveItem(-26283))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 4, "Cheers", new GiveItem(-26284))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 5, "Cheers", new GiveItem(-26285))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 6, "Cheers", new GiveItem(-26287))
-                .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
-
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 7, "Cheers", new GiveItem(-26286))
-                .ConnectTo(graph, new RemoveMoneyAction(1));
-
-
-            #endregion
-
-           var InitialBuyStatement = dialogueTreeBuilder.AddAnswerToMultipleChoice<StatementNodeExt>(initialChoice, 4, $"I can sell you a mount for {BuyItemCost}", dialogueTreeBuilder.CreateNPCStatement($"I can sell you a mount for {BuyItemCost}"));
-
-            ConditionNode BuyChoice = graph.AddNode<ConditionNode>();
-
-            BuyChoice.SetCondition(new HasCurrency()
-            {
-                AmountRequired = BuyItemCost
-            });
-
-            InitialBuyStatement.ConnectTo(graph, BuyChoice);
-
-            BuyChoice.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement("Thank you."))
-            .ConnectTo(graph, new RemoveMoneyAction(BuyItemCost))
-            .ConnectTo(graph, new GiveItem(BuyItemID));
-
-            BuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."));
-
-
-            var InitialUniqueBuyStatement = dialogueTreeBuilder.AddAnswerToMultipleChoice<DTNode>(initialChoice, 5, $"You have proven yourself capable, I can sell it to you a more unique mount for {BuyItemCost}.", dialogueTreeBuilder.CreateNPCStatement($"I can sell you a mount for {BuyItemCost}"));
-            ConditionNode UniqueBuyChoice = graph.AddNode<ConditionNode>();
-
-            InitialUniqueBuyStatement.ConnectTo(graph, UniqueBuyChoice);
-            UniqueBuyChoice.SetCondition(new HasCurrency(BuyItemCost));
-
-            UniqueBuyChoice.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement("Thank you."))
-            .ConnectTo(graph, new RemoveMoneyAction(BuyItemCost))
-            .ConnectTo(graph, new GiveItem(UniqueBuyItemID));
-
-            UniqueBuyChoice.OnFailure(graph, dialogueTreeBuilder.CreatePlayerStatement($"I don't seem to have enough silver, I'll return when I have {BuyItemCost} silver."));
-        }
-
-
-
-        private void SpawnCharacterMountBuddy(Character character, string SpeciesName, bool SpawnInARow = false, int CurrentIndex = 0)
-        {
-            OnDestroyComp onDestroyComp = character.gameObject.AddComponent<OnDestroyComp>();
-            MountSpecies mountSpecies = EmoMountMod.MountManager.GetSpeciesDefinitionByName(SpeciesName);
-            Vector3 FinalPosition = Vector3.zero;
-
-            if (mountSpecies != null)
-            {
-                GameObject MountPrefab = OutwardHelpers.GetFromAssetBundle<GameObject>("mount", mountSpecies.AssetBundleName, mountSpecies.PrefabName);
-
-                if (MountPrefab)
-                {
-                    if(SpawnInARow)
-                    {
-                        FinalPosition = GetPositionInLineUp(character.transform.position + new Vector3(0,0, 2f), 2f, CurrentIndex);
-                    }
-                    else
-                    {
-                        FinalPosition = character.transform.position + (UnityEngine.Random.insideUnitSphere * 6f);
-                    }
-
-                    onDestroyComp.MountVisualInstance = GameObject.Instantiate(MountPrefab);
-                    FinalPosition.y = character.transform.position.y;
-                    onDestroyComp.MountVisualInstance.transform.position = FinalPosition;
-
-                    EmoMountMod.Log.LogMessage($"Spawned {SpeciesName} for {character.Name}");
-
-                    if (SpawnInARow)
-                    {
-                        onDestroyComp.MountVisualInstance.transform.forward = character.transform.forward;
-                    }
-                    else
-                    {
-                        onDestroyComp.MountVisualInstance.transform.LookAt(character.transform);
-                    }                  
-                }
-            }
-        }
-
-        private Vector3 GetPositionInLineUp(Vector3 Origin, float Spacing, int CurrentIndex)
-        {
-            return Origin + new Vector3(0, 0, Spacing * CurrentIndex);
         }
     }
 }

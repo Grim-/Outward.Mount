@@ -362,12 +362,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Custom SL Effect\SL_AddDrop.cs" />
-    <Compile Include="Custom SL Effect\SL_ChangeMountEmissionColor.cs" />
+    <Compile Include="Custom SL Effect\SL_MountRandomEmission.cs" />
     <Compile Include="Custom SL Effect\SL_ChangeMountTint.cs" />
     <Compile Include="Custom SL Effect\SL_DismissActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_GrantQuest.cs" />
     <Compile Include="Custom SL Effect\SL_SummonActiveMount.cs" />
     <Compile Include="Custom SL Effect\SL_TransformIntoMount.cs" />
+    <Compile Include="Mount Components\DecorationComp.cs" />
     <Compile Include="Mount Components\GrantStatusInRangeComp.cs" />
     <Compile Include="Mount Components\MountEventComp.cs" />
     <Compile Include="Mount Components\SerializableColor.cs" />
@@ -386,10 +387,10 @@
     <Compile Include="NPC\HasQuestEventTriggered.cs" />
     <Compile Include="NPC\MountNPCManager.cs" />
     <Compile Include="NPC\OnDestroyComp.cs" />
+    <Compile Include="NPC\StableMaster.cs" />
     <Compile Include="Patches\DropOnCharacterDeath.cs" />
     <Compile Include="Patches\EventPatches.cs" />
     <Compile Include="Patches\ItemDrop_Patches.cs" />
-    <Compile Include="Patches\NPC_Patches.cs" />
     <Compile Include="Patches\UI_Patches.cs" />
     <Compile Include="Quest\EggQuestMap.cs" />
     <Compile Include="Quest\GenerateMountFromEgg.cs" />

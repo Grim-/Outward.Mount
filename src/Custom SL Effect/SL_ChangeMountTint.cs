@@ -31,6 +31,11 @@ namespace EmoMount.Custom_SL_Effect
 
             if (characterMount != null && characterMount.HasActiveMount && !characterMount.ActiveMountDisabled)
             {
+                if (characterMount.ActiveMountDisabled)
+                {
+                    characterMount.EnableActiveMount();
+                }
+
                 characterMount.ActiveMount.SetTintColor(TintColor);
             }
             else

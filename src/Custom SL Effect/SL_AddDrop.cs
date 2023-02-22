@@ -43,14 +43,14 @@ namespace EmoMount.Custom_SL_Effect
                             MaxQty = 1
                         }
                 },
-                    UID = "SOMEUID"
+                    UID = DropTableUID
                 };
                 dropTable.ApplyTemplate();
                 EmoMountMod.Log.LogMessage($"Adding {dropTable.UID} to {_affectedCharacter.UID} ({_affectedCharacter.Name})");
 
                 _affectedCharacter.Inventory.MakeLootable(false, true, true, false);
 
-                dropTable.AddAsDropableToGameObject(_affectedCharacter.Inventory.Pouch.gameObject, false, "OJWOJDWOJWO");
+                dropTable.AddAsDropableToGameObject(_affectedCharacter.Inventory.Pouch.gameObject, false, Guid.NewGuid().ToString());
                 dropTable.GenerateDrops(_affectedCharacter.Inventory.Pouch.transform);
             }
         }
