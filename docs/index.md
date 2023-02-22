@@ -22,7 +22,7 @@ If you have ever had to programmatically write a node-graph (or any kind of grap
 
     All the **9dot** mounts also have customizable emission (Such as the glowing chest of the Alpha Coral Horn or tentacles of the SandShark).
 
-- Added [Mounts components](https://github.com/Grim-/Outward.Mount/blob/main/docs/MountComponents.md) system allowing players to customize certain aspects of the mount.
+- Added [Mounts components](https://github.com/Grim-/Outward.Mount/blob/main/docs/MountComponents.md) system allowing players to customize certain aspects of the mount, such as adding decoration items or granting buffs to it's owner.
 
 - Added Eggs for certain species where applicable otherwise whistles still remain.
 
