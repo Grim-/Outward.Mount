@@ -1,17 +1,36 @@
 <?xml version="1.0"?>
 <SL_Recipe xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <UID>ObsdidianElementalRecipe</UID>
+  <UID>Summon Obsidian Elemental</UID>
   <StationType>Survival</StationType>
   <Ingredients>
     <Ingredient>
       <Type>AddSpecificIngredient</Type>
-      <SelectorValue>4000230</SelectorValue>
+      <!-- Depleted Obsidian Core !-->
+      <SelectorValue>-26600</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Fire Stone !-->
+      <SelectorValue>6500010</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Fire Stone !-->
+      <SelectorValue>6500010</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Fire Stone !-->
+      <SelectorValue>6500010</SelectorValue>
       <Ingredient_ItemID xsi:nil="true" />
     </Ingredient>
   </Ingredients>
   <Results>
     <ItemQty>
-      <ItemID>4100300</ItemID>
+      <ItemID>-26311</ItemID>
       <Quantity>1</Quantity>
     </ItemQty>
   </Results>

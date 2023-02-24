@@ -38,7 +38,7 @@
 	<EncumberenceSpeedModifier>0</EncumberenceSpeedModifier>
 	<!-- Food !-->
 	<RequiresFood>false</RequiresFood>
-	<MaximumFood>200</MaximumFood>
+	<MaximumFood>1234500</MaximumFood>
 	<!-- The time between food being taken from your mount !-->
 	<PassiveFoodLossTickTime>200</PassiveFoodLossTickTime>
 	<!-- The amount of food being taken from your mount !-->
@@ -69,5 +69,36 @@
 	<GenerateRandomEmission>false</GenerateRandomEmission>
 	<!-- Components !-->
 	<MountComponents>
+		<MountCompProp CompName="DecorationComp" xsi:type="DecorationCompProp">
+			<ItemID>5000060</ItemID>
+			<Position>
+				<x>0</x>
+				<y>0</y>
+				<z>-0.4</z>
+			</Position>
+			<Rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</Rotation>
+			<Scale>
+				<x>0.8</x>
+				<y>0.8</y>
+				<z>0.8</z>
+			</Scale>
+		</MountCompProp>
+		<MountCompProp CompName="DecorationComp" xsi:type="DecorationCompProp">
+			<ItemID>5100110</ItemID>
+			<Position>
+				<x>0.3601</x>
+				<y>0</y>
+				<z>-0.409</z>
+			</Position>
+			<Rotation>
+				<x>0</x>
+				<y>76.1831</y>
+				<z>0</z>
+			</Rotation>
+		</MountCompProp>
 	</MountComponents>
 </MountSpecies>

@@ -26,8 +26,8 @@
 		<z>-2</z>
 	</CameraOffset>
 	<!-- Speed !-->
-	<MoveSpeed>6.5</MoveSpeed>
-	<SprintModifier>1.5</SprintModifier>
+	<MoveSpeed>6</MoveSpeed>
+	<SprintModifier>2</SprintModifier>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>5</Acceleration>
 	<!-- Carry Weight !-->
@@ -67,36 +67,6 @@
 	<GenerateRandomEmission>false</GenerateRandomEmission>
 	<!-- Components !-->
 	<MountComponents>
-		<MountCompProp CompName="EmissionBlendComp" xsi:type="EmissionBlendCompProp">
-			<StartColor>
-				<r>7.2</r>
-				<g>3.01</g>
-				<b>1</b>
-				<a>1</a>
-			</StartColor>
-			<EndColor>
-				<r>3.01</r>
-				<g>1</g>
-				<b>9.01</b>
-				<a>1</a>
-			</EndColor>
-			<BlendTime>10</BlendTime>
-			<ReverseOnComplete>true</ReverseOnComplete>
-		</MountCompProp>
-		<MountCompProp CompName="LightableComp" xsi:type="LightableCompProp">
-			<Position>
-				<x>0</x>
-				<y>1</y>
-				<z>0</z>
-			</Position>
-			<Color>
-				<r>0</r>
-				<g>0.1</g>
-				<b>0.2</b>
-				<a>1</a>
-			</Color>
-			<Intensity>10</Intensity>
-			<Range>5</Range>
-		</MountCompProp>
+		<MountCompProp CompName="GrantStatusInRangeComp" StatusName="Environment Heat Resistance" xsi:type="GrantStatusInRangeCompProp" Radius="15" />
 	</MountComponents>
 </MountSpecies>

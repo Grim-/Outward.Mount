@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<SL_DropTable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UID>MountMod.Drop.ObsidianElemental</UID>
+  <GuaranteedDrops />
+  <RandomTables>
+    <SL_RandomDropGenerator>
+      <MinNumberOfDrops>1</MinNumberOfDrops>
+      <MaxNumberOfDrops>1</MaxNumberOfDrops>
+      <NoDrop_DiceValue>100</NoDrop_DiceValue>
+      <Drops>
+        <SL_ItemDropChance>
+          <MinQty>1</MinQty>
+          <MaxQty>1</MaxQty>
+          <DroppedItemID>-26209</DroppedItemID>
+          <DiceValue>15</DiceValue>
+        </SL_ItemDropChance>
+      </Drops>
+    </SL_RandomDropGenerator>
+  </RandomTables>
+</SL_DropTable>

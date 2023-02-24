@@ -54,6 +54,8 @@ namespace EmoMount
                 Backpack_ID = BackpackID,
             };
 
+            template.CharacterVisualsData = CharVisualData;
+
             template.ApplyTemplate();
 
 

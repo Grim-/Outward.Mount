@@ -29,6 +29,11 @@ namespace EmoMount.Mount_Components
             {
                 base.OnApply(BasicMountController);
 
+                if (BasicMountController.IsTransform)
+                {
+                    return;
+                }
+
                 if (DecorationInstance == null)
                 {
                     Item Item = ResourcesPrefabManager.Instance.GetItemPrefab(ItemID);

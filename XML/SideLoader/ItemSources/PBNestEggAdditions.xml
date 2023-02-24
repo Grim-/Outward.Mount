@@ -5,6 +5,6 @@
     <string>DT_PearlbirdNest</string>
   </SelectorTargets>
   <DropTableUIDsToAdd>
-    <string>PBNesEggDT</string>
+    <string>MountMod.Nest.PBNesEggDT</string>
   </DropTableUIDsToAdd>
 </SL_DropTableAddition>

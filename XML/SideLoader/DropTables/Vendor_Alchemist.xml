@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<SL_DropTable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UID>MountMod.Vendor.Alchemist</UID>
+  <GuaranteedDrops>
+    <SL_ItemDrop>
+      <MinQty>1</MinQty>
+      <MaxQty>1</MaxQty>
+      <DroppedItemID>-26601</DroppedItemID>
+    </SL_ItemDrop>
+    <SL_ItemDrop>
+      <MinQty>1</MinQty>
+      <MaxQty>1</MaxQty>
+      <DroppedItemID>-26608</DroppedItemID>
+    </SL_ItemDrop>
+    <SL_ItemDrop>
+      <MinQty>100</MinQty>
+      <MaxQty>100</MaxQty>
+      <DroppedItemID>-26613</DroppedItemID>
+    </SL_ItemDrop>
+  </GuaranteedDrops>
+  <RandomTables />
+</SL_DropTable>

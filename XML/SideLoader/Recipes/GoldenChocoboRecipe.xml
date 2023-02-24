@@ -5,7 +5,26 @@
   <Ingredients>
     <Ingredient>
       <Type>AddSpecificIngredient</Type>
-      <SelectorValue>4000230</SelectorValue>
+      <!-- Living Gold !-->
+      <SelectorValue>-26201</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Base PB Egg !-->
+      <SelectorValue>-26602</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Mana Stone !-->
+      <SelectorValue>6400130</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Mana Stone !-->
+      <SelectorValue>6400130</SelectorValue>
       <Ingredient_ItemID xsi:nil="true" />
     </Ingredient>
   </Ingredients>

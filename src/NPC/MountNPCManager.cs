@@ -127,7 +127,7 @@ namespace EmoMount
                 SpawnRotation = new(0, 156.0281f, 0),
                 HelmetID = 3100261,
                 ChestID = 3100260,
-                BootsID = 3100262,
+                BootsID = 3100252,
                 WeaponID = 2140080,
                 StartingPose = Character.SpellCastType.IdleAlternate,
                 CharVisualData = new SideLoader.SL_Character.VisualData()
@@ -153,14 +153,14 @@ namespace EmoMount
                 SpawnSceneBuildName = "NewSirocco",
                 SpawnPosition = new(46.7443f, 55.8582f, -68.3737f),
                 SpawnRotation = new(0, 295f, 0),
-                HelmetID = 3100261,
-                ChestID = 3100260,
+                HelmetID = 3000303,
+                ChestID =  3000360,
                 BootsID = 3100262,
-                WeaponID = 2140080,
+                WeaponID = 2150051,
                 StartingPose = Character.SpellCastType.IdleAlternate,
                 CharVisualData = new SideLoader.SL_Character.VisualData()
                 {
-                    Gender = Character.Gender.Female,
+                    Gender = Character.Gender.Male,
                     SkinIndex = 2,
                     HairStyleIndex = 8,
                     HairColorIndex = 4,

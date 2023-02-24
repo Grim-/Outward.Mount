@@ -6,13 +6,13 @@
   <Description>Use this to hatch yourself a new friend!</Description>
   <LegacyItemID>-1</LegacyItemID>
   <IsPickable>true</IsPickable>
-  <IsUsable>false</IsUsable>
+  <IsUsable>true</IsUsable>
   <QtyRemovedOnUse>0</QtyRemovedOnUse>
   <GroupItemInDisplay>false</GroupItemInDisplay>
   <HasPhysicsWhenWorld>false</HasPhysicsWhenWorld>
   <RepairedInRest>true</RepairedInRest>
   <BehaviorOnNoDurability>NotSet</BehaviorOnNoDurability>
-  <CastType>SummonGhost</CastType>
+  <CastType>NONE</CastType>
   <CastModifier>Immobilized</CastModifier>
   <CastLocomotionEnabled>false</CastLocomotionEnabled>
   <MobileCastMovementMult>-1</MobileCastMovementMult>
@@ -21,6 +21,25 @@
   <Tags>
     <string>Item</string>
   </Tags>
+  <EffectBehaviour>Destroy</EffectBehaviour>
+  <EffectTransforms>
+    <SL_EffectTransform>
+      <TransformName>Normal</TransformName>
+      <Position xsi:nil="true" />
+      <Rotation xsi:nil="true" />
+      <Scale xsi:nil="true" />
+      <Effects>
+        <SL_Effect xsi:type="SL_GrantQuest">
+          <Delay>0</Delay>
+          <SyncType>OwnerSync</SyncType>
+          <OverrideCategory>None</OverrideCategory>
+          <QuestID>-26507</QuestID>
+        </SL_Effect>
+      </Effects>
+      <EffectConditions />
+      <ChildEffects />
+    </SL_EffectTransform>
+  </EffectTransforms>
   <StatsHolder>
     <BaseValue>45</BaseValue>
     <RawWeight>1</RawWeight>

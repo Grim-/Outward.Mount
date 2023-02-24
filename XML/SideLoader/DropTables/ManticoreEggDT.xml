@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SL_DropTable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <UID>ManticoreEggDT</UID>
+  <UID>MountMod.Drop.ManticoreEggDT</UID>
   <GuaranteedDrops />
   <RandomTables>
     <SL_RandomDropGenerator>
@@ -11,6 +11,7 @@
         <SL_ItemDropChance>
           <MinQty>1</MinQty>
           <MaxQty>1</MaxQty>
+          <!-- Manticore Egg !-->
           <DroppedItemID>-26209</DroppedItemID>
           <DiceValue>15</DiceValue>
         </SL_ItemDropChance>

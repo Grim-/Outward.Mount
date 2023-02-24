@@ -26,7 +26,7 @@
 		<z>-2</z>
 	</CameraOffset>
 	<!-- Speed !-->
-	<MoveSpeed>5.5</MoveSpeed>
+	<MoveSpeed>7</MoveSpeed>
 	<SprintModifier>2</SprintModifier>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>5</Acceleration>
@@ -67,5 +67,6 @@
 	<GenerateRandomEmission>false</GenerateRandomEmission>
 	<!-- Components !-->
 	<MountComponents>
+		<MountCompProp CompName="GrantStatusInRangeComp" StatusName="Stamina recovery" xsi:type="GrantStatusInRangeCompProp" Radius="15" />
 	</MountComponents>
 </MountSpecies>

@@ -26,12 +26,12 @@
 		<z>-2</z>
 	</CameraOffset>
 	<!-- Speed !-->
-	<MoveSpeed>5.5</MoveSpeed>
+	<MoveSpeed>7</MoveSpeed>
 	<SprintModifier>2</SprintModifier>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>5</Acceleration>
 	<!-- Carry Weight !-->
-	<MaximumCarryWeight>180</MaximumCarryWeight>
+	<MaximumCarryWeight>250</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
 	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
 	<!-- Food !-->
@@ -67,5 +67,6 @@
 	<GenerateRandomEmission>false</GenerateRandomEmission>
 	<!-- Components !-->
 	<MountComponents>
+				<MountCompProp CompName="GrantStatusInRangeComp" StatusName="Environment Cold Resistance" xsi:type="GrantStatusInRangeCompProp" Radius="15" />
 	</MountComponents>
 </MountSpecies>

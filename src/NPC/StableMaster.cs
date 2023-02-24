@@ -184,8 +184,8 @@ namespace EmoMount
             {
                 // Start -> Do you have any unique for sale -> Condition (Done Quest) => True -> Multichoice yes buy / no dont
                 //                                                                    => False -> ShowHint
-                ConditionNode CanBuyUnique = dialogueTreeBuilder.AddAnswerToMultipleChoice<ConditionNode>(initialChoice, 5, graph.AddNode<ConditionNode>());
-                CanBuyUnique.SetCondition(new HasCompleteQuest()
+                ConditionNode CanBuyUnique_Condition = dialogueTreeBuilder.AddAnswerToMultipleChoice<ConditionNode>(initialChoice, 5, graph.AddNode<ConditionNode>());
+                CanBuyUnique_Condition.SetCondition(new HasCompleteQuest()
                 {
                     QuestID = UniqueBuyQuestID
                 });
@@ -208,8 +208,8 @@ namespace EmoMount
                     null
                     }
                 );
-                CanBuyUnique.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement(UniqueBuyText)).ConnectTo(graph, UniqueBuyMultiChoice);
-                CanBuyUnique.OnFailure(graph, dialogueTreeBuilder.CreateNPCStatement(UniqueSellableHint));
+                CanBuyUnique_Condition.OnSuccess(graph, dialogueTreeBuilder.CreateNPCStatement(UniqueBuyText)).ConnectTo(graph, UniqueBuyMultiChoice);
+                CanBuyUnique_Condition.OnFailure(graph, dialogueTreeBuilder.CreateNPCStatement(UniqueSellableHint));
 
                 dialogueTreeBuilder.AddAnswerToMultipleChoice(UniqueBuyMultiChoice, 0, dialogueTreeBuilder.CreateNPCStatement("Thanks.")).ConnectTo(graph, new RemoveMoneyAction(UniqueBuyPrice)).ConnectTo(graph, new GiveItem(UniqueBuyableID));
                 dialogueTreeBuilder.AddAnswerToMultipleChoice(UniqueBuyMultiChoice, 1, dialogueTreeBuilder.CreateNPCStatement("No problem, take care.")).ConnectTo(graph, graph.AddNode<FinishNode>());

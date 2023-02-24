@@ -3,7 +3,7 @@
   <Target_ItemID>6200010</Target_ItemID>
   <New_ItemID>-26601</New_ItemID>
   <Name>Living Gold</Name>
-  <Description>This strange lump of gold feels like clay one moment and solid the next, extremely odd. I'm sure an alchemist would want to see this.</Description>
+  <Description>This strange lump of gold feels like clay one moment and solid the next, extremely odd. I wonder what I can do with this?</Description>
   <LegacyItemID>-1</LegacyItemID>
   <IsPickable>true</IsPickable>
   <IsUsable>false</IsUsable>
@@ -26,7 +26,7 @@
     <string>Valuable</string>
   </Tags>
   <StatsHolder>
-    <BaseValue>200</BaseValue>
+    <BaseValue>3000</BaseValue>
     <RawWeight>0.1</RawWeight>
     <MaxDurability>-1</MaxDurability>
   </StatsHolder>

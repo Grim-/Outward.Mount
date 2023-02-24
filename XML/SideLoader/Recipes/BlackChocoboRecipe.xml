@@ -5,13 +5,32 @@
   <Ingredients>
     <Ingredient>
       <Type>AddSpecificIngredient</Type>
-      <SelectorValue>4000230</SelectorValue>
+      <!-- Living Obsidian !-->
+      <SelectorValue>-26608</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Base PB Egg !-->
+      <SelectorValue>-26602</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Occult Remains !-->
+      <SelectorValue>6600110</SelectorValue>
+      <Ingredient_ItemID xsi:nil="true" />
+    </Ingredient>
+    <Ingredient>
+      <Type>AddSpecificIngredient</Type>
+      <!-- Occult Remains !-->
+      <SelectorValue>6600110</SelectorValue>
       <Ingredient_ItemID xsi:nil="true" />
     </Ingredient>
   </Ingredients>
   <Results>
     <ItemQty>
-      <ItemID>4100300</ItemID>
+      <ItemID>-26207</ItemID>
       <Quantity>1</Quantity>
     </ItemQty>
   </Results>

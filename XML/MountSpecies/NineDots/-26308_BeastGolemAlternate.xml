@@ -15,7 +15,7 @@
 		<y>0</y>
 		<z>-4</z>
 	</CameraOffset>
-	<MoveSpeed>18</MoveSpeed>
+	<MoveSpeed>12</MoveSpeed>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>4</Acceleration>
 	<MaximumCarryWeight>70</MaximumCarryWeight>
@@ -48,5 +48,6 @@
 	<HatedFoods>
 	</HatedFoods>
 	<MountComponents>
+					<MountCompProp CompName="GrantStatusInRangeComp" StatusName="Environment Resistance" xsi:type="GrantStatusInRangeCompProp" Radius="15" />	
 	</MountComponents>
 </MountSpecies>

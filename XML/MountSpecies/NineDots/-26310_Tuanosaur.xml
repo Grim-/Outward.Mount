@@ -26,14 +26,14 @@
 		<z>-2</z>
 	</CameraOffset>
 	<!-- Speed !-->
-	<MoveSpeed>5.5</MoveSpeed>
+	<MoveSpeed>7</MoveSpeed>
 	<SprintModifier>2</SprintModifier>
 	<RotateSpeed>240</RotateSpeed>
 	<Acceleration>5</Acceleration>
 	<!-- Carry Weight !-->
-	<MaximumCarryWeight>180</MaximumCarryWeight>
+	<MaximumCarryWeight>220</MaximumCarryWeight>
 	<CarryWeightEncumberenceLimit>0.8</CarryWeightEncumberenceLimit>
-	<EncumberenceSpeedModifier>0.5</EncumberenceSpeedModifier>
+	<EncumberenceSpeedModifier>0.8</EncumberenceSpeedModifier>
 	<!-- Food !-->
 	<RequiresFood>true</RequiresFood>
 	<MaximumFood>200</MaximumFood>
@@ -67,5 +67,39 @@
 	<GenerateRandomEmission>false</GenerateRandomEmission>
 	<!-- Components !-->
 	<MountComponents>
+		<MountCompProp CompName="DecorationComp" xsi:type="DecorationCompProp">
+				<!-- Mage Tent !-->
+				<ItemID>5000060</ItemID>
+				<Position>
+					<x>0</x>
+					<y>0.1</y>
+					<z>-0.4087</z>
+				</Position>
+				<Rotation>
+					<x>0</x>
+					<y>0</y>
+					<z>0</z>
+				</Rotation>
+				<Scale>
+					<x>1</x>
+					<y>1</y>
+					<z>1</z>
+				</Scale>
+			</MountCompProp>
+			<MountCompProp CompName="DecorationComp" xsi:type="DecorationCompProp">
+				<!-- Old Lantern !-->
+				<ItemID>5100010</ItemID>
+				<Position>
+					<x>0.41</x>
+					<y>0</y>
+					<z>-0.35</z>
+				</Position>
+				<Rotation>
+					<x>0</x>
+					<y>76.1831</y>
+					<z>0</z>
+				</Rotation>
+			</MountCompProp>
+				<MountCompProp CompName="GrantStatusInRangeComp" StatusName="Stamina recovery" xsi:type="GrantStatusInRangeCompProp" Radius="15" />
 	</MountComponents>
 </MountSpecies>

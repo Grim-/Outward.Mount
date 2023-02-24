@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SL_DropTable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <UID>PBNesEggDT</UID>
+  <UID>MountMod.Nest.PBNesEggDT</UID>
   <GuaranteedDrops />
   <RandomTables>
     <SL_RandomDropGenerator>
