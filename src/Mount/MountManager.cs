@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -417,9 +418,8 @@ namespace EmoMount
         #endregion
         private SL_Item CreateWhistle(MountSpecies mountSpecies)
         {
-            string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
 
-
+            string NiceName = Regex.Replace(mountSpecies.SpeciesName.Replace("_", ""), @"(?<!^)(?=[A-Z])", " ");
             SL_Item WhistleItem = new SL_Item()
             {
                 Target_ItemID = mountSpecies.TargetItemID,

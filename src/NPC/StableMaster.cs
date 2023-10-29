@@ -92,22 +92,23 @@ namespace EmoMount
             graph.ConnectNodes(InitialStatement, initialChoice);
             #endregion
 
+            string MountSimpleExplanation = $"You can buy, find, and in rare cases, even <b>create</b> a mount. There are typically two ways to obtain a new mount:" +
+                " find a whistle and use it, or find an egg, use it, and wait 12 hours for it to hatch. Most of my colleagues in the Stablery business sell" +
+                " various mounts to get you moving. Feel free to ask them for assistance.";
 
-            string MountSimpleExplanation = $"You can buy, find and I have even heard in rare cases <i> create </i> - a mount." +
-                $"There are usually two ways to get a new mount, find a whistle and use it or find an egg use it and 12 hours later it will hatch. " +
-                $"Most of my colleagues in the Stablery business sell some kind of mount to get you moving. Ask them!";
+            string MountSimpleExplanation2 = $"<b>Most</b> mounts require feeding, and each has a favorite food. Carnivores usually prefer <b>Jewel Bird Meat</b>," +
+                " while herbivores seem to <b>love Marsh Mellons</b>. Feeding them their favorite food will fill them up better than other options." +
+                " Additionally, most mounts have a maximum carry weight, and they will move slower when they are closer to reaching this limit.";
 
-            string MountSimpleExplanation2 = $"<b>Most</b> mounts will require feeding! " +
-                $"They all have a favourite food in the case of carnivores it is usually <b>Jewel Bird Meat</b> and <b>Herbivores seem to love Marsh Mellons</b> favourite foods fill a mount up better than other foods" +
-                $"Most mounts will have a maximum carry weight which they will move slower than usual the closer they are to reaching it.";
+            string MountSimpleExplanation3 = $"You can also find eggs in the wild, often in Pearl Bird nests. These eggs can be raised into mounts," +
+                " and sometimes the plumage on the Pearl birds varies. There are reports of eggs for Manticores and Tuanosaurs as well, sometimes found from their corpses, including Alphas.";
 
-            string MountSimpleExplanation3 = $"Then there are eggs you can find Pearl Bird nests out in the world sometimes these may contain eggs that you are able to raise into mounts sometimes the plumage on the Pearl birds varies!" +
-                $"I hear you can also find eggs for Manticores and Tuanosaurs sometimes from their corpses! I hear even Alphas!";
+            string MountSimpleExplanation4 = $"There are also unsettling rumors about a <b>Gold Lich</b> experimenting with living pearl bird eggs using <b>Living Gold</b>." +
+                " It's hard to imagine how such a creature exists. It reminds me of that <b>Mad Pirate Captain</b>, famous for his unusual Pearl Bird companion." +
+                " He somehow transmuted <b>Living Obsidian</b> and a Pearl bird egg to create an incredibly fast mount that didn't require feeding. But is such an advantage worth the cost?";
 
-            string MountSimpleExplanation4 = $"And there are also disturbing rumours about a <b>Gold Lich</b> experimenting with living pearl bird egg using <b>Living Gold</b>, can you imagine? How does such a creature even exist?" +
-                $"Reminds me of that <b>Mad Pirate Cpt</b> famed for his unusual Pearl Bird companion he had some how transmuted <b>Living Obsidian</b> and a Pearl bird egg to create an incredibly fast mount that did not require feeding but is such an advantage worth the cost?";
+            string MountSimpleExplanation5 = $"Anyway, here are two skills you can use to Summon and Dismiss your <b>active</b> mount. If you wish to change your mount, you will need to visit a stable master for assistance, and we don't charge for this service.";
 
-            string MountSimpleExplanation5 = $"Anyway .. Here are two skills you can use to Summon and Dismiss your <b>Active</b> mount - you will still have to visit a stable master in order to change it though, we don't charge for this service.";
 
             dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 0, "Aye, I will take care of them.", new DismissMountActionNode());
             dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 1, "Here's a list of what you have in my stables.", new DisplayMountStorageListNode());
@@ -119,8 +120,7 @@ namespace EmoMount
 
             #region COlor Berry Choice
 
-            MultipleChoiceNodeExt ColorBerryChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[]
-            {
+            MultipleChoiceNodeExt ColorBerryChoice = dialogueTreeBuilder.AddMultipleChoiceNode(new string[] {
                 "Red?",
                 "Green?",
                 "Blue?",
@@ -128,10 +128,21 @@ namespace EmoMount
                 "Purple?",
                 "Yellow?",
                 "Black?",
-                "Reset? (removes current tint if any)"
+                "Reset? (removes current tint if any)",
+                "Sorry, I don't have any silver on me."
+            }, new ConditionTask[] {
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = ColorBerryCost.Value },
+                new HasCurrency() { AmountRequired = 1 },
+                null
             });
 
-            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, "There are many available, take a look", ColorBerryChoice);
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(initialChoice, 3, $"There are many available. Each option will cost {ColorBerryCost.Value} silver, except for Reset, which will cost 1 silver. Take a look.", ColorBerryChoice);
 
             dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 0, "Cheers", new GiveItem(-26280))
                  .ConnectTo(graph, new RemoveMoneyAction(ColorBerryCost.Value));
@@ -157,6 +168,7 @@ namespace EmoMount
             dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 7, "Cheers", new GiveItem(-26286))
                 .ConnectTo(graph, new RemoveMoneyAction(1));
 
+            dialogueTreeBuilder.AddAnswerToMultipleChoice(ColorBerryChoice, 8, dialogueTreeBuilder.CreateNPCStatement("No problem, take care.")).ConnectTo(graph, graph.AddNode<FinishNode>());
 
             #endregion
 
@@ -173,7 +185,8 @@ namespace EmoMount
                     AmountRequired = BuyPrice
                 },
                 null
-            });
+                }
+            );
 
             dialogueTreeBuilder.AddAnswerToMultipleChoice<MultipleChoiceNodeExt>(initialChoice, 4, BuyText, BuyMultiChoice);
             dialogueTreeBuilder.AddAnswerToMultipleChoice(BuyMultiChoice, 0, dialogueTreeBuilder.CreateNPCStatement("Thanks, take care of it.")).ConnectTo(graph, new RemoveMoneyAction(BuyPrice)).ConnectTo(graph, new GiveItem(BuyItemID));
@@ -196,7 +209,7 @@ namespace EmoMount
                 MultipleChoiceNodeExt UniqueBuyMultiChoice = dialogueTreeBuilder.AddMultipleChoiceNode(
                 new string[]
                 {
-                $"Sure, I'll pay {BuyPrice}.",
+                $"Sure, I'll pay {UniqueBuyPrice}.",
                 "No thanks, not right now."
                 },
                 new ConditionTask[]
