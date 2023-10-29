@@ -59,10 +59,10 @@ namespace EmoMount
 
                 if (characterMount)
                 {
-                    if (characterMount.IsTransformed && characterMount.ActiveMount)
+                    if (characterMount.IsTransformed && characterMount.ActiveTransformation)
                     {
                         //EmoMountMod.Log.LogMessage($"CharacterDiePatch. IsTransformed");
-                        characterMount.ActiveMount.DismountCharacter(__instance);
+                        characterMount.ActiveTransformation.DismountCharacter(__instance);
                     }
                     else if (characterMount.ActiveMount && characterMount.ActiveMount.CurrentlyMountedCharacter == __instance && characterMount.IsMounted)
                     {
@@ -74,13 +74,13 @@ namespace EmoMount
         }
     }
 
+
+    //Stops Cancel Actions from being called while mounted or transformed, otherwise this resets the animator and generally ends up with a moonwalking jim while still mounted.
     [HarmonyPatch(typeof(Character), nameof(Character.CancelActions))]
     public class CharacterCancelActionsPatch
     {
         static void Prefix(Character __instance)
         {
-            //EmoMountMod.Log.LogMessage($"CancelActions.");
-
             CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
 
             if (characterMount)
@@ -94,6 +94,7 @@ namespace EmoMount
         }
     }
 
+    //Teleport the mount whenever its owner is teleported.
     [HarmonyPatch(typeof(Character), nameof(Character.Teleport), new Type[] { typeof(Vector3), typeof(Vector3) })]
     public class CharacterTeleport
     {
@@ -105,15 +106,11 @@ namespace EmoMount
             {
                 if (characterMount.HasActiveMount)
                 {
+                    //dismount or untransform before teleporting
                     if (characterMount.ActiveMount.IsTransform || characterMount.IsMounted)
                     {
                         characterMount.ActiveMount.DismountCharacter(characterMount.ActiveMount.CurrentlyMountedCharacter);
                     }
-
-                    //if (characterMount.IsMounted)
-                    //{
-                    //    characterMount.ActiveMount.DismountCharacter(characterMount.ActiveMount.CurrentlyMountedCharacter);
-                    //}
 
                     //only teleport if the player is not mounted on the active mount
                     if (characterMount.ActiveMount.CurrentlyMountedCharacter != __instance)
@@ -122,14 +119,11 @@ namespace EmoMount
                     }
                     else
                     {
-                        EmoMountMod.Log.LogMessage($"Character is mounted while teleport is sent, died while mounted, dismounting.");
+                        EmoMountMod.LogMessage($"Character is mounted while teleport is sent, died while mounted, dismounting.");
                     }
 
                    
                 }
-
-                //EmoMountMod.Log.LogMessage($"Warping {characterMount.ActiveMount.MountName} with {characterMount.Character.Name}");
-                
             }
         }
     }

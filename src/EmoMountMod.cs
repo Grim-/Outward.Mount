@@ -18,6 +18,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using EmoMount.Custom_SL_Effect;
 using EmoMount.Patches;
+using Discord;
 
 namespace EmoMount
 {
@@ -37,9 +38,9 @@ namespace EmoMount
 
         #region Properties
 
-        public static ManualLogSource Log
+        private static ManualLogSource Log
         {
-            get; private set;
+            get; set;
         }
 
         public static Canvas MainCanvas
@@ -94,6 +95,8 @@ namespace EmoMount
         public static ConfigEntry<float> TravelDistanceThreshold;
         public static ConfigEntry<float> EncumberenceSpeedModifier;
 
+
+        public static ConfigEntry<bool> EnableDebugLogging;
         public static ConfigEntry<bool> DisableNonNinedots;
         public static ConfigEntry<bool> EnableCombatTransforming;
         public static ConfigEntry<bool> EnableFoodNeed;
@@ -188,11 +191,13 @@ namespace EmoMount
             WorldDropChanceMaximum = Config.Bind<float>(NAME, "Drop Chance Range Maximum", 500, "Maximum number to roll between");
             ColorBerryCost = Config.Bind<int>(NAME, "Color Berry Cost", 10, "How much does a colorberry cost?");
 
+
+            EnableDebugLogging = Config.Bind<bool>(NAME, "Enable Mount Mod Debug Logging", false, "If set to true enables mount mod specific logging. This is useful for error reports.");
             DisableNonNinedots = Config.Bind<bool>(NAME, "Disable non-ninedots mounts", false, "If set to true disables entirely dropping of the original mounts as world drops, leaving only the mount models provided by ninedots.");
             EnableCombatTransforming = Config.Bind<bool>(NAME, "Enable Transforming in Combat?", false, "If enabled you will be able to transform into a mount even in combat.");
             EnableFoodNeed = Config.Bind<bool>(NAME, "Enable Food Needs", true, "Enables the Mount food system.");
             EnableWeightLimit = Config.Bind<bool>(NAME, "Enable Weight Limits", true, "Enables the Mount weight limit system.");
-            EnableTestFeatures = Config.Bind<bool>(NAME, "Enable Test Features", true, "Enables any test features that aren't quite ready for release.");
+            EnableTestFeatures = Config.Bind<bool>(NAME, "Enable Test Features", true, "Enables any test features that aren't quite ready for release. (Bugs ahead)");
         }
         private void CreateMainCanvas()
         {
@@ -208,8 +213,18 @@ namespace EmoMount
             }
             else
             {
-                Log.LogMessage("EmoMountMod CanvasPrefab was null");
+                EmoMountMod.LogMessage("EmoMountMod CanvasPrefab was null");
             }
         }
+
+
+        public static void LogMessage(object message)
+        {
+            if (Log != null && EnableDebugLogging != null && EnableDebugLogging.Value)
+            {
+                Log.LogMessage(message);
+            }
+        }
+
     }
 }

@@ -51,7 +51,7 @@ namespace EmoMount.Mount_Components
                         }
   
                     }
-                    else EmoMountMod.Log.LogMessage($"DecorationComp : An Item cannot be found with ItemID {ItemID}");
+                    else EmoMountMod.LogMessage($"DecorationComp : An Item cannot be found with ItemID {ItemID}");
                         
                 }
             }

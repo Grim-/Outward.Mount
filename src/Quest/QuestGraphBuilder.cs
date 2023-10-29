@@ -149,7 +149,7 @@ public class QuestGraphBuilder
     {
         if (Graph != null && QuestTreeOwner != null)
         {
-            EmoMountMod.Log.LogMessage($"Starting QuestGraph {Graph}");
+            EmoMountMod.LogMessage($"Starting QuestGraph {Graph}");
             if (Graph.primeNode == null)
             {
                 Graph.primeNode = Graph.allNodes[0];

@@ -10,13 +10,13 @@ public class HasQuestEventTriggered : ConditionTask
     {
         if (string.IsNullOrEmpty(EventUID))
         {
-            EmoMountMod.Log.LogMessage($"EventUID : {EventUID} is null or empty");
+            EmoMountMod.LogMessage($"EventUID : {EventUID} is null or empty");
             return false;
         }
 
         QuestEventData questEventData = QuestEventManager.Instance.GetQuestEvent(EventUID);
         bool Result = QuestEventManager.Instance.GetEventCurrentStack(EventUID) >= 1;
-        EmoMountMod.Log.LogMessage($"Checking EventUID : {EventUID} Result : {Result}");
+        EmoMountMod.LogMessage($"Checking EventUID : {EventUID} Result : {Result}");
         return Result;
     }
 }
@@ -29,13 +29,13 @@ public class HasCompleteQuest : ConditionTask
     {
         if (QuestID == -1)
         {
-            EmoMountMod.Log.LogMessage($"QuestID : {QuestID} is not set.");
+            EmoMountMod.LogMessage($"QuestID : {QuestID} is not set.");
             return false;
         }
 
         Character Character = (Character)ownerAgent.GetComponent<Character>();
         bool Result = Character.Inventory.QuestKnowledge.IsQuestCompleted(QuestID);
-        EmoMountMod.Log.LogMessage($"QuestID : {QuestID} Result : {Result}");
+        EmoMountMod.LogMessage($"QuestID : {QuestID} Result : {Result}");
         return Result;
     }
 }

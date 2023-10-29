@@ -56,7 +56,7 @@ namespace EmoMount
         {
             if (characterMount.HasActiveMount && !characterMount.ActiveMount.IsTransform)
             {
-                EmoMountMod.Log.LogMessage("Saving Active Mount Data");
+                EmoMountMod.LogMessage("Saving Active Mount Data");
                 this.ActiveMountInstance = characterMount.ActiveMount.CreateInstanceData();
             }
             else
@@ -69,14 +69,14 @@ namespace EmoMount
 
         public void SaveStoredMounts(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage($"Saving stored mounts [{StoredMounts.Count}]");
+            EmoMountMod.LogMessage($"Saving stored mounts [{StoredMounts.Count}]");
             StoredMounts.Clear();
             StoredMounts = characterMount.StoredMounts.Values.ToList();
         }
 
         private void LoadStoredMounts(Character character, CharacterMount characterMount)
         {
-            EmoMountMod.Log.LogMessage($"Loading stored mounts [{StoredMounts.Count}]");
+            EmoMountMod.LogMessage($"Loading stored mounts [{StoredMounts.Count}]");
             characterMount.StoredMounts.Clear();
             foreach (var storedMount in StoredMounts)
             {

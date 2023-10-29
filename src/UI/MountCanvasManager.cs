@@ -77,7 +77,7 @@ namespace EmoMount
 
             if (UIContainer == null)
             {
-                EmoMountMod.Log.LogMessage($"Mount Canvas Manager UI Container cannot be found.");
+                EmoMountMod.LogMessage($"Mount Canvas Manager UI Container cannot be found.");
             }
 
 
@@ -87,7 +87,7 @@ namespace EmoMount
 
             if (StorageContainer == null)
             {
-                EmoMountMod.Log.LogMessage($"Mount Canvas Manager UI Storage Container cannot be found.");
+                EmoMountMod.LogMessage($"Mount Canvas Manager UI Storage Container cannot be found.");
             }
 
 
@@ -97,7 +97,7 @@ namespace EmoMount
 
             if (MountUIPrefab == null)
             {
-                EmoMountMod.Log.LogMessage("Mount UI Prefab could not be found");
+                EmoMountMod.LogMessage("Mount UI Prefab could not be found");
                 return;
             }
 
@@ -125,11 +125,11 @@ namespace EmoMount
 
         public void DisplayStorageForCharacter(Character character)
         {
-            EmoMountMod.Log.LogMessage($"Displaying Storage UI for {character.Name}");
+            EmoMountMod.LogMessage($"Displaying Storage UI for {character.Name}");
 
             if (StorageUIPrefab == null)
             {
-                EmoMountMod.Log.LogMessage("No Storage UI Prefab found");
+                EmoMountMod.LogMessage("No Storage UI Prefab found");
                 return;
             }
 
@@ -143,7 +143,7 @@ namespace EmoMount
 
                 if (characterMount.StoredMounts.Count == 0)
                 {
-                    EmoMountMod.Log.LogMessage($"No Stored Mounts");
+                    EmoMountMod.LogMessage($"No Stored Mounts");
                     //no mounts to show
                     return;
                 }
@@ -187,7 +187,7 @@ namespace EmoMount
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"CharacterMount component not found for  {character.Name}");
+                EmoMountMod.LogMessage($"CharacterMount component not found for  {character.Name}");
             }
 
 

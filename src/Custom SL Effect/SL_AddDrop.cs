@@ -46,7 +46,7 @@ namespace EmoMount.Custom_SL_Effect
                     UID = DropTableUID
                 };
                 dropTable.ApplyTemplate();
-                EmoMountMod.Log.LogMessage($"Adding {dropTable.UID} to {_affectedCharacter.UID} ({_affectedCharacter.Name})");
+                EmoMountMod.LogMessage($"Adding {dropTable.UID} to {_affectedCharacter.UID} ({_affectedCharacter.Name})");
 
                 _affectedCharacter.Inventory.MakeLootable(false, true, true, false);
 

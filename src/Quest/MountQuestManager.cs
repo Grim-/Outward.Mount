@@ -187,9 +187,9 @@ namespace EmoMount
 
 		private Graph GenerateEggHatchingQuestTree(Quest quest, EggQuestMap eggQuestMap, int QuestEventExpiryTime = 12, string QuestTreeName = "CustomGraph")
 		{
-			EmoMountMod.Log.LogMessage($"Generating QuestTree for {quest.DisplayName} ({quest.ItemID})");
-			EmoMountMod.Log.LogMessage($"ItemIDToRemove {eggQuestMap.EggItemID}");
-			EmoMountMod.Log.LogMessage($"Species to generate on complete {eggQuestMap.SpeciesID}");
+			EmoMountMod.LogMessage($"Generating QuestTree for {quest.DisplayName} ({quest.ItemID})");
+			EmoMountMod.LogMessage($"ItemIDToRemove {eggQuestMap.EggItemID}");
+			EmoMountMod.LogMessage($"Species to generate on complete {eggQuestMap.SpeciesID}");
 
 			QuestGraphBuilder questGraphBuilder = new QuestGraphBuilder(quest);
 			questGraphBuilder.SetGraphName(QuestTreeName);
@@ -322,7 +322,7 @@ namespace EmoMount
 			QuestTree Graph = (QuestTree)QTO.graph;
 			if (Graph != null)
 			{
-				EmoMountMod.Log.LogMessage($"Starting Graph {Graph} Graph Is Currently Running ? : {Graph.isRunning}");
+				EmoMountMod.LogMessage($"Starting Graph {Graph} Graph Is Currently Running ? : {Graph.isRunning}");
 				if (Graph.primeNode == null)
 				{
 					Graph.primeNode = Graph.allNodes[0];

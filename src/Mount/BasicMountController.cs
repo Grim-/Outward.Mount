@@ -237,7 +237,7 @@ namespace EmoMount
         }
         private void SetupInteractionComponents()
         {
-            EmoMountMod.Log.LogMessage($"Creating Interaction Components...");
+            EmoMountMod.LogMessage($"Creating Interaction Components...");
             MountUpInteraction = gameObject.AddComponent<MountUpInteraction>();
             ShowStashInteraction = gameObject.AddComponent<ShowStashMountInteraction>();
             //dismissMountInteraction = gameObject.AddComponent<StoreMountInteraction>();
@@ -649,7 +649,7 @@ namespace EmoMount
         {
             if (CharacterOwner != null)
             {
-                EmoMountMod.Log.LogMessage($"Teleporting {MountName} to Owner");
+                EmoMountMod.LogMessage($"Teleporting {MountName} to Owner");
                 Teleport(CharacterOwner.transform.position, CharacterOwner.transform.eulerAngles);
             }
         }
@@ -657,7 +657,7 @@ namespace EmoMount
         private IEnumerator DelayTeleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {     
             IsTeleporting = true;
-            EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
+            EmoMountMod.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
 
             if (NavMeshAgent.enabled)
             {
@@ -757,7 +757,7 @@ namespace EmoMount
                 _affectedCharacter.transform.localPosition = Vector3.zero;
                 _affectedCharacter.transform.localEulerAngles = Vector3.zero;
 
-                EmoMountMod.Log.LogMessage("Could not find SL_MOUNTPOINT Transform");
+                EmoMountMod.LogMessage("Could not find SL_MOUNTPOINT Transform");
             }
         }
 

@@ -15,7 +15,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
 
         if (Character == null)
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Character is null");
+            EmoMountMod.LogMessage($"GenerateMountFromEgg Task : Character is null");
             return;
         }
 
@@ -23,7 +23,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
 
         if (CharacterMount == null)
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : CharacterMount is null");
+            EmoMountMod.LogMessage($"GenerateMountFromEgg Task : CharacterMount is null");
             return;
         }
 
@@ -31,7 +31,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
 
         if (mountSpecies == null)
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : MountSpecies is null");
+            EmoMountMod.LogMessage($"GenerateMountFromEgg Task : MountSpecies is null");
             return;
         }
 
@@ -41,7 +41,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
 
         if (CharacterMount.HasActiveMount)
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Character has an active mount");
+                EmoMountMod.LogMessage($"GenerateMountFromEgg Task : Character has an active mount");
             newMount = EmoMountMod.MountManager.CreateMountFromSpecies(SpeciesID, Vector3.zero, Vector3.zero, Color.clear, Color.clear);
             SetTintColour(newMount, mountSpecies);
             Character.CharacterUI.ShowInfoNotification($"Your newly hatched {mountSpecies.SpeciesName} was sent to the stables!");
@@ -50,7 +50,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
         }
         else
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Character has no active mount");
+            EmoMountMod.LogMessage($"GenerateMountFromEgg Task : Character has no active mount");
             newMount = EmoMountMod.MountManager.CreateMountForCharacter(Character, SpeciesID, Character.transform.position, Character.transform.eulerAngles);
             Character.CharacterUI.ShowInfoNotification($"{mountSpecies.SpeciesName} has just hatched!");
             SetTintColour(newMount, mountSpecies);
@@ -59,7 +59,7 @@ public class GenerateMountFromEgg : ActionTask<QuestProgress>
 
         if (newMount == null)
         {
-            EmoMountMod.Log.LogMessage($"GenerateMountFromEgg Task : Failed to Generate Mount From Egg.");
+            EmoMountMod.LogMessage($"GenerateMountFromEgg Task : Failed to Generate Mount From Egg.");
             EndAction(false);
             return;
         }

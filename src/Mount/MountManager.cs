@@ -47,7 +47,7 @@ namespace EmoMount
         public MountManager(string rootFolder)
         {
             RootFolder = rootFolder;
-            EmoMountMod.Log.LogMessage($"Initalising MountManager at : {RootFolder}");
+            EmoMountMod.LogMessage($"Initalising MountManager at : {RootFolder}");
             MountWhistleIDs = new List<int>();
             WorldDropMountWhistleIDs = new List<int>();
             MountControllers = new Dictionary<Character, BasicMountController>();
@@ -60,16 +60,16 @@ namespace EmoMount
         private void LoadAllSpeciesDataFiles()
         {
             SpeciesData = new Dictionary<string, MountSpecies>();
-            EmoMountMod.Log.LogMessage($"MountManager Loading Species Definitions..");
+            EmoMountMod.LogMessage($"MountManager Loading Species Definitions..");
 
             if (!HasFolder(SpeciesFolder))
             {
-                EmoMountMod.Log.LogMessage($"MountManager MountSpecies Folder does not exist, creating..");
+                EmoMountMod.LogMessage($"MountManager MountSpecies Folder does not exist, creating..");
                 Directory.CreateDirectory(SpeciesFolder);
             }
 
             string[] filePaths = Directory.GetFiles(SpeciesFolder, "*.xml", SearchOption.AllDirectories);
-            EmoMountMod.Log.LogMessage($"MountManager MountSpecies [{filePaths.Length}] Definitions found.");
+            EmoMountMod.LogMessage($"MountManager MountSpecies [{filePaths.Length}] Definitions found.");
 
             foreach (var item in filePaths)
             {
@@ -81,12 +81,12 @@ namespace EmoMount
                 }
                 catch (Exception e)
                 {
-                    EmoMountMod.Log.LogMessage($"Failed To deserialize file {file} exception -> \r\n {e.Message} ");
+                    EmoMountMod.LogMessage($"Failed To deserialize file {file} exception -> \r\n {e.Message} ");
                 }
 
                 if (mountSpecies != null)
                 {
-                    EmoMountMod.Log.LogMessage($"Created MountSpecies definition : {mountSpecies.SpeciesName}.");
+                    EmoMountMod.LogMessage($"Created MountSpecies definition : {mountSpecies.SpeciesName}.");
 
                     if (!HasSpeciesDefinition(mountSpecies.SpeciesName))
                     {
@@ -162,7 +162,7 @@ namespace EmoMount
         {
             if (string.IsNullOrEmpty(mountSpecies))
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromSpecies MountSpecies was null.");
+                EmoMountMod.LogMessage($"CreateMountFromSpecies MountSpecies was null.");
                 return null;
             }
 
@@ -170,7 +170,7 @@ namespace EmoMount
 
             if (MountSpecies == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromSpecies MountSpecies was null.");
+                EmoMountMod.LogMessage($"CreateMountFromSpecies MountSpecies was null.");
                 return null;
             }
 
@@ -179,10 +179,10 @@ namespace EmoMount
 
             if (Prefab == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.PrefabName} from AssetBundle was null.");
+                EmoMountMod.LogMessage($"CreateMountFromSpecies PrefabName : {MountSpecies.PrefabName} from AssetBundle was null.");
                 return null;
             }
-            EmoMountMod.Log.LogMessage($"MountManager:CreateMountFromSpecies :: Creating Mount Instance from species {mountSpecies} at {Position}");
+            EmoMountMod.LogMessage($"MountManager:CreateMountFromSpecies :: Creating Mount Instance from species {mountSpecies} at {Position}");
             MountInstance = GameObject.Instantiate(Prefab, Position, Quaternion.Euler(Rotation));
             GameObject.DontDestroyOnLoad(MountInstance);
 
@@ -224,7 +224,7 @@ namespace EmoMount
 
             if (MountSpecies.MountComponents != null)
             {
-                EmoMountMod.Log.LogMessage($"Attempting to parse MountComps [{MountSpecies.MountComponents.Count}]");
+                EmoMountMod.LogMessage($"Attempting to parse MountComps [{MountSpecies.MountComponents.Count}]");
 
                 foreach (var item in MountSpecies.MountComponents)
                 {
@@ -240,13 +240,13 @@ namespace EmoMount
                     }
                     catch (Exception e)
                     {
-                        EmoMountMod.Log.LogMessage($"Failed to create component {item.CompName}. Exception -> \r\n {e.Message}");
+                        EmoMountMod.LogMessage($"Failed to create component {item.CompName}. Exception -> \r\n {e.Message}");
                         continue;
                     }
                
                     if (comp)
                     {
-                        EmoMountMod.Log.LogMessage($"Added {item.CompName} to {basicMountController.MountName}.");
+                        EmoMountMod.LogMessage($"Added {item.CompName} to {basicMountController.MountName}.");
                         MountComponentFactory.ApplyMountCompProps(comp, item);
                         comp.OnApply(basicMountController);
                     }       
@@ -291,7 +291,7 @@ namespace EmoMount
         {
             if (mountInstanceData == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Mount Instance data is null");
+                EmoMountMod.LogMessage($"CreateMountFromInstanceData Mount Instance data is null");
                 return null;
             }
 
@@ -300,7 +300,7 @@ namespace EmoMount
 
             if (basicMountController == null)
             {
-                EmoMountMod.Log.LogMessage($"CreateMountFromInstanceData Failed to create Mount, controller is null.");
+                EmoMountMod.LogMessage($"CreateMountFromInstanceData Failed to create Mount, controller is null.");
                 return null;
             }
 
@@ -339,7 +339,7 @@ namespace EmoMount
             if (MountControllers.ContainsKey(Character))
             {
 
-                EmoMountMod.Log.LogMessage($"{Character.Name} already has a registered MountController updating.");
+                EmoMountMod.LogMessage($"{Character.Name} already has a registered MountController updating.");
 
                 MountControllers[Character] = Mount;
             }
@@ -375,27 +375,27 @@ namespace EmoMount
         }
         public void DestroyAllMountInstances()
         {
-            EmoMountMod.Log.LogMessage($"Destroying All Mount Instances...");
+            EmoMountMod.LogMessage($"Destroying All Mount Instances...");
 
             if (MountControllers != null)
             {
                 foreach (var mount in MountControllers.ToList())
                 {
                    
-                    EmoMountMod.Log.LogMessage($"Destroying and unregistring from UI for {mount.Value.MountName} of {mount.Key.Name}");
+                    EmoMountMod.LogMessage($"Destroying and unregistring from UI for {mount.Value.MountName} of {mount.Key.Name}");
                     DestroyMount(mount.Key, mount.Value);
                 }
 
                 MountControllers.Clear();
 
-                EmoMountMod.Log.LogMessage($"All Mount Instances Destroyed Successfully.");
+                EmoMountMod.LogMessage($"All Mount Instances Destroyed Successfully.");
             }
         }
         public void DestroyActiveMount(Character character)
         {
             if (EmoMountMod.MountManager.CharacterHasMount(character))
             {
-                EmoMountMod.Log.LogMessage($"Destroying Active Mount for {character.Name}");
+                EmoMountMod.LogMessage($"Destroying Active Mount for {character.Name}");
                 DestroyMount(character, EmoMountMod.MountManager.GetActiveMountForCharacter(character));
 
                 RemoveMountControllerForCharacter(character);
@@ -403,7 +403,7 @@ namespace EmoMount
         }
         public void DestroyMount(Character character, BasicMountController basicMountController)
         {
-            EmoMountMod.Log.LogMessage($"Destroying Mount for {character.Name}");
+            EmoMountMod.LogMessage($"Destroying Mount for {character.Name}");
             basicMountController.DisableNavMeshAgent();
 
             if (MountCanvasManager.Instance.HasRegisteredUI(basicMountController))

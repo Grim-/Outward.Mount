@@ -30,7 +30,7 @@ namespace EmoMount.Mount_Components
 
             if (FoundPrefab == null)
             {
-                EmoMountMod.Log.LogMessage($"Could not find a prefab for SLPack : {SLPackName} AssetBundleName : {AssetBundleName} Prefab Name : {PrefabName}");
+                EmoMountMod.LogMessage($"Could not find a prefab for SLPack : {SLPackName} AssetBundleName : {AssetBundleName} Prefab Name : {PrefabName}");
                 return;
             }
 

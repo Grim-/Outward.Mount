@@ -27,7 +27,7 @@ namespace EmoMount
 
         public static MountComp CreateComponent(BasicMountController MountController, string compName)
         {                  
-            EmoMountMod.Log.LogMessage($"Trying to create {compName} Mountcomp");
+            EmoMountMod.LogMessage($"Trying to create {compName} Mountcomp");
             if (_componentTypes.ContainsKey(compName))
             {
                 return (MountComp)MountController.gameObject.AddComponent(_componentTypes[compName]);

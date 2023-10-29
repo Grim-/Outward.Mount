@@ -190,12 +190,12 @@ namespace EmoMount
 
         private void SetupNPC(StableMaster StableMaster)
         {
-            EmoMountMod.Log.LogMessage($"EmoMountMod :: Setting up NPC {StableMaster.Name}");
+            EmoMountMod.LogMessage($"EmoMountMod :: Setting up NPC {StableMaster.Name}");
 
             // Create and apply the template
             var template = StableMaster.CreateAndApplyTemplate((SL_Character SLTemplate, Character Character, string RPCData) =>
             {
-                EmoMountMod.Log.LogMessage($"EmoMountMod :: Applying Template to  {SLTemplate.Name}");
+                EmoMountMod.LogMessage($"EmoMountMod :: Applying Template to  {SLTemplate.Name}");
 
                 GameObject dialogueTemplate = GameObject.Instantiate(Resources.Load<GameObject>("editor/templates/DialogueTemplate"));
                 dialogueTemplate.transform.parent = Character.transform;

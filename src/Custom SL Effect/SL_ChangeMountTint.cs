@@ -42,7 +42,7 @@ namespace EmoMount.Custom_SL_Effect
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"ChangeMountTint, no Active Mount found for {_affectedCharacter.Name}.");
+                EmoMountMod.LogMessage($"ChangeMountTint, no Active Mount found for {_affectedCharacter.Name}.");
             }
         }
     }

@@ -44,7 +44,7 @@ namespace EmoMount.Custom_SL_Effect
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"Dismiss Active Mount, no Active Mount found for {_affectedCharacter.Name}.");
+                EmoMountMod.LogMessage($"Dismiss Active Mount, no Active Mount found for {_affectedCharacter.Name}.");
             }
         
           

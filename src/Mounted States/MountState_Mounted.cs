@@ -47,7 +47,7 @@ namespace EmoMount
         {
             if (MountedCharacter == null)
             {
-                EmoMountMod.Log.LogMessage($"we somehow ended up in the MountedState without a Mounted Character dismounting character owner and popping state.");
+                EmoMountMod.LogMessage($"we somehow ended up in the MountedState without a Mounted Character dismounting character owner and popping state.");
                 MountController.DismountCharacter(MountController.CharacterOwner);
                 //if we somehow ended up in the MountedState without a Mounted Character
                 Parent.PopState();
@@ -153,20 +153,20 @@ namespace EmoMount
             if (EmoMountMod.EnableTestFeatures.Value)
             {
 
-                List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+                //List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
 
-                if (AreaSwitches != null)
-                {
-                    if (CurrentAreaSwitch >= AreaSwitches.Count)
-                    {
-                        CurrentAreaSwitch = -1;
-                    }
-                    else
-                    {
-                        CurrentAreaSwitch++;
-                        MountController.DisplayImportantNotification($"Travel To {GetAreaSwitches()[CurrentAreaSwitch].m_area.DefaultName}?");
-                    }
-                }
+                //if (AreaSwitches != null)
+                //{
+                //    if (CurrentAreaSwitch >= AreaSwitches.Count)
+                //    {
+                //        CurrentAreaSwitch = -1;
+                //    }
+                //    else
+                //    {
+                //        CurrentAreaSwitch++;
+                //        MountController.DisplayImportantNotification($"Travel To {AreaSwitches[CurrentAreaSwitch].m_area.DefaultName}?");
+                //    }
+                //}
             }
         }
 
@@ -195,20 +195,20 @@ namespace EmoMount
 
             if (EmoMountMod.EnableTestFeatures.Value)
             {
-                List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
+                //List<InteractionSwitchArea> AreaSwitches = GetAreaSwitches();
 
-                if (AreaSwitches != null)
-                {
-                    if (CurrentAreaSwitch >= 0)
-                    {
-                        if (CurrentAreaSwitch > AreaSwitches.Count)
-                        {
-                            CurrentAreaSwitch = AreaSwitches.Count;
-                        }
+                //if (AreaSwitches != null)
+                //{
+                //    if (CurrentAreaSwitch >= 0)
+                //    {
+                //        if (CurrentAreaSwitch > AreaSwitches.Count)
+                //        {
+                //            CurrentAreaSwitch = AreaSwitches.Count;
+                //        }
 
-                        SwitchAutoMove(MountController, TryGetNavMeshPositionOnTerrain(MountController, GetAreaSwitchPosition(AreaSwitches, CurrentAreaSwitch), 30f), AreaSwitches[CurrentAreaSwitch].m_area);
-                    }
-                }
+                //        SwitchAutoMove(MountController, TryGetNavMeshPositionOnTerrain(MountController, GetAreaSwitchPosition(AreaSwitches, CurrentAreaSwitch), 30f), AreaSwitches[CurrentAreaSwitch].m_area);
+                //    }
+                //}
             }
 
 

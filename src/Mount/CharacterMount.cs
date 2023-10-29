@@ -21,7 +21,10 @@ namespace EmoMount
         {
             get; private set;
         }
-
+        public BasicMountController ActiveTransformation
+        {
+            get; private set;
+        }
         public Dictionary<string, MountInstanceData> StoredMounts = new Dictionary<string, MountInstanceData>();
 
         public bool HasActiveMount
@@ -89,6 +92,11 @@ namespace EmoMount
             ActiveMount = newMount;
         }
 
+        public void SetActiveTransformation(BasicMountController newMount)
+        {
+            ActiveTransformation = newMount;
+        }
+
         public void SetIsMounted(bool isMounted)
         {
             IsMounted = isMounted;
@@ -111,14 +119,14 @@ namespace EmoMount
         /// <param name="MountToStore"></param>
         public void StoreMount(BasicMountController MountToStore)
         {
-            EmoMountMod.Log.LogMessage($"Storing Mount {MountToStore.MountName}");
+            EmoMountMod.LogMessage($"Storing Mount {MountToStore.MountName}");
             if (!HasStoredMount(MountToStore.MountUID))
             {
                 AddMountToStore(MountToStore);
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"Updating {MountToStore.MountName} store data");
+                EmoMountMod.LogMessage($"Updating {MountToStore.MountName} store data");
                 UpdateMountInStore(MountToStore);
             }
 
@@ -127,7 +135,7 @@ namespace EmoMount
 
             if (MountToStore == ActiveMount)
             {
-                EmoMountMod.Log.LogMessage($"Stored Mount is ActiveMount");
+                EmoMountMod.LogMessage($"Stored Mount is ActiveMount");
                 SetActiveMount(null);
             }
         }

@@ -73,12 +73,12 @@ namespace EmoMount
                 }
                 else
                 {
-                    EmoMountMod.Log.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
+                    EmoMountMod.LogMessage($"SLEx_SpawnMount Could not find species with Species Name : {SpeciesName}, in the list of defintions.");
                 }
             }
             else
             {
-                EmoMountMod.Log.LogMessage($"SLEx_SpawnMount {_affectedCharacter.Name} already has an active mount.");
+                EmoMountMod.LogMessage($"SLEx_SpawnMount {_affectedCharacter.Name} already has an active mount.");
             }
         }
     }
