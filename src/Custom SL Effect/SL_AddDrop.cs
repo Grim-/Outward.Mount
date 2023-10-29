@@ -14,13 +14,13 @@ namespace EmoMount.Custom_SL_Effect
         public override void ApplyToComponent<T>(T component)
         {
             AddDrop comp = component as AddDrop;
-
             comp.DropTableUID = DropTableUID;
         }
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            AddDrop comp = effect as AddDrop;
+            this.DropTableUID = comp.DropTableUID;
         }
     }
 
@@ -55,4 +55,109 @@ namespace EmoMount.Custom_SL_Effect
             }
         }
     }
+    //public class SL_RestoreEquippedItemDurability : SL_Effect, ICustomModel
+    //{
+    //    public Type SLTemplateModel => typeof(SL_RestoreEquippedItemDurability);
+    //    public Type GameModel => typeof(RestoreEquippedItemDurability);
+
+    //    public override void ApplyToComponent<T>(T component)
+    //    {
+    //        RestoreEquippedItemDurability comp = component as RestoreEquippedItemDurability;
+    //        comp.EquipmentSlot = this.EquipmentSlot;
+    //        comp.Durability = this.Durability;
+    //        comp.Percentage = this.Percentage;
+    //    }
+
+    //    public override void SerializeEffect<T>(T effect)
+    //    {
+    //        RestoreEquippedItemDurability comp = effect as RestoreEquippedItemDurability;
+    //        comp.EquipmentSlot = this.EquipmentSlot;
+    //        comp.Durability = this.Durability;
+    //        comp.Percentage = this.Percentage;
+    //    }
+    //    public EquipmentSlot.EquipmentSlotIDs EquipmentSlot;
+    //    public float Durability;
+    //    public bool Percentage;
+    //}
+
+    //public class RestoreEquippedItemDurability : Effect
+    //{
+    //    public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
+    //    {
+    //        // if no affected character, do nothing and return (exit).
+    //        if (_affectedCharacter == null) { return; }
+
+
+    //        if (_affectedCharacter.Inventory == null)
+    //        {
+    //            //no inventory
+    //            return;
+    //        }
+
+    //        if (_affectedCharacter.Inventory.Equipment == null)
+    //        {
+    //            //no equipment?
+    //            return;
+    //        }
+
+    //        if (!_affectedCharacter.Inventory.Equipment.IsEquipmentSlotActive(EquipmentSlot))
+    //        {
+    //            //slot isnt active, whatever that means
+    //            return;
+    //        }
+
+
+    //        EquipmentSlot ChosenSlot = _affectedCharacter.Inventory.Equipment.GetMatchingSlot(EquipmentSlot);
+
+    //        if (ChosenSlot == null)
+    //        {
+    //            //Log chosen slot is null
+    //            return;
+    //        }
+
+
+    //        if (!ChosenSlot.HasItemEquipped)
+    //        {
+    //            //log no item equipped in slot
+    //            return;
+    //        }
+
+    //        //
+
+
+    //        // Gets equipped item in EquipmentSlot
+    //        Item equippedItem = ChosenSlot.EquippedItem;
+    //        RepairEquipment(equippedItem, Durability);
+    //    }
+    //    public EquipmentSlot.EquipmentSlotIDs EquipmentSlot;
+    //    public float Durability;
+    //    public bool Percentage;
+
+    //    private void RepairEquipment(Item ItemToRepair, float RepairAmount)
+    //    {
+    //        if (ItemToRepair is not Equipment)
+    //        {
+    //            //log Item isnt equipment
+    //            return;
+    //        }
+
+    //        float FinalRepairValue = 0;
+
+    //        //if its an absolute value
+    //        if (!this.Percentage)
+    //        {
+    //            FinalRepairValue = RepairAmount;
+    //        }
+    //        //restore a percent of max instead
+    //        else
+    //        {
+    //            FinalRepairValue = this.Durability / 100f * (float)ItemToRepair.MaxDurability;
+    //        }
+
+    //        ItemToRepair.RepairAmount(FinalRepairValue);
+    //    }
+    //}
+
+
+    
 }

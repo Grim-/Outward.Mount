@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
 
@@ -26,7 +27,10 @@ namespace EmoMount.Custom_SL_Effect
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            MountRandomEmission comp = effect as MountRandomEmission;
+            this.ColorChoices = comp.ColorChoices.ToList();
+            this.Intensity = comp.Intensity;
+            this.ChangeInterval = comp.ChangeInterval;
         }
     }
 

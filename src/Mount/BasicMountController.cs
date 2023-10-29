@@ -33,7 +33,7 @@ namespace EmoMount
             get; private set;
         }
 
-        public NavMeshAgent NavMesh
+        public NavMeshAgent NavMeshAgent
         {
             get; private set;
         }
@@ -89,6 +89,8 @@ namespace EmoMount
         {
             get; private set;
         }
+
+        public CharacterMount CurrentlyMounted => CurrentlyMountedCharacter.GetComponent<CharacterMount>();
 
         public bool Initalized
         {
@@ -183,6 +185,7 @@ namespace EmoMount
         public float TargetStopDistance = 1.4f;
         public float MoveToRayCastDistance = 20f;
         public LayerMask MoveToLayerMask => LayerMask.GetMask("LargeTerrainEnvironment", "WorldItems");
+        public int NavMeshAreaMask = 5;
 
         //weight
         public float CurrentCarryWeight = 0;
@@ -196,24 +199,29 @@ namespace EmoMount
         private Vector3 OriginalPlayerCameraOffset;
         private bool IsTeleporting = false;
 
+        private Hitbox Hitbox = null;
+        private BoxCollider Collider = null;
+
         public void Awake()
         {
             Initalized = false;
             Animator = GetComponent<Animator>();
             Controller = GetComponent<CharacterController>();
-            NavMesh = gameObject.AddComponent<NavMeshAgent>();
+            NavMeshAgent = gameObject.AddComponent<NavMeshAgent>();
             MountFood = gameObject.AddComponent<MountFood>();
             EventComp = gameObject.AddComponent<MountEventComp>();
+            Collider = gameObject.GetComponent<BoxCollider>();
             SetupInteractionComponents();
-
+            Hitbox = CreateHitBox();
             gameObject.layer = LayerMask.NameToLayer("Characters");
-
+            //DisableHitbox();
             //needs to be done this way to avoid the jillion racetime errors
             MountFood.Init();
 
-            NavMesh.height = 1f;
-            NavMesh.stoppingDistance = 1f;
-            NavMesh.enabled = false;
+            NavMeshAgent.height = 1f;
+            NavMeshAgent.stoppingDistance = 1f;
+            NavMeshAgent.enabled = false;
+            NavMeshAgent.areaMask = NavMeshAreaMask;
             MountUID = Guid.NewGuid().ToString();
             MountTotalWeight = 0;
             IsSprinting = true;
@@ -242,6 +250,59 @@ namespace EmoMount
             InteractionTriggerBase.DetectionColliderRadius = 1f;
         }
 
+
+        public Hitbox CreateHitBox()
+        {
+            GameObject newHitBox = new GameObject("Hitbox");
+            newHitBox.transform.parent = transform;
+            newHitBox.transform.localPosition = Vector3.zero;
+            newHitBox.gameObject.layer = LayerMask.NameToLayer("Hitbox");
+
+
+            BoxCollider boxCollider = newHitBox.AddComponent<BoxCollider>();
+
+            boxCollider.isTrigger = true;
+
+            if (Collider)
+            {
+                newHitBox.transform.localPosition = boxCollider.transform.localPosition;
+                boxCollider.size = Collider.size;
+            }
+            else
+                boxCollider.size = new Vector3(3, 3, 3);
+
+
+            Hitbox hb = newHitBox.AddComponent<Hitbox>();
+            return hb;
+        }
+
+        public void EnableHitbox()
+        {
+            if (Hitbox)
+            {
+                Hitbox.gameObject.SetActive(true);
+            }
+        }
+
+        public void SetHitboxOwner(Character Character)
+        {
+            //EmoMountMod.Log.LogMessage("Mount : : Hitbox " + Hitbox);
+            if (Hitbox)
+            {
+                Hitbox.m_ownerChar = Character;
+                Hitbox.OwnerChar = Character;
+
+                //EmoMountMod.Log.LogMessage("Mount : : Setting Hitbox Owner" + Character);
+            }
+        }
+
+        public void DisableHitbox()
+        {
+            if (Hitbox)
+            {
+                Hitbox.gameObject.SetActive(false);
+            }
+        }
 
         #region Setters
 
@@ -315,28 +376,28 @@ namespace EmoMount
 
         public void SetNavMeshMoveSpeed(float newSpeed)
         {
-            if (NavMesh != null)
+            if (NavMeshAgent != null)
             {
-                NavMesh.speed = newSpeed;
+                NavMeshAgent.speed = newSpeed;
                 //EmoMountMod.Log.LogMessage($"{MountName} setting MoveSpeed to {newSpeed}");
             }
         }
         public void SetNavMeshAcceleration(float acceleration)
         {
-            if (NavMesh != null)
+            if (NavMeshAgent != null)
             {
-                NavMesh.acceleration = acceleration;
+                NavMeshAgent.acceleration = acceleration;
             }
         }
         public void SetMoveSpeed(float newSpeed)
         {
             MoveSpeed = newSpeed;
-            NavMesh.speed = newSpeed;
+            NavMeshAgent.speed = newSpeed;
         }
         public void SetRotationSpeed(float newSpeed)
         {
             RotateSpeed = newSpeed;
-            NavMesh.angularSpeed = newSpeed;
+            NavMeshAgent.angularSpeed = newSpeed;
         }
 
         public void SetCameraOffset(Vector3 newOffset)
@@ -431,7 +492,12 @@ namespace EmoMount
         public void MountCharacter(Character _affectedCharacter)
         {
             CurrentlyMountedCharacter = _affectedCharacter;
-            //HitBox.OwnerChar = CurrentlyMountedCharacter;
+
+            if (CurrentlyMounted != null)
+            {
+                CurrentlyMounted.OnMounted(this);
+            }
+
             _affectedCharacter.CharacterController.enabled = false;
             _affectedCharacter.CharacterControl.enabled = false;
             //cancel movement in animator
@@ -456,14 +522,7 @@ namespace EmoMount
             MountFSM.PushDynamicState(new MountState_Mounted(CurrentlyMountedCharacter));
 
             EventComp.OnMounted?.Invoke(this, CurrentlyMountedCharacter);
-
-            if (CurrentlyMountedCharacter != null)
-            {
-                CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(true);
-            }
-
-
-            
+            SetHitboxOwner(_affectedCharacter);
         }
         public void DismountCharacter(Character _affectedCharacter)
         {
@@ -478,6 +537,11 @@ namespace EmoMount
             _affectedCharacter.transform.position = transform.position;
             _affectedCharacter.transform.eulerAngles = transform.eulerAngles;
 
+
+            if (CurrentlyMounted != null)
+            {
+                CurrentlyMounted.OnUnMounted(this);
+            }
 
             if (IsTransform)
             {
@@ -499,7 +563,9 @@ namespace EmoMount
 
             SetCharacterCameraOffset(_affectedCharacter, OriginalPlayerCameraOffset);
             EventComp.OnUnMounted?.Invoke(this, CurrentlyMountedCharacter);
-            CurrentlyMountedCharacter.GetComponent<CharacterMount>().SetIsMounted(false);
+
+
+            SetHitboxOwner(null);
             CurrentlyMountedCharacter = null;
             MountFSM.PopState();
         }
@@ -556,14 +622,14 @@ namespace EmoMount
             //dont turn the nav mesh on at all if this is a transform, it messes with positions too much when summoning/unsummoning
             if (!IsTransform)
             {
-                NavMesh.enabled = true;
-                NavMesh.isStopped = false;
+                NavMeshAgent.enabled = true;
+                NavMeshAgent.isStopped = false;
             }
         }
         public void DisableNavMeshAgent()
         {
-            NavMesh.enabled = false;
-            NavMesh.isStopped = true;
+            NavMeshAgent.enabled = false;
+            NavMeshAgent.isStopped = true;
         }
         public void Teleport(Vector3 Position, Vector3 Rotation, Action OnTeleported = null)
         {
@@ -593,9 +659,13 @@ namespace EmoMount
             IsTeleporting = true;
             EmoMountMod.Log.LogMessage($"Teleporting {MountName} to {Position} {Rotation}");
 
-            if (NavMesh.enabled)
+            if (NavMeshAgent.enabled)
             {
-                NavMesh.Warp(Position);
+                if (NavMesh.SamplePosition(Position, out NavMeshHit hit, 10f, NavMesh.AllAreas))
+                {
+                    Position = hit.position;
+                }
+                NavMeshAgent.Warp(Position);
             }
             else
             {

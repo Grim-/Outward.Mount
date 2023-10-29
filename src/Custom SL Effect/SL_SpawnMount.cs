@@ -1,6 +1,7 @@
 ﻿using SideLoader;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,10 @@ namespace EmoMount
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            SLEx_SpawnMount comp = effect as SLEx_SpawnMount;
+            this.SpeciesName = comp.SpeciesName;
+            this.GenerateRandomTint = comp.GenerateRandomTint;
+            this.GenerateRandomEmission =  comp.GenerateRandomEmission;
         }
     }
 

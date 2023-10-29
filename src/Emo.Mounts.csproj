@@ -372,6 +372,7 @@
     <Compile Include="Mount Components\GrantStatusInRangeComp.cs" />
     <Compile Include="Mount Components\MountEventComp.cs" />
     <Compile Include="Mount Components\SerializableColor.cs" />
+    <Compile Include="Mount Components\VFXComp.cs" />
     <Compile Include="Mounted States\BaseMountState.cs" />
     <Compile Include="Mounted States\MountState_Caravan.cs" />
     <Compile Include="Mounted States\SimpleTimer.cs" />

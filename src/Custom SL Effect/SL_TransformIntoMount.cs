@@ -1,5 +1,6 @@
 ﻿using SideLoader;
 using System;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace EmoMount.Custom_SL_Effect
@@ -21,7 +22,9 @@ namespace EmoMount.Custom_SL_Effect
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            TransformIntoMount comp = effect as TransformIntoMount;
+            this.SpeciesName = comp.SpeciesName;
+            this.TransformVFX = comp.TransformVFX;
         }
     }
 
@@ -65,13 +68,17 @@ namespace EmoMount.Custom_SL_Effect
                     basicMountController.EventComp.OnMounted += (BasicMountController MountController, Character Character) =>
                     {
                         //EmoMountMod.Log.LogMessage("Character : : " + Character);
-                        //EmoMountMod.Log.LogMessage("Mount : : " + MountController);
+                        MountController.CurrentlyMounted.IsTransformed = true;
+                        MountController.CurrentlyMounted.SetActiveMount(MountController);
                         Character.VisualHolderTrans.gameObject.SetActive(false);
+                        MountController.SetHitboxOwner(Character);
                         Character.CharacterUI.NotificationPanel.ShowNotification("You can revert by pressing the interact key");
                     };
 
                     basicMountController.EventComp.OnUnMounted += (BasicMountController MountController, Character Character) =>
                     {
+                        MountController.CurrentlyMounted.IsTransformed = false;
+                        MountController.CurrentlyMounted.SetActiveMount(null);
                         OutwardHelpers.SpawnTransformVFX(Character.Visuals.ActiveVisualsBody.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                         OutwardHelpers.SpawnTransformVFX(Character.Visuals.ActiveVisualsFoot.Renderer, 3, TransformVFX, ParticleSystemSimulationSpace.World);
                         Character.VisualHolderTrans.gameObject.SetActive(true);
@@ -81,7 +88,8 @@ namespace EmoMount.Custom_SL_Effect
                     basicMountController.MountCharacter(_affectedCharacter);
 
                 }, 0.3f);
-            }         
+            }
+            else EmoMountMod.Log.LogMessage($"SL_TransformIntoMount : : Could not find MountSpecies Definition for SpeciesName [{SpeciesName}]");
         }
 
     }

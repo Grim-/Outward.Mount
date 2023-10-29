@@ -248,7 +248,7 @@ namespace EmoMount
             MountController.EnableNavMeshAgent();
             Target.y = MountController.transform.position.y;
 
-            MountController.NavMesh.SetDestination(Target);
+            MountController.NavMeshAgent.SetDestination(Target);
             AutoMoveTarget = Target;
             IsInManualMode = false;
         }

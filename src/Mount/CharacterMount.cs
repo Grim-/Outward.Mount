@@ -31,6 +31,7 @@ namespace EmoMount
                 return ActiveMount != null;
             }
         }
+        public bool IsTransformed { get; set; }
         public bool IsMounted { get; private set; }
         public bool ActiveMountDisabled { get; private set; }
         public Character Character => GetComponent<Character>();
@@ -38,9 +39,49 @@ namespace EmoMount
 
         public Action<Item> OnItemPicked;
 
+
+        private AnimatorOverrideController AC;
+        private AnimatorOverrideController LastAC;
+        private RuntimeAnimatorController OriginalAC;
+
+
         public void Start()
         {
             SetIsMounted(false);
+
+
+        }
+
+        private void OverrideAC()
+        {
+            // OriginalAC = Character.Animator.runtimeAnimatorController;
+
+
+            // AC = new AnimatorOverrideController(OriginalAC);
+
+
+            // AnimationClip SittingMounted = OutwardHelpers.GetFromAssetBundle<AnimationClip>("mount", "emomountbundle", "SittingMounted");
+
+            // if (SittingMounted == null)
+            // {
+            //     EmoMountMod.Log.LogMessage("Cant find animation clip");
+            // }
+            // else
+            // {
+            //     EmoMountMod.Log.LogMessage("Found clip");
+            // }
+
+
+            //string SitAnimation =  CustomAnimations.ClipEnumToName(SideLoader.Animation.PlayerAnimationClip.HumanSitGroundIdle1_a);
+
+            // foreach (var item in AC.animationClips)
+            // {
+            //     if (item.name == SitAnimation)
+            //     {
+            //         AC.SetClip(item, SittingMounted, true);
+            //         OutwardHelpers.CopyAnimationEvents(item, SittingMounted);
+            //     }
+            // }
         }
 
         public void SetActiveMount(BasicMountController newMount)
@@ -53,6 +94,16 @@ namespace EmoMount
             IsMounted = isMounted;
         }
 
+
+        public void OnMounted(BasicMountController BasicMountController)
+        {
+            SetIsMounted(true);
+        }
+
+        public void OnUnMounted(BasicMountController BasicMountController)
+        {
+            SetIsMounted(false); 
+        }
 
         /// <summary>
         /// Serialize a BasicMountController Instance into MountInstanceData, add it to the StoredMounts List then Destroy it's GameObject.
@@ -83,15 +134,20 @@ namespace EmoMount
 
         private void AddMountToStore(BasicMountController basicMountController)
         {
-            StoredMounts.Add(basicMountController.MountUID, basicMountController.CreateInstanceData());
-            EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
+            if (!StoredMounts.ContainsKey(basicMountController.MountUID))
+            {
+                StoredMounts.Add(basicMountController.MountUID, basicMountController.CreateInstanceData());
+                EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
+            }
         }
 
         private void UpdateMountInStore(BasicMountController basicMountController)
         {
-            StoredMounts[basicMountController.MountUID] = basicMountController.CreateInstanceData();
-
-            EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
+            if (StoredMounts.ContainsKey(basicMountController.MountUID))
+            {
+                StoredMounts[basicMountController.MountUID] = basicMountController.CreateInstanceData();
+                EmoMountMod.MountManager.RemoveMountControllerForCharacter(Character);
+            }
         }
 
         /// <summary>

@@ -72,12 +72,12 @@ namespace EmoMount.Mounted_States
 
         public virtual void UpdateAnimator(BasicMountController MountController)
         {
-            if (MountController.NavMesh.enabled)
+            if (MountController.NavMeshAgent.enabled)
             {
-                float forwardVel = Vector3.Dot(MountController.NavMesh.velocity.normalized, MountController.transform.forward);
-                float sideVel = Vector3.Dot(MountController.NavMesh.velocity.normalized, MountController.transform.right);
+                float forwardVel = Vector3.Dot(MountController.NavMeshAgent.velocity.normalized, MountController.transform.forward);
+                float sideVel = Vector3.Dot(MountController.NavMeshAgent.velocity.normalized, MountController.transform.right);
 
-                MountController.IsMoving = MountController.NavMesh.velocity != Vector3.zero;
+                MountController.IsMoving = MountController.NavMeshAgent.velocity != Vector3.zero;
                 //dont even use X its just there because 
                 MountController.Animator.SetFloat("Move X", sideVel, 5f, 5f);
                 MountController.Animator.SetFloat("Move Z", forwardVel, 5f, 5f);

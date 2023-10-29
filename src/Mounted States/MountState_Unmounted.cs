@@ -158,7 +158,7 @@ namespace EmoMount
             }
             else
             {
-                MountController.NavMesh.isStopped = true;
+                MountController.NavMeshAgent.isStopped = true;
                 MoveToTarget = Vector3.zero;
             }
     
@@ -177,7 +177,7 @@ namespace EmoMount
         }
         protected void MoveToTargetPosition(BasicMountController MountController, Vector3 MoveToTarget, float StopDistance, Action OnTargetReached = null)
         {
-            if (!MountController.NavMesh.isOnNavMesh)
+            if (!MountController.NavMeshAgent.isOnNavMesh)
             {
                 return;
             }
@@ -190,15 +190,15 @@ namespace EmoMount
 
                 if (distanceToTarget <= StopDistance)
                 {
-                    MountController.NavMesh.isStopped = true;
+                    MountController.NavMeshAgent.isStopped = true;
                     MoveToTarget = Vector3.zero;
                     if (OnTargetReached != null) OnTargetReached?.Invoke();
                 }
                 else
                 {
 
-                    MountController.NavMesh.SetDestination(MoveToTarget);
-                    MountController.NavMesh.isStopped = false;
+                    MountController.NavMeshAgent.SetDestination(MoveToTarget);
+                    MountController.NavMeshAgent.isStopped = false;
                 }
             }
         }

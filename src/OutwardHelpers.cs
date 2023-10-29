@@ -203,5 +203,60 @@ namespace EmoMount
 
             return foodValue;
         }
+
+        /// <summary>
+        /// Copy Animation Events from one clip to another
+        /// </summary>
+        /// <param name="originalClip"></param>
+        /// <param name="newClip"></param>
+        public static void CopyAnimationEvents(AnimationClip originalClip, AnimationClip newClip)
+        {
+            if (originalClip == null)
+            {
+                return;
+            }
+
+            if (originalClip.events == null)
+            {
+                return;
+            }
+
+            if (originalClip.events.Length == 0)
+            {
+                return;
+            }
+
+            if (newClip == null)
+            {
+                return;
+            }
+
+            List<AnimationEvent> copyOfOriginalEvents = originalClip.events.ToList();
+
+            for (int i = 0; i < copyOfOriginalEvents.Count; i++)
+            {
+                if (copyOfOriginalEvents[i] == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    AnimationEvent newEvent = copyOfOriginalEvents[i];
+                    newEvent.m_Time = ScaleAnimationTimeWithClipLength(originalClip.length, copyOfOriginalEvents[i].m_Time, newClip.length);
+                    newClip.AddEvent(newEvent);
+                }
+            }
+        }
+        /// <summary>
+        /// Scales an AnimationEvent time by the newClip duration
+        /// </summary>
+        /// <param name="originalClipDuration">Original Clip Duration</param>
+        /// <param name="originalClipEventTime">Original Clip Animation Event trigger time</param>
+        /// <param name="newClipDuration">New Clip Duration</param>
+        /// <returns> Animation Event trigger time scaled to New Clip Duration </returns>
+        public static float ScaleAnimationTimeWithClipLength(float originalClipDuration, float originalClipEventTime, float newClipDuration)
+        {
+            return newClipDuration * (originalClipEventTime / originalClipDuration);
+        }
     }
 }

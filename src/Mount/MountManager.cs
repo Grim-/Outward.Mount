@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Policy;
 using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace EmoMount
 {
@@ -416,6 +418,8 @@ namespace EmoMount
         private SL_Item CreateWhistle(MountSpecies mountSpecies)
         {
             string NiceName = mountSpecies.SpeciesName.Replace("_", " ");
+
+
             SL_Item WhistleItem = new SL_Item()
             {
                 Target_ItemID = mountSpecies.TargetItemID,
@@ -435,9 +439,10 @@ namespace EmoMount
                             }
                         }
                     }
-                }
+                },
             };
 
+            WhistleItem.OnTemplateApplied += WhistleItem_OnTemplateApplied;
             WhistleItem.ApplyTemplate();
 
             MountWhistleIDs.Add(WhistleItem.New_ItemID);
@@ -449,9 +454,44 @@ namespace EmoMount
 
             return WhistleItem;
         }
+
+        private void WhistleItem_OnTemplateApplied(Item Item)
+        {
+            LoadCustomIconForItem(Item);
+        }
+
         public int GetRandomWhistleID()
         {
             return WorldDropMountWhistleIDs[UnityEngine.Random.Range(0, WorldDropMountWhistleIDs.Count)];
         }
+
+
+        public Texture2D GetIcon(string SLPackName = "mount", string IconName = "summon")
+        {
+            SLPack pack = SL.GetSLPack(SLPackName);
+            if (pack != null)
+            {
+                return pack.Texture2D[IconName];
+            }
+
+            return null;
+        }
+
+
+        public void LoadCustomIconForItem(Item Item)
+        {
+            Texture2D icon = GetIcon();
+
+            if (icon)
+            {
+                Sprite sprite = CustomTextures.CreateSprite(icon, CustomTextures.SpriteBorderTypes.ItemIcon);
+                UnityEngine.Object.DontDestroyOnLoad(sprite);
+                sprite.name = "icon";
+                CustomItemVisuals.SetSpriteLink(Item, sprite);
+            }
+        }
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 ﻿using SideLoader;
 using System;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace EmoMount.Custom_SL_Effect
@@ -19,7 +20,8 @@ namespace EmoMount.Custom_SL_Effect
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            ChangeMountTint comp = effect as ChangeMountTint;
+            this.TintColor = comp.TintColor;
         }
     }
     public class ChangeMountTint : Effect

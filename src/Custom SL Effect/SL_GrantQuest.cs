@@ -1,6 +1,7 @@
 ﻿using SideLoader;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace EmoMount.Custom_SL_Effect
@@ -22,7 +23,8 @@ namespace EmoMount.Custom_SL_Effect
 
         public override void SerializeEffect<T>(T effect)
         {
-
+            GrantQuest comp = effect as GrantQuest;
+            this.QuestID = comp.QuestID;
         }
     }
 

@@ -53,15 +53,42 @@ namespace EmoMount
         {
             if (!_loadedDead)
             {
+                //EmoMountMod.Log.LogMessage($"CharacterDiePatch.");
+
                 CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
 
                 if (characterMount)
                 {
-                    if (characterMount.ActiveMount && characterMount.ActiveMount.CurrentlyMountedCharacter == __instance && characterMount.IsMounted)
+                    if (characterMount.IsTransformed && characterMount.ActiveMount)
                     {
-                        EmoMountMod.Log.LogMessage($"Character died while mounted, dismounting.");
+                        //EmoMountMod.Log.LogMessage($"CharacterDiePatch. IsTransformed");
                         characterMount.ActiveMount.DismountCharacter(__instance);
                     }
+                    else if (characterMount.ActiveMount && characterMount.ActiveMount.CurrentlyMountedCharacter == __instance && characterMount.IsMounted)
+                    {
+                        //EmoMountMod.Log.LogMessage($"Character died while mounted, dismounting.");
+                        characterMount.ActiveMount.DismountCharacter(__instance);
+                    }
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Character), nameof(Character.CancelActions))]
+    public class CharacterCancelActionsPatch
+    {
+        static void Prefix(Character __instance)
+        {
+            //EmoMountMod.Log.LogMessage($"CancelActions.");
+
+            CharacterMount characterMount = __instance.gameObject.GetComponent<CharacterMount>();
+
+            if (characterMount)
+            {
+                if (characterMount.IsTransformed || characterMount.IsMounted)
+                {
+                   // EmoMountMod.Log.LogMessage($"CancelActions. Returning Because mounted or transformed");
+                    return;
                 }
             }
         }
@@ -78,15 +105,15 @@ namespace EmoMount
             {
                 if (characterMount.HasActiveMount)
                 {
-                    if (characterMount.ActiveMount.IsTransform)
-                    {
-                        return;
-                    }
-
-                    if (characterMount.IsMounted)
+                    if (characterMount.ActiveMount.IsTransform || characterMount.IsMounted)
                     {
                         characterMount.ActiveMount.DismountCharacter(characterMount.ActiveMount.CurrentlyMountedCharacter);
                     }
+
+                    //if (characterMount.IsMounted)
+                    //{
+                    //    characterMount.ActiveMount.DismountCharacter(characterMount.ActiveMount.CurrentlyMountedCharacter);
+                    //}
 
                     //only teleport if the player is not mounted on the active mount
                     if (characterMount.ActiveMount.CurrentlyMountedCharacter != __instance)
