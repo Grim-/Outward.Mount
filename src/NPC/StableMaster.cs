@@ -97,7 +97,7 @@ namespace EmoMount
                 " various mounts to get you moving. Feel free to ask them for assistance.";
 
             string MountSimpleExplanation2 = $"<b>Most</b> mounts require feeding, and each has a favorite food. Carnivores usually prefer <b>Jewel Bird Meat</b>," +
-                " while herbivores seem to <b>love Marsh Mellons</b>. Feeding them their favorite food will fill them up better than other options." +
+                " while herbivores seem to love <b>Marsh Mellons</b>. Feeding them their favorite food will fill them up better than other options." +
                 " Additionally, most mounts have a maximum carry weight, and they will move slower when they are closer to reaching this limit.";
 
             string MountSimpleExplanation3 = $"You can also find eggs in the wild, often in Pearl Bird nests. These eggs can be raised into mounts," +
